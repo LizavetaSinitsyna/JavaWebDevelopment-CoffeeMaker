@@ -1,0 +1,134 @@
+@charset "UTF-8";
+
+.logo {
+	width: 100%;
+}
+
+header {
+	background-color: lightgoldenrodyellow;
+}
+
+footer {
+	background-color: lightgoldenrodyellow;
+}
+
+body {
+	background-color: beige;
+}
+
+.header-link-border:hover {
+	border-color: red;
+}
+
+.header-link-border-stat {
+	border: 1px solid;
+	border-radius: 10px;
+	margin-right: 5px;
+}
+
+.footer-image {
+	width: 35px;
+}
+
+.basket {
+	background: no-repeat url("/CoffeeMachine/images/black_basket.png");
+}
+
+.basket:hover {
+	background-image: url("/CoffeeMachine/images/red_basket.png");
+}
+
+.basket-image {
+	width: 24px;
+	height: 24px;
+	float: left;
+	margin-top: .5rem;
+	text-decoration: none;
+}
+
+#basket-area:hover .nav-link {
+	color: red;
+}
+
+#basket-area:hover .basket {
+	background-image: url("/CoffeeMachine/images/red_basket.png");
+}
+
+#basket-area {
+	display: inline-block;
+}
+
+.basket-float-right {
+	float: right;
+}
+
+header .nav-link:hover {
+	color: red;
+}
+
+@media ( min-width : 1200px) {
+	.container, .container-lg, .container-md, .container-sm, .container-xl {
+		max-width: 720px;
+	}
+}
+
+@media ( min-width : 992px) {
+	.container, .container-lg, .container-md, .container-sm, .container-xl {
+		max-width: 720px;
+	}
+}
+
+.btn:hover {
+	color: red;
+}
+
+.form-floating>label {
+	padding: 1px;
+}
+
+.form-control {
+	width: 70%;
+}
+
+.star {
+	color: red;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: lightgoldenrodyellow;
+	border-radius: 10px;
+	overflow: auto;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+.show {
+	display: block;
+}
+
+.center-align {
+	text-align: center;
+}
+
+.form-floating > #phone.form-control::placeholder {
+  color: gray;
+}
+
+:-ms-input-placeholder  {
+	color: transparent;
+	}
+	
+#phone:-ms-input-placeholder  {
+	color: gray;
+	}
+
+.flex-display {
+	display: flex;
+}
+
+.error-margin {
+	margin: 5px;
+}
+
