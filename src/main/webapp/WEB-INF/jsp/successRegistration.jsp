@@ -11,9 +11,9 @@
 <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
 </head>
 <body>
-	<jsp:include page="header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/jsp/header.jsp"></jsp:include>
 	<h1>You successfully registered!</h1>
-	<jsp:include page="footer.jsp"></jsp:include>
-	<script src="js/site.js"></script>
+	<%@include file="footer.jsp"%>
+	<script src="js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,6 +1,10 @@
+const lang_change = document.getElementById("language-change");
+
 function showDropdownContent() {
-  document.getElementById("dropdown-content").classList.toggle("show");
+document.getElementById("dropdown-content").classList.toggle("show");
 }
+
+lang_change.onclick = showDropdownContent;
 
 window.onclick = function(event) {
   if (event.target.id != 'language-change') {

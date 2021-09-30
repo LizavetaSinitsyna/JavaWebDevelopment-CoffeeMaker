@@ -12,4 +12,32 @@
 		<servlet-name>Controller</servlet-name>
 		<url-pattern>/Controller</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Login</servlet-name>
+		<jsp-file>/WEB-INF/jsp/login.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Login</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Registration</servlet-name>
+		<jsp-file>/WEB-INF/jsp/registration.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Registration</servlet-name>
+		<url-pattern>/registration</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>SuccessRegistration</servlet-name>
+		<jsp-file>/WEB-INF/jsp/successRegistration.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SuccessRegistration</servlet-name>
+		<url-pattern>/successRegistration</url-pattern>
+	</servlet-mapping>
+
 </web-app>

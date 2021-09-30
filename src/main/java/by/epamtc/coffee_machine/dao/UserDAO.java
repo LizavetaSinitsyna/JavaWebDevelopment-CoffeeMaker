@@ -4,6 +4,7 @@
 package by.epamtc.coffee_machine.dao;
 
 import by.epamtc.coffee_machine.bean.UserInfo;
+import by.epamtc.coffee_machine.bean.transfer.UserLoginTransfer;
 import by.epamtc.coffee_machine.bean.User;
 
 /**
@@ -13,9 +14,7 @@ import by.epamtc.coffee_machine.bean.User;
 public interface UserDAO extends GenericDAO<User> {
 	boolean authorization(String login, String password) throws DAOException;
 
-	boolean registration(UserInfo userInfo) throws DAOException;
-
-	User searchByLogin(String login) throws DAOException;
+	UserLoginTransfer login(String login, String password) throws DAOException;
 	
 	boolean containsEmail(String email) throws DAOException;
 	

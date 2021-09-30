@@ -5,8 +5,8 @@ package by.epamtc.coffee_machine.dao;
 
 import java.util.List;
 
-import by.epamtc.coffee_machine.bean.Drink;
 import by.epamtc.coffee_machine.bean.OrderDrink;
+import by.epamtc.coffee_machine.bean.transfer.DrinkTransfer;
 
 /**
  * @author Lizaveta Sinitsyna
@@ -24,5 +24,5 @@ public interface OrderDrinkDAO extends GenericDAO<OrderDrink> {
 
 	boolean update(OrderDrink orderDrink, int amount);
 	
-	List<Drink> selectPopularDrinks(int amount) throws DAOException;
+	List<DrinkTransfer> selectPopularDrinks(int amount) throws DAOException;
 }

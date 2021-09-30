@@ -11,6 +11,7 @@ import java.sql.Statement;
 
 import by.epamtc.coffee_machine.bean.User;
 import by.epamtc.coffee_machine.bean.UserInfo;
+import by.epamtc.coffee_machine.bean.transfer.UserLoginTransfer;
 import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.UserDAO;
 import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolException;
@@ -22,11 +23,14 @@ import by.epamtc.coffee_machine.validation.ValidationHelper;
  *
  */
 public class SQLUserDAO implements UserDAO {
-	private final ConnectionPoolImpl connectionPool = ConnectionPoolImpl.retrieveConnectionPool();
-	private final String ADD_QUERY = "INSERT INTO users "
+	private static final ConnectionPoolImpl CONNECTION_POOL = ConnectionPoolImpl.retrieveConnectionPool();
+	private static final String ADD_QUERY = "INSERT INTO users "
 			+ "(login, password, bonus_account_id, account_id, name, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?)";
-	private final String SEARCH_EMAIL_QUERY = "SELECT * FROM users WHERE email = ?";
-	private final String SEARCH_LOGIN_QUERY = "SELECT * FROM users WHERE login = ?";
+	private static final String SEARCH_EMAIL_QUERY = "SELECT * FROM users WHERE email = ?";
+	private static final String SEARCH_LOGIN_QUERY = "SELECT * FROM users WHERE login = ?";
+	private static final String LOGIN_QUERY = "SELECT user_id, roles.name FROM users "
+			+ "INNER JOIN roles ON users.role_id = roles.role_id WHERE "
+			+ "(login = ? AND password = ?) OR (email = ? AND password = ?)";
 
 	@Override
 	public boolean authorization(String login, String password) {
@@ -35,15 +39,33 @@ public class SQLUserDAO implements UserDAO {
 	}
 
 	@Override
-	public boolean registration(UserInfo userInfo) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public UserLoginTransfer login(String login, String password) throws DAOException {
+		UserLoginTransfer result = null;
+		if (ValidationHelper.isNull(login) || ValidationHelper.isNull(password)) {
+			return result;
+		}
 
-	@Override
-	public User searchByLogin(String login) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			connection = CONNECTION_POOL.retrieveConnection();
+			statement = connection.prepareStatement(LOGIN_QUERY);
+			statement.setString(1, login);
+			statement.setString(2, password);
+			statement.setString(3, login);
+			statement.setString(4, password);
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				result = new UserLoginTransfer();
+				result.setId(resultSet.getInt(1));
+				result.setRoleName(resultSet.getString(2));
+			}
+		} catch (SQLException | ConnectionPoolException e) {
+			throw new DAOException(e.getMessage(), e);
+		}
+
+		return result;
 	}
 
 	@Override
@@ -58,7 +80,7 @@ public class SQLUserDAO implements UserDAO {
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		try {
-			connection = connectionPool.retrieveConnection();
+			connection = CONNECTION_POOL.retrieveConnection();
 			statement = connection.prepareStatement(SEARCH_EMAIL_QUERY);
 			statement.setString(1, email);
 			resultSet = statement.executeQuery();
@@ -67,7 +89,7 @@ public class SQLUserDAO implements UserDAO {
 			throw new DAOException(e.getMessage(), e);
 		} finally {
 			try {
-				connectionPool.closeConnection(connection, statement, resultSet);
+				CONNECTION_POOL.closeConnection(connection, statement, resultSet);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e.getMessage(), e);
 			}
@@ -88,7 +110,7 @@ public class SQLUserDAO implements UserDAO {
 		ResultSet resultSet = null;
 
 		try {
-			connection = connectionPool.retrieveConnection();
+			connection = CONNECTION_POOL.retrieveConnection();
 			statement = connection.prepareStatement(SEARCH_LOGIN_QUERY);
 			statement.setString(1, username);
 			resultSet = statement.executeQuery();
@@ -97,7 +119,7 @@ public class SQLUserDAO implements UserDAO {
 			throw new DAOException(e.getMessage(), e);
 		} finally {
 			try {
-				connectionPool.closeConnection(connection, statement, resultSet);
+				CONNECTION_POOL.closeConnection(connection, statement, resultSet);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e.getMessage(), e);
 			}
@@ -142,7 +164,7 @@ public class SQLUserDAO implements UserDAO {
 			throw new DAOException(e.getMessage(), e);
 		} finally {
 			try {
-				connectionPool.closeConnection(connection, preparedStatement);
+				CONNECTION_POOL.closeConnection(connection, preparedStatement);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e.getMessage(), e);
 			}

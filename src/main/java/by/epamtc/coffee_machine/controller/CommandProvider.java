@@ -7,6 +7,10 @@ import java.util.HashMap;
 
 import by.epamtc.coffee_machine.controller.command.ChangeLanguageCommand;
 import by.epamtc.coffee_machine.controller.command.Command;
+import by.epamtc.coffee_machine.controller.command.ViewMenuCommand;
+import by.epamtc.coffee_machine.controller.command.ViewProductCommand;
+import by.epamtc.coffee_machine.controller.command.LogOutCommand;
+import by.epamtc.coffee_machine.controller.command.LoginCommand;
 import by.epamtc.coffee_machine.controller.command.NoSuchCommand;
 import by.epamtc.coffee_machine.controller.command.RegistrationCommand;
 import by.epamtc.coffee_machine.controller.command.SelectPopularDrinksCommand;
@@ -24,6 +28,10 @@ public class CommandProvider {
 		commands.put(CommandName.NO_SUCH_COMMAND, new NoSuchCommand());
 		commands.put(CommandName.CHANGE_LANGUAGE, new ChangeLanguageCommand());
 		commands.put(CommandName.REGISTRATION, new RegistrationCommand());
+		commands.put(CommandName.LOGIN, new LoginCommand());
+		commands.put(CommandName.LOG_OUT, new LogOutCommand());
+		commands.put(CommandName.VIEW_MENU, new ViewMenuCommand());
+		commands.put(CommandName.VIEW_PRODUCT, new ViewProductCommand());
 	}
 
 	private static final class SingletonHelper {

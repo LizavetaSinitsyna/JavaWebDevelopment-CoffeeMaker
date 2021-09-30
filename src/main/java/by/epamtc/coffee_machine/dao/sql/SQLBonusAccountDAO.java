@@ -21,9 +21,9 @@ import by.epamtc.coffee_machine.validation.ValidationHelper;
  *
  */
 public class SQLBonusAccountDAO implements BonusAccountDAO {
-	private final ConnectionPoolImpl connectionPool = ConnectionPoolImpl.retrieveConnectionPool();
+	private static final ConnectionPoolImpl connectionPool = ConnectionPoolImpl.retrieveConnectionPool();
 
-	private final String ADD_QUERY = "INSERT INTO bonus_accounts (balance) VALUES (?)";
+	private static final String ADD_QUERY = "INSERT INTO bonus_accounts (balance) VALUES (?)";
 
 	@Override
 	public BonusAccount read(int account_id) {

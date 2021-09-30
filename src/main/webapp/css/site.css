@@ -38,7 +38,7 @@ body {
 	background-image: url("/CoffeeMachine/images/red_basket.png");
 }
 
-.basket-image {
+.icon-image {
 	width: 24px;
 	height: 24px;
 	float: left;
@@ -66,6 +66,15 @@ header .nav-link:hover {
 	color: red;
 }
 
+.user-icon {
+	background: no-repeat url("/CoffeeMachine/images/user_icon.png");
+	margin: 5px;
+}
+
+.user-icon:hover {
+	background: no-repeat url("/CoffeeMachine/images/user_icon_red.png");
+}
+
 @media ( min-width : 1200px) {
 	.container, .container-lg, .container-md, .container-sm, .container-xl {
 		max-width: 720px;
@@ -82,12 +91,16 @@ header .nav-link:hover {
 	color: red;
 }
 
+#log_out.btn:focus {
+	box-shadow: none;
+}
+
 .form-floating>label {
 	padding: 1px;
 }
 
 .form-control {
-	width: 70%;
+	width: 50%;
 }
 
 .star {
@@ -112,23 +125,115 @@ header .nav-link:hover {
 	text-align: center;
 }
 
-.form-floating > #phone.form-control::placeholder {
-  color: gray;
+.form-floating>#phone.form-control::placeholder {
+	color: gray;
 }
 
-:-ms-input-placeholder  {
+:-ms-input-placeholder {
 	color: transparent;
-	}
-	
-#phone:-ms-input-placeholder  {
+}
+
+#phone:-ms-input-placeholder {
 	color: gray;
-	}
+}
 
 .flex-display {
 	display: flex;
 }
 
-.error-margin {
+.input-info {
+	max-width: 45%;
 	margin: 5px;
 }
 
+.error {
+	color: red;
+}
+
+.error-input {
+	border-color: red;
+	box-shadow: 0 0 0 0.25rem red;
+}
+
+.float-right {
+	float: right;
+}
+
+.description {
+	min-width: 66%;
+}
+
+.description-row {
+	min-height: 50%;
+}
+
+.edit {
+	background: no-repeat url("/CoffeeMachine/images/edit.png");
+}
+
+.edit:hover {
+	background-image: url("/CoffeeMachine/images/red_edit.png");
+}
+
+.delete {
+	background: no-repeat url("/CoffeeMachine/images/delete.png");
+}
+
+.delete:hover {
+	background-image: url("/CoffeeMachine/images/red_delete.png");
+}
+
+.icon {
+	position: absolute;
+	margin: 5px;
+}
+
+.icon-right-corner {
+	top: 0px;
+	right: 0px;
+}
+
+.page-list {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 5px;
+}
+
+.half-padding {
+	padding-top: 0.5rem !important;
+	padding-bottom: 0.5rem !important;
+}
+
+.rating {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: center
+}
+
+.rating>input {
+	display: none
+}
+
+.rating>label {
+	position: relative;
+	color: #FFD600;
+	cursor: pointer
+}
+
+.rating>label::before {
+	content: "\2605";
+	position: absolute;
+	opacity: 0
+}
+
+.rating>label:hover:before, .rating>label:hover ~label:before {
+	opacity: 1 !important
+}
+
+.rating>input:checked ~label:before {
+	opacity: 1
+}
+
+.rating:hover>input:checked ~label:before {
+	opacity: 0.4
+}

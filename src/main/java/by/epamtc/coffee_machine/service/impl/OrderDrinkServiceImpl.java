@@ -3,16 +3,15 @@
  */
 package by.epamtc.coffee_machine.service.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 
-import by.epamtc.coffee_machine.bean.Drink;
+import by.epamtc.coffee_machine.bean.transfer.DrinkTransfer;
 import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.DAOProvider;
 import by.epamtc.coffee_machine.service.OrderDrinkService;
 import by.epamtc.coffee_machine.service.ServiceException;
+import by.epamtc.coffee_machine.utility.MenuParameter;
+import by.epamtc.coffee_machine.utility.MenuPropertyProvider;
 import by.epamtc.coffee_machine.validation.ValidationHelper;
 
 /**
@@ -21,21 +20,19 @@ import by.epamtc.coffee_machine.validation.ValidationHelper;
  */
 public class OrderDrinkServiceImpl implements OrderDrinkService {
 	private DAOProvider daoProvider = DAOProvider.getInstance();
-	private final String popularDrinkPropertyFile = "popular_drink.properties";
+	private MenuPropertyProvider menuPropertyProvider = MenuPropertyProvider.getInstance();
 
 	@Override
-	public List<Drink> selectPopularDrinks() throws ServiceException {
-		List<Drink> drinks = null;
+	public List<DrinkTransfer> selectPopularDrinks() throws ServiceException {
+		List<DrinkTransfer> drinks = null;
 		int amount;
-		Properties properties = new Properties();
-		try (InputStream is = getClass().getClassLoader().getResourceAsStream(popularDrinkPropertyFile)) {
-			properties.load(is);
-			amount = Integer.parseInt(properties.getProperty("popular_drinks_amount"));
+		try {
+			amount = Integer.parseInt(menuPropertyProvider.retrieveValue(MenuParameter.POPULAR_DRINKS_AMOUNT));
 			if (ValidationHelper.isNegative(amount)) {
 				throw new ServiceException(ValidationHelper.NEGATIVE_PARAM_EXCEPTION);
 			}
 			drinks = daoProvider.getOrderDrinkDAO().selectPopularDrinks(amount);
-		} catch (DAOException | IOException | NumberFormatException e) {
+		} catch (DAOException | NumberFormatException e) {
 			throw new ServiceException(e.getMessage(), e);
 		}
 		return drinks;

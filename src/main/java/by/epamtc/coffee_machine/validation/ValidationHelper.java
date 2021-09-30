@@ -21,4 +21,8 @@ public class ValidationHelper {
 	public static boolean isNegative(double number) {
 		return number < 0;
 	}
+	
+	public static boolean isPositive(double number) {
+		return number > 0;
+	}
 }

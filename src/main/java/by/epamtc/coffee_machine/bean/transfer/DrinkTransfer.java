@@ -1,39 +1,54 @@
 /**
  * 
  */
-package by.epamtc.coffee_machine.bean;
+package by.epamtc.coffee_machine.bean.transfer;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * @author Lizaveta Sinitsyna
  *
  */
-public class DrinkInfo implements Serializable, Cloneable {
-	private static final long serialVersionUID = 1L;
-
+/**
+ * @author Lizaveta Sinitsyna
+ *
+ */
+public class DrinkTransfer {
+	private int id;
 	private String name;
-	private String imagePath;
 	private BigDecimal price;
-	private String description;
+	private String imagePath;
 
+	public DrinkTransfer() {
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * @param name the name to set
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getImagePath() {
-		return imagePath;
-	}
-
-	public void setImagePath(String image_path) {
-		this.imagePath = image_path;
-	}
-
 
 	/**
 	 * @return the price
@@ -49,31 +64,25 @@ public class DrinkInfo implements Serializable, Cloneable {
 		this.price = price;
 	}
 
-	public String getDescription() {
-		return description;
+	/**
+	 * @return the imagePath
+	 */
+	public String getImagePath() {
+		return imagePath;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	@Override
-	public Object clone() {
-		DrinkInfo info = new DrinkInfo();
-
-		info.name = this.name;
-		info.imagePath = this.imagePath;
-		info.price = this.price;
-		info.description = this.description;
-
-		return info;
+	/**
+	 * @param imagePath the imagePath to set
+	 */
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + id;
 		result = prime * result + ((imagePath == null) ? 0 : imagePath.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
@@ -88,11 +97,8 @@ public class DrinkInfo implements Serializable, Cloneable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		DrinkInfo other = (DrinkInfo) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
+		DrinkTransfer other = (DrinkTransfer) obj;
+		if (id != other.id)
 			return false;
 		if (imagePath == null) {
 			if (other.imagePath != null)
@@ -114,10 +120,8 @@ public class DrinkInfo implements Serializable, Cloneable {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " [name=" + name + ", imagePath=" + imagePath + ", price=" + price + ", description="
-				+ description + "]";
+		return getClass().getSimpleName() + " [id=" + id + ", name=" + name + ", price=" + price + ", imagePath=" + imagePath + "]";
 	}
 
 	
-
 }

@@ -21,11 +21,11 @@ import by.epamtc.coffee_machine.validation.ValidationHelper;
  *
  */
 public class SQLAccountDAO implements AccountDAO {
-	private final ConnectionPoolImpl connectionPool = ConnectionPoolImpl.retrieveConnectionPool();
+	private static final ConnectionPoolImpl CONNECTION_POOL = ConnectionPoolImpl.retrieveConnectionPool();
 
-	private final String ADD_QUERY = "INSERT INTO accounts (balance) VALUES (?)";
-	private final String UPDATE_QUERY = "UPDATE accounts SET balance = ? WHERE account_id = ?";
-	private final String SELECT_BY_ID_QUERY = "SELECT * FROM accounts WHERE account_id = ?";
+	private static final String ADD_QUERY = "INSERT INTO accounts (balance) VALUES (?)";
+	private static final String UPDATE_QUERY = "UPDATE accounts SET balance = ? WHERE account_id = ?";
+	private static final String SELECT_BY_ID_QUERY = "SELECT * FROM accounts WHERE account_id = ?";
 
 	@Override
 	public Account read(int account_id) throws DAOException {
@@ -83,7 +83,7 @@ public class SQLAccountDAO implements AccountDAO {
 			throw new DAOException(e.getMessage(), e);
 		} finally {
 			try {
-				connectionPool.closeConnection(connection, preparedStatement);
+				CONNECTION_POOL.closeConnection(connection, preparedStatement);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e.getMessage(), e);
 			}
