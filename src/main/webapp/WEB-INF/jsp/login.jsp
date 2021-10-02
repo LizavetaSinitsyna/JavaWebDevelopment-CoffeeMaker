@@ -4,12 +4,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="cookie_lang" value="${cookie['lang'].value}"
 	scope="application" />
-<fmt:setLocale value="${cookie_lang == null ? 'EN' : cookie_lang}"
+<fmt:setLocale value="${ empty cookie_lang ? 'EN' : cookie_lang}"
 	scope="application" />
 <fmt:setBundle basename="localization.local" scope="application" />
 <c:set var="currentPage" value="/CoffeeMachine/login"
-	scope="application" />
-<c:set var="registration_errors" value="${registration_errors}"
 	scope="application" />
 <!DOCTYPE html>
 <html>
@@ -21,7 +19,7 @@
 <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
 </head>
 <body>
-	<jsp:include page="/WEB-INF/jsp/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/jsp/partial_pages/header.jsp"></jsp:include>
 	<h3>
 		<fmt:message key="local.header.login.name" />
 	</h3>
@@ -30,7 +28,7 @@
 	</p>
 	<p>
 		<span class="star">* </span>
-		<fmt:message key="local.registration.required_field_info" />
+		<fmt:message key="local.required_field_info" />
 	</p>
 	<div>
 		<div class="bd-example">
@@ -63,9 +61,9 @@
 	<p>
 		<fmt:message key="local.login.registration_offer" />
 		<a href="/CoffeeMachine/registration"><fmt:message
-				key="local.registration.header" /></a>
+				key="local.header.sign_up.name" /></a>
 	</p>
-	<%@include file="footer.jsp"%>
+	<%@include file="partial_pages/footer.jsp"%>
 	<script src="js/header.js"></script>
 </body>
 </html>

@@ -37,7 +37,7 @@ public class RegistrationCommand implements Command {
 			Set<UserValidationError> registrationErrors = userService.registration(email, password, repeatPassword,
 					username, name, phone);
 			if (registrationErrors.size() > 0) {
-				request.setAttribute(AttributeName.REGISTRATION_ERRORS, registrationErrors);
+				request.setAttribute(AttributeName.ERRORS, registrationErrors);
 				request.setAttribute(AttributeName.EMAIL, email);
 				request.setAttribute(AttributeName.USERNAME, username);
 				request.setAttribute(AttributeName.NAME, name);

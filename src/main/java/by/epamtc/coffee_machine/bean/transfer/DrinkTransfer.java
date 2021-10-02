@@ -3,6 +3,7 @@
  */
 package by.epamtc.coffee_machine.bean.transfer;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -13,7 +14,10 @@ import java.math.BigDecimal;
  * @author Lizaveta Sinitsyna
  *
  */
-public class DrinkTransfer {
+public class DrinkTransfer implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
 	private int id;
 	private String name;
 	private BigDecimal price;

@@ -27,10 +27,11 @@ public class ViewMenuCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		String pageRequest = request.getParameter(AttributeName.PAGE);
 		int page;
-		if (pageRequest == null) {
-			page = FIRST_PAGE;
-		} else {
+
+		try {
 			page = Integer.parseInt(pageRequest);
+		} catch (NumberFormatException e) {
+			page = FIRST_PAGE;
 		}
 
 		List<DrinkTransfer> drinks;

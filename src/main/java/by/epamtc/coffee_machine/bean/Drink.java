@@ -26,13 +26,22 @@ public class Drink implements Serializable {
 	}
 
 	public DrinkInfo getInfo() {
-		return ValidationHelper.isNull(info) ? info : (DrinkInfo) info.clone();
+		return ValidationHelper.isNull(info) ? info : infoCopy(info);
 	}
 
 	public void setInfo(DrinkInfo info) {
 		if (!ValidationHelper.isNull(info)) {
-			this.info = (DrinkInfo) info.clone();
+			this.info = infoCopy(info);
 		}
+	}
+
+	private DrinkInfo infoCopy(DrinkInfo info) {
+		DrinkInfo copy = new DrinkInfo();
+		copy.setName(info.getName());
+		copy.setImagePath(info.getImagePath());
+		copy.setPrice(info.getPrice());
+		copy.setDescription(info.getDescription());
+		return copy;
 	}
 
 	@Override

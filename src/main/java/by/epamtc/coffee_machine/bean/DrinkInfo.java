@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * @author Lizaveta Sinitsyna
  *
  */
-public class DrinkInfo implements Serializable, Cloneable {
+public class DrinkInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String name;
@@ -34,7 +34,6 @@ public class DrinkInfo implements Serializable, Cloneable {
 		this.imagePath = image_path;
 	}
 
-
 	/**
 	 * @return the price
 	 */
@@ -55,18 +54,6 @@ public class DrinkInfo implements Serializable, Cloneable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	@Override
-	public Object clone() {
-		DrinkInfo info = new DrinkInfo();
-
-		info.name = this.name;
-		info.imagePath = this.imagePath;
-		info.price = this.price;
-		info.description = this.description;
-
-		return info;
 	}
 
 	@Override
@@ -114,10 +101,8 @@ public class DrinkInfo implements Serializable, Cloneable {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " [name=" + name + ", imagePath=" + imagePath + ", price=" + price + ", description="
-				+ description + "]";
+		return getClass().getSimpleName() + " [name=" + name + ", imagePath=" + imagePath + ", price=" + price
+				+ ", description=" + description + "]";
 	}
-
-	
 
 }

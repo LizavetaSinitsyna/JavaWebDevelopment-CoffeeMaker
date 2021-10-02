@@ -8,8 +8,8 @@ package by.epamtc.coffee_machine.bean;
  *
  */
 public class DrinkIngredient {
-	private Drink drink;
-	private Ingredient ingredient;
+	private int drinkId;
+	private int ingredientId;
 	private int ingredient_amount;
 	private boolean optional;
 }

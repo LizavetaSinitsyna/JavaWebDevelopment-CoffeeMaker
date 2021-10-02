@@ -6,6 +6,7 @@ package by.epamtc.coffee_machine.dao;
 import java.util.List;
 
 import by.epamtc.coffee_machine.bean.DrinkIngredient;
+import by.epamtc.coffee_machine.bean.transfer.DrinkIngredientTransfer;
 
 /**
  * @author Lizaveta Sinitsyna
@@ -14,7 +15,7 @@ import by.epamtc.coffee_machine.bean.DrinkIngredient;
 public interface DrinkIngredientDAO extends GenericDAO<DrinkIngredient> {
 	List<DrinkIngredient> findDrinksWithSpecificIngredient(int ingredient_id);
 
-	List<DrinkIngredient> readIngredientsForSpecificDrink(int drink_id);
+	List<DrinkIngredientTransfer> readIngredientsForSpecificDrink(int drink_id) throws DAOException;
 
 	@Override
 	int add(DrinkIngredient drinkIngredient);

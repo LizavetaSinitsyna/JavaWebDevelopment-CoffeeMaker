@@ -4,12 +4,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="cookie_lang" value="${cookie['lang'].value}"
 	scope="application" />
-<fmt:setLocale value="${cookie_lang == null ? 'EN' : cookie_lang}"
+<fmt:setLocale value="${ empty cookie_lang ? 'EN' : cookie_lang}"
 	scope="application" />
 <fmt:setBundle basename="localization.local" scope="application" />
 <c:set var="currentPage" value="/CoffeeMachine/registration"
 	scope="application" />
-<jsp:include page="/WEB-INF/jsp/registration_error_handler.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/jsp/partial_pages/registration_error_handler.jsp"></jsp:include>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +20,7 @@
 <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
 </head>
 <body>
-	<jsp:include page="/WEB-INF/jsp/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/jsp/partial_pages/header.jsp"></jsp:include>
 	<h3>
 		<fmt:message key="local.registration.header" />
 	</h3>
@@ -29,13 +29,13 @@
 	</p>
 	<p>
 		<span class="star">* </span>
-		<fmt:message key="local.registration.required_field_info" />
+		<fmt:message key="local.required_field_info" />
 	</p>
 	<div>
 		<div class="bd-example">
 			<form action="Controller" method="post">
 				<input type="hidden" name="command" value="registration" />
-				<c:if test="${! empty registration_errors}">
+				<c:if test="${! empty errors}">
 					<div class="form-floating mb-3 flex-display error">
 						<fmt:message key="local.user.error.incorrect_input" />
 					</div>
@@ -116,8 +116,8 @@
 		<a href="/CoffeeMachine/login"><fmt:message
 				key="local.header.login.name" /></a>
 	</p>
-	<%@include file="footer.jsp"%>
-	<jsp:include page="/WEB-INF/jsp/registration-js.jsp"></jsp:include>
+	<%@include file="partial_pages/footer.jsp"%>
+	<jsp:include page="/WEB-INF/jsp/partial_pages/registration-js.jsp"></jsp:include>
 	<script src="js/header.js"></script>
 </body>
 </html>

@@ -4,10 +4,15 @@
 	<div class="container">
 		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 			<c:forEach var="drink" items="${menu}">
+				<c:set var="drinkId" value="${drink.getId()}"/>
 				<div class="col">
 					<div class="card shadow-sm">
-						<c:if test="${sessionScope.user != null && sessionScope.user.getRoleName().equals('Admin')}"><a class="edit icon icon-image" href=""></a> <a
-							class="delete icon icon-image icon-right-corner" href=""></a></c:if>
+						<c:if
+							test="${sessionScope.user != null && sessionScope.user.getRoleName().equals('Admin')}">
+							<a class="edit icon icon-image"
+								href="/CoffeeMachine/Controller?command=view_product_edit&drink_id=${drinkId}"></a>
+							<a class="delete icon icon-image icon-right-corner" href=""></a>
+						</c:if>
 						<img alt="" src="${drink.getImagePath()}">
 						<div class="card-body">
 							<p class="card-text">
@@ -20,7 +25,7 @@
 								<div class="btn-group">
 									<form>
 										<input type="hidden" name="command" value="view_product">
-										<input type="hidden" name="drink_id" value="${drink.getId()}">
+										<input type="hidden" name="drink_id" value="${drinkId}">
 										<button type="submit" class="btn btn-sm btn-outline-secondary">
 											<fmt:message key="local.menu.view" />
 										</button>

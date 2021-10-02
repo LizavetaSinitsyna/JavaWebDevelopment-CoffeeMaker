@@ -39,5 +39,14 @@
 		<servlet-name>SuccessRegistration</servlet-name>
 		<url-pattern>/successRegistration</url-pattern>
 	</servlet-mapping>
+	
+		<servlet>
+		<servlet-name>ForbidenAccess</servlet-name>
+		<jsp-file>/WEB-INF/jsp/forbidenAccess.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ForbidenAccess</servlet-name>
+		<url-pattern>/forbidenAccess</url-pattern>
+	</servlet-mapping>
 
 </web-app>

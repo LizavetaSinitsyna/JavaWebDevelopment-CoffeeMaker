@@ -25,7 +25,7 @@ public class ViewProductCommand implements Command {
 		int productId = Integer.parseInt(request.getParameter(AttributeName.DRINK_ID));
 		try {
 			Drink drink = ServiceProvider.getInstance().getDrinkService().obtainDrink(productId);
-			request.setAttribute("drink", drink);
+			request.setAttribute(AttributeName.DRINK, drink);
 			request.getRequestDispatcher(NEXT_PATH).forward(request, response);
 		} catch (ServiceException | ServletException | IOException e) {
 			// log4j2

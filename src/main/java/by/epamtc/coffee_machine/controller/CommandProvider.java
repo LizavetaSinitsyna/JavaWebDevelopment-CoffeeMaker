@@ -9,6 +9,7 @@ import by.epamtc.coffee_machine.controller.command.ChangeLanguageCommand;
 import by.epamtc.coffee_machine.controller.command.Command;
 import by.epamtc.coffee_machine.controller.command.ViewMenuCommand;
 import by.epamtc.coffee_machine.controller.command.ViewProductCommand;
+import by.epamtc.coffee_machine.controller.command.ViewProductEditCommand;
 import by.epamtc.coffee_machine.controller.command.LogOutCommand;
 import by.epamtc.coffee_machine.controller.command.LoginCommand;
 import by.epamtc.coffee_machine.controller.command.NoSuchCommand;
@@ -32,6 +33,7 @@ public class CommandProvider {
 		commands.put(CommandName.LOG_OUT, new LogOutCommand());
 		commands.put(CommandName.VIEW_MENU, new ViewMenuCommand());
 		commands.put(CommandName.VIEW_PRODUCT, new ViewProductCommand());
+		commands.put(CommandName.VIEW_PRODUCT_EDIT, new ViewProductEditCommand());
 	}
 
 	private static final class SingletonHelper {

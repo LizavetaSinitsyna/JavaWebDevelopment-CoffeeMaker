@@ -63,6 +63,12 @@ public class SQLUserDAO implements UserDAO {
 			}
 		} catch (SQLException | ConnectionPoolException e) {
 			throw new DAOException(e.getMessage(), e);
+		}  finally {
+			try {
+				CONNECTION_POOL.closeConnection(connection, statement, resultSet);
+			} catch (ConnectionPoolException e) {
+				throw new DAOException(e.getMessage(), e);
+			}
 		}
 
 		return result;

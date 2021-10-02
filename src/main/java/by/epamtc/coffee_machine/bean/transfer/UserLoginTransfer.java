@@ -3,11 +3,15 @@
  */
 package by.epamtc.coffee_machine.bean.transfer;
 
+import java.io.Serializable;
+
 /**
  * @author Lizaveta Sinitsyna
  *
  */
-public class UserLoginTransfer {
+public class UserLoginTransfer implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private String roleName;
 	private int id;
 

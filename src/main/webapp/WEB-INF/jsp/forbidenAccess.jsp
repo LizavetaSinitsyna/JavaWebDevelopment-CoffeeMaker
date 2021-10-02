@@ -7,20 +7,20 @@
 <fmt:setLocale value="${ empty cookie_lang ? 'EN' : cookie_lang}"
 	scope="application" />
 <fmt:setBundle basename="localization.local" scope="application" />
-<c:set var="currentPage" value="/CoffeeMachine/successRegistration"
+<c:set var="currentPage" value="/CoffeeMachine/forbidenAccess"
 	scope="application" />
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title><fmt:message key="local.registration.header" /></title>
+<title><fmt:message key="local.access.forbiden.header" /></title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/site.css" rel="stylesheet">
 <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
 </head>
 <body>
 	<jsp:include page="/WEB-INF/jsp/partial_pages/header.jsp"></jsp:include>
-	<p><fmt:message key="local.registration.success" /></p>
+	<h1><fmt:message key="local.access.forbiden.message" /></h1>
 	<%@include file="partial_pages/footer.jsp"%>
 	<script src="js/bootstrap.bundle.min.js"></script>
 	<script src="js/header.js"></script>
