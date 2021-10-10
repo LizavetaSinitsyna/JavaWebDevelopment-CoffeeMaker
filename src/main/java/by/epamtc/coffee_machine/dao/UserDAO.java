@@ -20,9 +20,6 @@ public interface UserDAO extends GenericDAO<User> {
 	
 	boolean containsUsername(String username) throws DAOException;
 
-	@Override
-	int add(User user) throws DAOException;
-
 	boolean remove(int user_id) throws DAOException;
 
 	boolean update(int user_id, UserInfo userInfo) throws DAOException;

@@ -13,7 +13,7 @@
 		var message = document.getElementById('check-pass-message');
 		if (password.value == repeatPassword.value) {
 			message.innerHTML = '';
-			message.parentNode.getElementsByTagName('INPUT')[0].classList.remove("error-input");
+			message.parentNode.getElementsByTagName('input')[0].classList.remove("error-input");
 			document.getElementById('submit-registration').disabled = false;
 
 		} else {

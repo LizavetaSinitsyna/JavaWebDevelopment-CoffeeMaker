@@ -17,9 +17,6 @@ public interface OrderDrinkDAO extends GenericDAO<OrderDrink> {
 
 	List<OrderDrink> findOrdersWithSpecificDrink(int drink_id);
 
-	@Override
-	int add(OrderDrink orderDrink);
-
 	boolean remove(OrderDrink orderDrink);
 
 	boolean update(OrderDrink orderDrink, int amount);

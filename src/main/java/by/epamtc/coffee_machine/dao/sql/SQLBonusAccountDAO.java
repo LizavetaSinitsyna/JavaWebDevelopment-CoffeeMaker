@@ -21,7 +21,7 @@ import by.epamtc.coffee_machine.validation.ValidationHelper;
  *
  */
 public class SQLBonusAccountDAO implements BonusAccountDAO {
-	private static final ConnectionPoolImpl connectionPool = ConnectionPoolImpl.retrieveConnectionPool();
+	private static final ConnectionPoolImpl CONNECTION_POOL = ConnectionPoolImpl.retrieveConnectionPool();
 
 	private static final String ADD_QUERY = "INSERT INTO bonus_accounts (balance) VALUES (?)";
 
@@ -59,7 +59,7 @@ public class SQLBonusAccountDAO implements BonusAccountDAO {
 			throw new DAOException(e.getMessage(), e);
 		} finally {
 			try {
-				connectionPool.closeConnection(connection, preparedStatement);
+				CONNECTION_POOL.closeConnection(connection, preparedStatement);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e.getMessage(), e);
 			}

@@ -4,6 +4,7 @@
 package by.epamtc.coffee_machine.dao.sql;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import by.epamtc.coffee_machine.bean.DrinkIngredient;
+import by.epamtc.coffee_machine.bean.DrinkIngredientMap;
 import by.epamtc.coffee_machine.bean.transfer.DrinkIngredientTransfer;
 import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.DrinkIngredientDAO;
@@ -24,11 +26,11 @@ import by.epamtc.coffee_machine.validation.ValidationHelper;
  */
 public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 	private static final ConnectionPoolImpl CONNECTION_POOL = ConnectionPoolImpl.retrieveConnectionPool();
-	private static final String READ_INGREDIENTS_FOR_SPECIFIC_DRINK_QUERY = 
-			"SELECT ingredients.ingredient_id, ingredients.name, ingredient_amount, is_optional FROM "
+	private static final String READ_INGREDIENTS_FOR_SPECIFIC_DRINK_QUERY = "SELECT ingredients.ingredient_id, ingredients.name, ingredient_amount, is_optional FROM "
 			+ "ingredients INNER JOIN drink_ingredients ON "
 			+ "drink_ingredients.ingredient_id = ingredients.ingredient_id WHERE drink_id = ";
-
+	private static final String DELETE_DRINK_INGREDIENTS_QUERY = "DELETE FROM drink_ingredients WHERE drink_id = ";
+	private static final String INSERT_DRINK_INGREDIENTS_QUERY = "INSERT INTO drink_ingredients (drink_id, ingredient_id, ingredient_amount, is_optional) VALUES (?, ?, ?, ?)";
 
 	@Override
 	public List<DrinkIngredient> findDrinksWithSpecificIngredient(int ingredient_id) {
@@ -48,7 +50,7 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 		ResultSet resultSet = null;
 		result = new ArrayList<>();
 		DrinkIngredientTransfer drinkIngredientTransfer;
-		
+
 		try {
 			connection = CONNECTION_POOL.retrieveConnection();
 			statement = connection.createStatement();
@@ -63,7 +65,7 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 			}
 		} catch (SQLException | ConnectionPoolException e) {
 			throw new DAOException(e.getMessage(), e);
-		}  finally {
+		} finally {
 			try {
 				CONNECTION_POOL.closeConnection(connection, statement, resultSet);
 			} catch (ConnectionPoolException e) {
@@ -93,9 +95,93 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 	}
 
 	@Override
-	public boolean update(DrinkIngredient drinkIngredient, int amount) {
-		// TODO Auto-generated method stub
-		return false;
+	public int update(DrinkIngredientMap drinkIngredientMap) throws DAOException {
+		int effectedColumns = 0;
+
+		if (ValidationHelper.isNull(drinkIngredientMap)) {
+			return effectedColumns;
+		}
+
+		List<DrinkIngredient> ingredients = drinkIngredientMap.getIngredients();
+
+		if (ValidationHelper.isNull(ingredients) || ingredients.isEmpty()) {
+			return effectedColumns;
+		}
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		Statement statement = null;
+
+		int drinkId = drinkIngredientMap.getDrinkId();
+		if (!ValidationHelper.isPositive(drinkId)) {
+			return effectedColumns;
+		}
+
+		try {
+			connection = CONNECTION_POOL.retrieveConnection();
+			connection.setAutoCommit(false);
+
+			statement = connection.createStatement();
+			effectedColumns = statement.executeUpdate(DELETE_DRINK_INGREDIENTS_QUERY + drinkId);
+
+			if (!ValidationHelper.isPositive(effectedColumns)) {
+				return effectedColumns;
+			}
+			preparedStatement = connection.prepareStatement(INSERT_DRINK_INGREDIENTS_QUERY);
+			for (DrinkIngredient element : ingredients) {
+				preparedStatement.setInt(1, drinkId);
+				preparedStatement.setInt(2, element.getIngredientId());
+				preparedStatement.setInt(3, element.getIngredientAmount());
+				preparedStatement.setBoolean(4, element.isOptional());
+				effectedColumns += preparedStatement.executeUpdate();
+			}
+
+			connection.commit();
+			connection.setAutoCommit(true);
+		} catch (ConnectionPoolException | SQLException e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				throw new DAOException(e.getMessage(), e);
+			}
+			throw new DAOException(e.getMessage(), e);
+		} finally {
+			try {
+				CONNECTION_POOL.closeConnection(connection, preparedStatement);
+			} catch (ConnectionPoolException e) {
+				throw new DAOException(e.getMessage(), e);
+			}
+		}
+		return effectedColumns;
+	}
+
+	private int deleteDrink(int drinkId) throws DAOException {
+		int effectedColumns = 0;
+
+		if (!ValidationHelper.isPositive(drinkId)) {
+			return effectedColumns;
+		}
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			connection = CONNECTION_POOL.retrieveConnection();
+
+			preparedStatement = connection.prepareStatement(DELETE_DRINK_INGREDIENTS_QUERY);
+			preparedStatement.setInt(1, drinkId);
+			effectedColumns = preparedStatement.executeUpdate();
+
+		} catch (ConnectionPoolException | SQLException e) {
+			throw new DAOException(e.getMessage(), e);
+		} finally {
+			try {
+				CONNECTION_POOL.closeConnection(connection, preparedStatement);
+			} catch (ConnectionPoolException e) {
+				throw new DAOException(e.getMessage(), e);
+			}
+		}
+		return effectedColumns;
 	}
 
 }

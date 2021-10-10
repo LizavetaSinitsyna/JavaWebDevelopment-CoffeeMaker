@@ -24,6 +24,7 @@ body {
 	border: 1px solid;
 	border-radius: 10px;
 	margin-right: 5px;
+	height: fit-content;
 }
 
 .footer-image {
@@ -38,12 +39,19 @@ body {
 	background-image: url("/CoffeeMachine/images/red_basket.png");
 }
 
+.basket-list {
+	min-width: 100%;
+}
+
 .icon-image {
 	width: 24px;
 	height: 24px;
-	float: left;
 	margin-top: .5rem;
 	text-decoration: none;
+}
+
+.revert-padding {
+	padding: revert;
 }
 
 #basket-area:hover .nav-link {
@@ -91,7 +99,7 @@ header .nav-link:hover {
 	color: red;
 }
 
-#log_out.btn:focus {
+.empty-shadow:focus {
 	box-shadow: none;
 }
 
@@ -99,8 +107,12 @@ header .nav-link:hover {
 	padding: 1px;
 }
 
-.form-control {
+.width-50 {
 	width: 50%;
+}
+
+.width-45 {
+	width: 45%;
 }
 
 .star {
@@ -148,6 +160,11 @@ header .nav-link:hover {
 
 .error {
 	color: red;
+}
+
+.success {
+	color: green;
+	text-decoration: underline;
 }
 
 .error-input {
@@ -236,4 +253,20 @@ header .nav-link:hover {
 
 .rating:hover>input:checked ~label:before {
 	opacity: 0.4
+}
+
+.hide {
+	display: none;
+}
+
+.auto-flex {
+	flex: auto;
+}
+
+.margin-05 {
+	margin-right: 0.5%;
+}
+
+.current {
+	background-color: lightblue;
 }

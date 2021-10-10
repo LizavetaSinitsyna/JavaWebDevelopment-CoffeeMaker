@@ -28,8 +28,7 @@ public class SQLUserDAO implements UserDAO {
 			+ "(login, password, bonus_account_id, account_id, name, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	private static final String SEARCH_EMAIL_QUERY = "SELECT * FROM users WHERE email = ?";
 	private static final String SEARCH_LOGIN_QUERY = "SELECT * FROM users WHERE login = ?";
-	private static final String LOGIN_QUERY = "SELECT user_id, roles.name FROM users "
-			+ "INNER JOIN roles ON users.role_id = roles.role_id WHERE "
+	private static final String LOGIN_QUERY = "SELECT user_id, role_id FROM users WHERE "
 			+ "(login = ? AND password = ?) OR (email = ? AND password = ?)";
 
 	@Override
@@ -59,11 +58,11 @@ public class SQLUserDAO implements UserDAO {
 			while (resultSet.next()) {
 				result = new UserLoginTransfer();
 				result.setId(resultSet.getInt(1));
-				result.setRoleName(resultSet.getString(2));
+				result.setRoleId(resultSet.getInt(2));
 			}
 		} catch (SQLException | ConnectionPoolException e) {
 			throw new DAOException(e.getMessage(), e);
-		}  finally {
+		} finally {
 			try {
 				CONNECTION_POOL.closeConnection(connection, statement, resultSet);
 			} catch (ConnectionPoolException e) {

@@ -26,10 +26,11 @@ import by.epamtc.coffee_machine.validation.ValidationHelper;
  *
  */
 public class SQLOrderDrinkDAO implements OrderDrinkDAO {
+	private static final ConnectionPoolImpl CONNECTION_POOL = ConnectionPoolImpl.retrieveConnectionPool();
+	private static final MenuPropertyProvider MENU_PROPERTY_PROVIDER = MenuPropertyProvider.getInstance();
 	private static final String SELECT_POPULAR_DRINKS_QUERY = "SELECT drink_id, name, image_path, price "
 			+ "FROM drinks WHERE drink_id IN " + "(SELECT drink_id FROM (SELECT drink_id, SUM(drink_count) "
 			+ "FROM order_drinks GROUP BY drink_id ORDER BY drink_count DESC LIMIT ?) sub_query)";
-	private MenuPropertyProvider menuPropertyProvider = MenuPropertyProvider.getInstance();
 
 	@Override
 	public List<OrderDrink> findDrinksForSpecificOrder(int ingredient_id) {
@@ -75,10 +76,9 @@ public class SQLOrderDrinkDAO implements OrderDrinkDAO {
 		ResultSet resultSet = null;
 		DrinkTransfer drink;
 		drinks = new ArrayList<>();
-		ConnectionPoolImpl connectionPool = ConnectionPoolImpl.retrieveConnectionPool();
 
 		try {
-			connection = connectionPool.retrieveConnection();
+			connection = CONNECTION_POOL.retrieveConnection();
 			preparedStatement = connection.prepareStatement(SELECT_POPULAR_DRINKS_QUERY);
 			preparedStatement.setInt(1, amount);
 			resultSet = preparedStatement.executeQuery();
@@ -90,7 +90,7 @@ public class SQLOrderDrinkDAO implements OrderDrinkDAO {
 
 				BigDecimal priceDB = new BigDecimal(resultSet.getInt(4));
 				BigDecimal priceDivisor = new BigDecimal(
-						menuPropertyProvider.retrieveValue(MenuParameter.DRINK_PRICE_DIVISOR));
+						MENU_PROPERTY_PROVIDER.retrieveValue(MenuParameter.DRINK_PRICE_DIVISOR));
 				BigDecimal price = priceDB.divide(priceDivisor);
 				drink.setPrice(price);
 
@@ -100,7 +100,7 @@ public class SQLOrderDrinkDAO implements OrderDrinkDAO {
 			throw new DAOException(e.getMessage(), e);
 		} finally {
 			try {
-				connectionPool.closeConnection(connection, preparedStatement, resultSet);
+				CONNECTION_POOL.closeConnection(connection, preparedStatement, resultSet);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e.getMessage(), e);
 			}

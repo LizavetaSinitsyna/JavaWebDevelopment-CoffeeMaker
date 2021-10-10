@@ -7,6 +7,7 @@ import by.epamtc.coffee_machine.service.impl.AccountServiceImpl;
 import by.epamtc.coffee_machine.service.impl.BonusAccountServiceImpl;
 import by.epamtc.coffee_machine.service.impl.DrinkIngredientServiceImpl;
 import by.epamtc.coffee_machine.service.impl.DrinkServiceImpl;
+import by.epamtc.coffee_machine.service.impl.IngredientServiceImpl;
 import by.epamtc.coffee_machine.service.impl.OrderDrinkServiceImpl;
 import by.epamtc.coffee_machine.service.impl.UserServiceImpl;
 
@@ -21,6 +22,7 @@ public class ServiceProvider {
 	private BonusAccountService bonusAccountService = new BonusAccountServiceImpl();
 	private DrinkService drinkService = new DrinkServiceImpl();
 	private DrinkIngredientService drinkIngredientService = new DrinkIngredientServiceImpl();
+	private IngredientService ingredientService = new IngredientServiceImpl();
 
 	private ServiceProvider() {
 
@@ -111,7 +113,19 @@ public class ServiceProvider {
 	public void setDrinkIngredientService(DrinkIngredientService drinkIngredientService) {
 		this.drinkIngredientService = drinkIngredientService;
 	}
-	
-	
+
+	/**
+	 * @return the ingredientService
+	 */
+	public IngredientService getIngredientService() {
+		return ingredientService;
+	}
+
+	/**
+	 * @param ingredientService the ingredientService to set
+	 */
+	public void setIngredientService(IngredientService ingredientService) {
+		this.ingredientService = ingredientService;
+	}
 	
 }

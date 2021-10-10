@@ -18,11 +18,11 @@ public class ChangeLanguageCommand implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			String language = request.getParameter("new_lang");
-			String path = request.getParameter("currentPage");
-			Cookie cookie = new Cookie("lang", language);
+			String language = request.getParameter(AttributeName.NEW_LANGUAGE);
+			String path = request.getParameter(AttributeName.CURRENT_PAGE);
+			Cookie cookie = new Cookie(AttributeName.LANGUAGE, language);
 			response.addCookie(cookie);
-			response.sendRedirect(path);
+			response.sendRedirect(request.getContextPath() + path);
 		} catch (IOException e) {
 			// log4j2
 			e.printStackTrace();

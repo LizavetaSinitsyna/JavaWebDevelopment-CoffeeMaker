@@ -12,9 +12,6 @@ import by.epamtc.coffee_machine.bean.Account;
 public interface AccountDAO extends GenericDAO<Account> {
 	Account read(int account_id) throws DAOException;
 
-	@Override
-	int add(Account account) throws DAOException;
-
 	void update(int account_id, int amount) throws DAOException;
 
 }

@@ -7,7 +7,7 @@
 <fmt:setLocale value="${ empty cookie_lang ? 'EN' : cookie_lang}"
 	scope="application" />
 <fmt:setBundle basename="localization.local" scope="application" />
-<c:set var="currentPage" value="/CoffeeMachine/index.jsp"
+<c:set var="currentPage" value="/index.jsp"
 	scope="application" />
 <!DOCTYPE html>
 <html>

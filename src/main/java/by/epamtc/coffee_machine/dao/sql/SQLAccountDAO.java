@@ -95,7 +95,7 @@ public class SQLAccountDAO implements AccountDAO {
 	public void update(int account_id, int amount) throws DAOException {
 		try (Connection connection = ConnectionPoolImpl.retrieveConnectionPool().retrieveConnection()) {
 			if (ValidationHelper.isNull(connection)) {
-				throw new DAOException("Database �onnection can't be null.");
+				throw new DAOException("Database connection can't be null.");
 			}
 			try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
 				preparedStatement.setInt(1, amount);

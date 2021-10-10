@@ -22,7 +22,15 @@ public class ValidationHelper {
 		return number < 0;
 	}
 	
+	public static boolean isNegative(int number) {
+		return number < 0;
+	}
+	
 	public static boolean isPositive(double number) {
+		return number > 0;
+	}
+	
+	public static boolean isPositive(int number) {
 		return number > 0;
 	}
 }

@@ -6,7 +6,6 @@ package by.epamtc.coffee_machine.dao;
 import java.util.List;
 
 import by.epamtc.coffee_machine.bean.Drink;
-import by.epamtc.coffee_machine.bean.DrinkInfo;
 import by.epamtc.coffee_machine.bean.transfer.DrinkTransfer;
 
 /**
@@ -15,19 +14,23 @@ import by.epamtc.coffee_machine.bean.transfer.DrinkTransfer;
  */
 public interface DrinkDAO extends GenericDAO<Drink> {
 	Drink read(int drink_id) throws DAOException;
-	
-	List<DrinkTransfer> obtainDrinks(int startIndex, int amount) throws DAOException;
 
-	@Override
-	int add(Drink drink);
+	List<DrinkTransfer> obtainDrinks(int startIndex, int amount) throws DAOException;
 
 	boolean remove(int drink_id);
 
-	boolean update(int drink_id, DrinkInfo info);
+	int update(Drink drink) throws DAOException;
 
 	/**
 	 * @return
-	 * @throws DAOException 
+	 * @throws DAOException
 	 */
 	int obtainGeneralDrinksAmount() throws DAOException;
+
+	/**
+	 * @param drinkId
+	 * @return
+	 * @throws DAOException
+	 */
+	String obtainDrinkName(int drinkId) throws DAOException;
 }

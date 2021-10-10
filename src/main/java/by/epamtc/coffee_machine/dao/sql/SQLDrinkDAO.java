@@ -28,11 +28,15 @@ import by.epamtc.coffee_machine.validation.ValidationHelper;
  *
  */
 public class SQLDrinkDAO implements DrinkDAO {
-	private MenuPropertyProvider menuPropertyProvider = MenuPropertyProvider.getInstance();
+	private static final ConnectionPoolImpl CONNECTION_POOL = ConnectionPoolImpl.retrieveConnectionPool();
+	private static final BigDecimal PRICE_DIVISOR = new BigDecimal(
+			MenuPropertyProvider.getInstance().retrieveValue(MenuParameter.DRINK_PRICE_DIVISOR));
 	private static final String OBTAIN_DRINKS_QUERY = "SELECT drink_id, name, image_path, price "
 			+ "FROM drinks LIMIT ?, ?";
 	private static final String OBTAIN_DRINK_QUERY = "SELECT * FROM drinks WHERE drink_id = ?";
-	private static final String OBTAIN_GENERAL_DRINKS_AMOUNT = "SELECT COUNT(*) FROM drinks";
+	private static final String OBTAIN_GENERAL_DRINKS_AMOUNT_QUERY = "SELECT COUNT(*) FROM drinks";
+	private static final String UPDATE_DRINK_QUERY = "UPDATE drinks SET image_path = ?, price = ?, description = ? WHERE drink_id = ?";
+	private static final String OBTAIN_NAME_QUERY = "SELECT name FROM drinks WHERE drink_id = ?";
 
 	@Override
 	public Drink read(int drink_id) throws DAOException {
@@ -46,10 +50,9 @@ public class SQLDrinkDAO implements DrinkDAO {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		drink = new Drink();
-		ConnectionPoolImpl connectionPool = ConnectionPoolImpl.retrieveConnectionPool();
 
 		try {
-			connection = connectionPool.retrieveConnection();
+			connection = CONNECTION_POOL.retrieveConnection();
 			preparedStatement = connection.prepareStatement(OBTAIN_DRINK_QUERY);
 			preparedStatement.setInt(1, drink_id);
 			resultSet = preparedStatement.executeQuery();
@@ -60,9 +63,7 @@ public class SQLDrinkDAO implements DrinkDAO {
 				drinkInfo.setImagePath(resultSet.getString(3));
 
 				BigDecimal priceDB = new BigDecimal(resultSet.getInt(4));
-				BigDecimal priceDivisor = new BigDecimal(
-						menuPropertyProvider.retrieveValue(MenuParameter.DRINK_PRICE_DIVISOR));
-				BigDecimal price = priceDB.divide(priceDivisor);
+				BigDecimal price = priceDB.divide(PRICE_DIVISOR);
 				drinkInfo.setPrice(price);
 
 				drinkInfo.setDescription(resultSet.getString(5));
@@ -72,7 +73,7 @@ public class SQLDrinkDAO implements DrinkDAO {
 			throw new DAOException(e.getMessage(), e);
 		} finally {
 			try {
-				connectionPool.closeConnection(connection, preparedStatement, resultSet);
+				CONNECTION_POOL.closeConnection(connection, preparedStatement, resultSet);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e.getMessage(), e);
 			}
@@ -94,10 +95,9 @@ public class SQLDrinkDAO implements DrinkDAO {
 		ResultSet resultSet = null;
 		DrinkTransfer drink;
 		drinks = new ArrayList<>();
-		ConnectionPoolImpl connectionPool = ConnectionPoolImpl.retrieveConnectionPool();
 
 		try {
-			connection = connectionPool.retrieveConnection();
+			connection = CONNECTION_POOL.retrieveConnection();
 			preparedStatement = connection.prepareStatement(OBTAIN_DRINKS_QUERY);
 			preparedStatement.setInt(1, startIndex);
 			preparedStatement.setInt(2, amount);
@@ -109,9 +109,7 @@ public class SQLDrinkDAO implements DrinkDAO {
 				drink.setImagePath(resultSet.getString(3));
 
 				BigDecimal priceDB = new BigDecimal(resultSet.getInt(4));
-				BigDecimal priceDivisor = new BigDecimal(
-						menuPropertyProvider.retrieveValue(MenuParameter.DRINK_PRICE_DIVISOR));
-				BigDecimal price = priceDB.divide(priceDivisor);
+				BigDecimal price = priceDB.divide(PRICE_DIVISOR);
 				drink.setPrice(price);
 
 				drinks.add(drink);
@@ -120,27 +118,26 @@ public class SQLDrinkDAO implements DrinkDAO {
 			throw new DAOException(e.getMessage(), e);
 		} finally {
 			try {
-				connectionPool.closeConnection(connection, preparedStatement, resultSet);
+				CONNECTION_POOL.closeConnection(connection, preparedStatement, resultSet);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e.getMessage(), e);
 			}
 		}
 		return drinks;
 	}
-	
+
 	@Override
 	public int obtainGeneralDrinksAmount() throws DAOException {
 		int result = 0;
-		
+
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
-		ConnectionPoolImpl connectionPool = ConnectionPoolImpl.retrieveConnectionPool();
 
 		try {
-			connection = connectionPool.retrieveConnection();
+			connection = CONNECTION_POOL.retrieveConnection();
 			statement = connection.createStatement();
-			resultSet = statement.executeQuery(OBTAIN_GENERAL_DRINKS_AMOUNT);
+			resultSet = statement.executeQuery(OBTAIN_GENERAL_DRINKS_AMOUNT_QUERY);
 			while (resultSet.next()) {
 				result = resultSet.getInt(1);
 			}
@@ -148,7 +145,7 @@ public class SQLDrinkDAO implements DrinkDAO {
 			throw new DAOException(e.getMessage(), e);
 		} finally {
 			try {
-				connectionPool.closeConnection(connection, statement, resultSet);
+				CONNECTION_POOL.closeConnection(connection, statement, resultSet);
 			} catch (ConnectionPoolException e) {
 				throw new DAOException(e.getMessage(), e);
 			}
@@ -169,9 +166,75 @@ public class SQLDrinkDAO implements DrinkDAO {
 	}
 
 	@Override
-	public boolean update(int drink_id, DrinkInfo info) {
-		// TODO Auto-generated method stub
-		return false;
+	public int update(Drink drink) throws DAOException {
+		int effectedColumns = 0;
+
+		if (ValidationHelper.isNull(drink) || !ValidationHelper.isPositive(drink.getId())) {
+			return effectedColumns;
+		}
+
+		DrinkInfo info = drink.getInfo();
+		if (ValidationHelper.isNull(info)) {
+			return effectedColumns;
+		}
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			connection = CONNECTION_POOL.retrieveConnection();
+			preparedStatement = connection.prepareStatement(UPDATE_DRINK_QUERY);
+			preparedStatement.setString(1, info.getImagePath());
+
+			BigDecimal inputPrice = info.getPrice();
+			BigDecimal priceDB = inputPrice.multiply(PRICE_DIVISOR);
+			preparedStatement.setInt(2, priceDB.intValue());
+
+			preparedStatement.setString(3, info.getDescription());
+			preparedStatement.setInt(4, drink.getId());
+			effectedColumns = preparedStatement.executeUpdate();
+		} catch (ConnectionPoolException | SQLException e) {
+			throw new DAOException(e.getMessage(), e);
+		} finally {
+			try {
+				CONNECTION_POOL.closeConnection(connection, preparedStatement);
+			} catch (ConnectionPoolException e) {
+				throw new DAOException(e.getMessage(), e);
+			}
+		}
+		return effectedColumns;
+	}
+	
+	// unused
+	@Override
+	public String obtainDrinkName(int drinkId) throws DAOException {
+		String result = null;
+
+		if (!ValidationHelper.isPositive(drinkId)) {
+			return result;
+		}
+
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			connection = CONNECTION_POOL.retrieveConnection();
+			statement = connection.prepareStatement(OBTAIN_NAME_QUERY);
+			statement.setInt(1, drinkId);
+			resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				result = resultSet.getString(1);
+			}
+		} catch (ConnectionPoolException | SQLException e) {
+			throw new DAOException(e.getMessage(), e);
+		} finally {
+			try {
+				CONNECTION_POOL.closeConnection(connection, statement, resultSet);
+			} catch (ConnectionPoolException e) {
+				throw new DAOException(e.getMessage(), e);
+			}
+		}
+		return result;
 	}
 
 }

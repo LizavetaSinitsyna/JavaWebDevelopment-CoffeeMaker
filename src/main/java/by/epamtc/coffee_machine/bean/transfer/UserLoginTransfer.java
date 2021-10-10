@@ -12,24 +12,24 @@ import java.io.Serializable;
 public class UserLoginTransfer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private String roleName;
+	private int roleId;
 	private int id;
 
 	public UserLoginTransfer() {
 	}
 
 	/**
-	 * @return the roleName
+	 * @return the roleId
 	 */
-	public String getRoleName() {
-		return roleName;
+	public int getRoleId() {
+		return roleId;
 	}
 
 	/**
-	 * @param roleName the roleName to set
+	 * @param roleId the roleId to set
 	 */
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class UserLoginTransfer implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + id;
-		result = prime * result + ((roleName == null) ? 0 : roleName.hashCode());
+		result = prime * result + roleId;
 		return result;
 	}
 
@@ -66,20 +66,14 @@ public class UserLoginTransfer implements Serializable {
 		UserLoginTransfer other = (UserLoginTransfer) obj;
 		if (id != other.id)
 			return false;
-		if (roleName == null) {
-			if (other.roleName != null)
-				return false;
-		} else if (!roleName.equals(other.roleName))
+		if (roleId != other.roleId)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " [roleName=" + roleName + ", id=" + id + "]";
+		return "UserLoginTransfer [roleId=" + roleId + ", id=" + id + "]";
 	}
-	
-	
-	
 
 }

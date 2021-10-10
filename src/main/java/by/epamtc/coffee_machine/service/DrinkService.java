@@ -3,7 +3,9 @@
  */
 package by.epamtc.coffee_machine.service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 import by.epamtc.coffee_machine.bean.Drink;
 import by.epamtc.coffee_machine.bean.transfer.DrinkTransfer;
@@ -17,7 +19,7 @@ public interface DrinkService {
 	/**
 	 * @param pageNumber
 	 * @return
-	 * @throws ServiceException 
+	 * @throws ServiceException
 	 */
 	List<DrinkTransfer> obtainMenu(int pageNumber) throws ServiceException;
 
@@ -33,5 +35,15 @@ public interface DrinkService {
 	 * @throws ServiceException
 	 */
 	int obtainMenuPagesAmount() throws ServiceException;
+
+	/**
+	 * @param imagePath
+	 * @param drinkId
+	 * @param price
+	 * @param description
+	 * @return
+	 * @throws ServiceException
+	 */
+	Set<DrinkMessage> edit(String imagePath, int drinkId, BigDecimal price, String description) throws ServiceException;
 
 }

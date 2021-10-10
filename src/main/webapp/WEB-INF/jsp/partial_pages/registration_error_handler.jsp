@@ -4,7 +4,7 @@
 	<c:choose>
 		<c:when test="${error == 'ILLEGAL_EMAIL'}">
 			<c:set var="email_error" scope="request">
-				<fmt:message key="local.user.error.illegal_email" />
+				<fmt:message key="local.registration.email_requirements" />
 			</c:set>
 		</c:when>
 		<c:when test="${error == 'DUBLICATE_EMAIL'}">
@@ -34,12 +34,12 @@
 		</c:when>
 		<c:when test="${error == 'ILLEGAL_NAME'}">
 			<c:set var="name_error" scope="request">
-				<fmt:message key="local.user.error.illegal_name" />
+				<fmt:message key="local.registration.name_requirements" />
 			</c:set>
 		</c:when>
 		<c:when test="${error == 'ILLEGAL_PHONE'}">
 			<c:set var="phone_error" scope="request">
-				<fmt:message key="local.user.error.illegal_phone" />
+				<fmt:message key="local.registration.phone_requirements" />
 			</c:set>
 		</c:when>
 	</c:choose>

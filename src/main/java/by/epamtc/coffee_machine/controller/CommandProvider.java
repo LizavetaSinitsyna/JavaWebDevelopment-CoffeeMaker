@@ -5,8 +5,10 @@ package by.epamtc.coffee_machine.controller;
 
 import java.util.HashMap;
 
+import by.epamtc.coffee_machine.controller.command.AddToBasketCommand;
 import by.epamtc.coffee_machine.controller.command.ChangeLanguageCommand;
 import by.epamtc.coffee_machine.controller.command.Command;
+import by.epamtc.coffee_machine.controller.command.EditProductCommand;
 import by.epamtc.coffee_machine.controller.command.ViewMenuCommand;
 import by.epamtc.coffee_machine.controller.command.ViewProductCommand;
 import by.epamtc.coffee_machine.controller.command.ViewProductEditCommand;
@@ -34,6 +36,8 @@ public class CommandProvider {
 		commands.put(CommandName.VIEW_MENU, new ViewMenuCommand());
 		commands.put(CommandName.VIEW_PRODUCT, new ViewProductCommand());
 		commands.put(CommandName.VIEW_PRODUCT_EDIT, new ViewProductEditCommand());
+		commands.put(CommandName.EDIT_PRODUCT, new EditProductCommand());
+		commands.put(CommandName.ADD_TO_BASKET, new AddToBasketCommand());
 	}
 
 	private static final class SingletonHelper {
