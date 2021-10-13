@@ -101,7 +101,13 @@ public class DrinkIngredientMap implements Serializable {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " [drinkId=" + drinkId + ", ingredients=" + ingredients + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("DrinkIngredientMap [drinkId=");
+		builder.append(drinkId);
+		builder.append(", ingredients=");
+		builder.append(ingredients);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

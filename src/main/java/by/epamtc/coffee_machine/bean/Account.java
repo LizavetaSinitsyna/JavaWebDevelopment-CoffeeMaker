@@ -58,7 +58,14 @@ public class Account implements Serializable {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " [id=" + id + ", balance=" + balance + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("Account [id=");
+		builder.append(id);
+		builder.append(", balance=");
+		builder.append(balance);
+		builder.append("]");
+		return builder.toString();
 	}
+
 
 }

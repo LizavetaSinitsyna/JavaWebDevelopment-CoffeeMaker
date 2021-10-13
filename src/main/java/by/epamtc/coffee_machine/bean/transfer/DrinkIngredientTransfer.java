@@ -114,8 +114,17 @@ public class DrinkIngredientTransfer implements Serializable {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " [ingredientId=" + ingredientId + ", ingredientName=" + ingredientName
-				+ ", ingredientAmount=" + ingredientAmount + ", isOptional=" + isOptional + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("DrinkIngredientTransfer [ingredientId=");
+		builder.append(ingredientId);
+		builder.append(", ingredientName=");
+		builder.append(ingredientName);
+		builder.append(", ingredientAmount=");
+		builder.append(ingredientAmount);
+		builder.append(", isOptional=");
+		builder.append(isOptional);
+		builder.append("]");
+		return builder.toString();
 	}
 
 	

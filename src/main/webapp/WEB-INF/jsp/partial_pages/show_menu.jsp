@@ -13,6 +13,15 @@
 				<c:set
 					var="drinkId"
 					value="${drink.getId()}" />
+				<c:set
+					var="image"
+					value="${drink.getImagePath()}" />
+				<c:set
+					var="name"
+					value="${drink.getName()}" />
+				<c:set
+					var="price"
+					value="${drink.getPrice()}" />
 				<div class="col">
 					<div class="card shadow-sm">
 						<c:if test="${sessionScope.user != null && sessionScope.user.getRoleId() == 1}">
@@ -25,14 +34,14 @@
 						</c:if>
 						<img
 							alt=""
-							src="${drink.getImagePath()}">
+							src="${image}">
 						<div class="card-body">
 							<p class="card-text">
-								<c:out value="${drink.getName()}" />
+								<c:out value="${name}" />
 								<span class="float-right"><fmt:formatNumber
 										type="number"
 										minFractionDigits="2"
-										value="${drink.getPrice()}" /> <fmt:message key="local.menu.price.currency" /></span>
+										value="${price}" /> <fmt:message key="local.menu.price.currency" /></span>
 							</p>
 							<div class="d-flex justify-content-between align-items-center">
 								<div class="btn-group">
@@ -51,25 +60,36 @@
 											<fmt:message key="local.menu.view" />
 										</button>
 									</form>
-									<form action="Controller">
+									<div>
 										<input
 											type="hidden"
-											name="command"
-											value="add_to_basket">
+											name="image"
+											value="${image}">
 										<input
 											type="hidden"
 											name="drink_id"
 											value="${drinkId}">
 										<input
 											type="hidden"
-											name="currentPage"
-											value="${currentPage}">
-										<button
-											type="submit"
-											class="btn btn-sm btn-outline-secondary">
-											<fmt:message key="local.menu.add_to_basket" />
-										</button>
-									</form>
+											name="name"
+											value="${name}">
+										<c:set
+											var="intValue"
+											value="${price.intValue()}" />
+										<input
+											type="hidden"
+											name="priceInt"
+											value="${intValue}">
+										<input
+											type="hidden"
+											name="priceFractional"
+											value="${((price - intValue) * 100).intValue()}">
+										<input
+											type="button"
+											class="btn btn-sm btn-outline-secondary"
+											value="<fmt:message key="local.menu.add_to_basket" />"
+											onclick="addToBasket(); increaseBasket()" />
+									</div>
 								</div>
 							</div>
 						</div>

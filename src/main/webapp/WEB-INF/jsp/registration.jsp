@@ -143,7 +143,7 @@
 						name="phone"
 						class="form-control width-50"
 						id="phone"
-						placeholder="+375(XX)XXX-XX-XX"
+						placeholder="+375XXXXXXXXX"
 						value="${requestScope.phone}"
 						pattern="\+375[0-9]{9}"
 						required>

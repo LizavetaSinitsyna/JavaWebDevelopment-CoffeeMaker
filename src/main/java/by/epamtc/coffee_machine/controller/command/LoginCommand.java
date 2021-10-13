@@ -28,7 +28,7 @@ public class LoginCommand implements Command {
 		String login = request.getParameter(AttributeName.LOGIN);
 		String password = request.getParameter(AttributeName.PASSWORD);
 		UserService userService = ServiceProvider.getInstance().getUserService();
-		String nextPath;
+		String nextPath = request.getParameter(AttributeName.NEXT_PAGE);
 		try {
 			UserLoginTransfer user = userService.login(login, password);
 			if (user == null) {
@@ -37,7 +37,9 @@ public class LoginCommand implements Command {
 			} else {
 				HttpSession session = request.getSession();
 				session.setAttribute(AttributeName.USER, user);
-				nextPath = NEXT_PATH_SUCCESS_LOGIN;
+				if (nextPath == null) {
+					nextPath = NEXT_PATH_SUCCESS_LOGIN;
+				}
 			}
 			request.getRequestDispatcher(nextPath).forward(request, response);
 		} catch (ServiceException | ServletException | IOException e) {

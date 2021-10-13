@@ -59,6 +59,10 @@
 					type="hidden"
 					name="command"
 					value="login" />
+					<input
+					type="hidden"
+					name="nextPage"
+					value="${param.nextPage}" />
 				<c:if test="${incorrect_credentials}">
 					<div class="form-floating mb-3 flex-display error">
 						<fmt:message key="local.user.error.incorrect_credentials" />

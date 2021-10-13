@@ -41,6 +41,29 @@ body {
 
 .basket-list {
 	min-width: 100%;
+	text-align: center;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	background-color: #fff;
+	border-radius: .25rem;
+}
+
+.basket-list-image {
+	height: 106px;
+}
+
+.basket-list-tr {
+	border-top-width: 1px;
+	font-weight: 100;
+}
+
+.basket-list-td {
+	border-right-width: 1px;
+}
+
+.basket-list-header {
+	font-weight: bold;
 }
 
 .icon-image {
@@ -66,7 +89,7 @@ body {
 	display: inline-block;
 }
 
-.basket-float-right {
+.float-right {
 	float: right;
 }
 
@@ -194,6 +217,7 @@ header .nav-link:hover {
 
 .delete {
 	background: no-repeat url("/CoffeeMachine/images/delete.png");
+	background-position: center;
 }
 
 .delete:hover {
@@ -269,4 +293,8 @@ header .nav-link:hover {
 
 .current {
 	background-color: lightblue;
+}
+
+.do-btn {
+	margin: 3%;
 }

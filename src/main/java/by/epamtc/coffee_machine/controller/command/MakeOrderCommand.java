@@ -13,13 +13,12 @@ import javax.servlet.http.HttpServletResponse;
  * @author Lizaveta Sinitsyna
  *
  */
-public class AddToBasketCommand implements Command {
-	private final static char DRINKS_DELIMITER = '|';
+public class MakeOrderCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		String newDrinkId = request.getParameter(AttributeName.DRINK_ID);
-		String nextPath = request.getParameter(AttributeName.CURRENT_PAGE);
+		String[] drinksId = request.getParameterValues(AttributeName.DRINK_ID);
+		String[] drinksAmount = request.getParameterValues(AttributeName.DRINK_AMOUNT);
 
 		StringBuilder currentBasket = new StringBuilder();
 		String cookieName;

@@ -124,7 +124,17 @@ public class DrinkTransfer implements Serializable {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " [id=" + id + ", name=" + name + ", price=" + price + ", imagePath=" + imagePath + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("DrinkTransfer [id=");
+		builder.append(id);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", price=");
+		builder.append(price);
+		builder.append(", imagePath=");
+		builder.append(imagePath);
+		builder.append("]");
+		return builder.toString();
 	}
 
 	

@@ -11,11 +11,13 @@ import by.epamtc.coffee_machine.bean.Account;
 import by.epamtc.coffee_machine.bean.BonusAccount;
 import by.epamtc.coffee_machine.bean.User;
 import by.epamtc.coffee_machine.bean.UserInfo;
+import by.epamtc.coffee_machine.bean.transfer.UserLoginPasswordTransfer;
 import by.epamtc.coffee_machine.bean.transfer.UserLoginTransfer;
 import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.DAOProvider;
 import by.epamtc.coffee_machine.dao.UserDAO;
 import by.epamtc.coffee_machine.service.AccountService;
+import by.epamtc.coffee_machine.service.BCrypt;
 import by.epamtc.coffee_machine.service.BonusAccountService;
 import by.epamtc.coffee_machine.service.ServiceException;
 import by.epamtc.coffee_machine.service.ServiceProvider;
@@ -30,7 +32,7 @@ import by.epamtc.coffee_machine.service.UserValidationError;
 public class UserServiceImpl implements UserService {
 	private static final UserDAO USER_DAO = DAOProvider.getInstance().getUserDAO();
 	private static final String EMAIL_REGEX = "^(?=[^@\\s]+@[^@\\s]+\\.[^@\\s]+).{5,255}$";
-	private static final String PASSWORD_REGEX = "^(?=.*?[A-ZА-Я])(?=.*?[a-zа-я])(?=.*?[0-9])(?=.*?[ !\\\"#\\$%&'\\(\\)\\*\\+,\\-\\./:;<=>\\?@\\[\\]\\^_`{|}~]).{8,}$";
+	private static final String PASSWORD_REGEX = "^(?=.*?[A-ZА-Я])(?=.*?[a-zа-я])(?=.*?[0-9])(?=.*?[ !\\\"#\\$%&'\\(\\)\\*\\+,\\-\\./:;<=>\\?@\\[\\]\\^_`{|}~]).{8,25}$";
 	private static final String USERNAME_REGEX = "^[a-zA-Z0-9а-яА-Я]([\\._-](?![\\._-])|[a-zA-Z0-9а-яА-Я]){3,18}[a-zA-Z0-9а-яА-Я]$";
 	private static final String PHONE_REGEX = "\\+375[0-9]{9}";
 	private static final String NAME_REGEX = ".{1,100}";
@@ -42,7 +44,12 @@ public class UserServiceImpl implements UserService {
 			return result;
 		}
 		try {
-			result = USER_DAO.login(login, password);
+			UserLoginPasswordTransfer user = USER_DAO.login(login);
+			if (!ValidationHelper.isNull(user) && BCrypt.checkpw(password, user.getPassword())) {
+				result = new UserLoginTransfer();
+				result.setId(user.getId());
+				result.setRoleId(user.getRoleId());
+			}
 		} catch (DAOException e) {
 			throw new ServiceException(e.getMessage(), e);
 		}
@@ -74,7 +81,10 @@ public class UserServiceImpl implements UserService {
 
 		UserInfo userInfo = new UserInfo();
 		userInfo.setEmail(email);
-		userInfo.setPassword(password);
+
+		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+		userInfo.setPassword(hashedPassword);
+
 		userInfo.setLogin(username);
 		userInfo.setName(name);
 		userInfo.setPhone(phone);

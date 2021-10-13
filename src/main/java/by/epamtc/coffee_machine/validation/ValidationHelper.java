@@ -13,6 +13,12 @@ public class ValidationHelper {
 	public static final String NULL_ARGUMENT_EXCEPTION = "Passed parameter can't be null";
 	public static final String NO_GENERATED_ID_EXCEPTION = "Add process failed, no ID was generated.";
 	public static final String NULL_ACCOUNT_EXCEPTION = "Created account can't be null!";
+	
+	public static final String DIGITS_REGEX = "\\d+";
+	
+	private ValidationHelper() {
+		
+	}
 
 	public static boolean isNull(Object obj) {
 		return obj == null;

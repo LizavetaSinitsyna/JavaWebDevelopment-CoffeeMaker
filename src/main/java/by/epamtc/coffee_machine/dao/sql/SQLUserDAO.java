@@ -11,7 +11,7 @@ import java.sql.Statement;
 
 import by.epamtc.coffee_machine.bean.User;
 import by.epamtc.coffee_machine.bean.UserInfo;
-import by.epamtc.coffee_machine.bean.transfer.UserLoginTransfer;
+import by.epamtc.coffee_machine.bean.transfer.UserLoginPasswordTransfer;
 import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.UserDAO;
 import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolException;
@@ -28,8 +28,7 @@ public class SQLUserDAO implements UserDAO {
 			+ "(login, password, bonus_account_id, account_id, name, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	private static final String SEARCH_EMAIL_QUERY = "SELECT * FROM users WHERE email = ?";
 	private static final String SEARCH_LOGIN_QUERY = "SELECT * FROM users WHERE login = ?";
-	private static final String LOGIN_QUERY = "SELECT user_id, role_id FROM users WHERE "
-			+ "(login = ? AND password = ?) OR (email = ? AND password = ?)";
+	private static final String LOGIN_QUERY = "SELECT user_id, role_id, password FROM users WHERE login = ? OR email = ?";
 
 	@Override
 	public boolean authorization(String login, String password) {
@@ -38,9 +37,9 @@ public class SQLUserDAO implements UserDAO {
 	}
 
 	@Override
-	public UserLoginTransfer login(String login, String password) throws DAOException {
-		UserLoginTransfer result = null;
-		if (ValidationHelper.isNull(login) || ValidationHelper.isNull(password)) {
+	public UserLoginPasswordTransfer login(String login) throws DAOException {
+		UserLoginPasswordTransfer result = null;
+		if (ValidationHelper.isNull(login)) {
 			return result;
 		}
 
@@ -51,14 +50,13 @@ public class SQLUserDAO implements UserDAO {
 			connection = CONNECTION_POOL.retrieveConnection();
 			statement = connection.prepareStatement(LOGIN_QUERY);
 			statement.setString(1, login);
-			statement.setString(2, password);
-			statement.setString(3, login);
-			statement.setString(4, password);
+			statement.setString(2, login);
 			resultSet = statement.executeQuery();
 			while (resultSet.next()) {
-				result = new UserLoginTransfer();
+				result = new UserLoginPasswordTransfer();
 				result.setId(resultSet.getInt(1));
 				result.setRoleId(resultSet.getInt(2));
+				result.setPassword(resultSet.getString(3));
 			}
 		} catch (SQLException | ConnectionPoolException e) {
 			throw new DAOException(e.getMessage(), e);

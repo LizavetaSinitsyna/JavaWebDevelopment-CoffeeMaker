@@ -11,10 +11,6 @@
 	var="basket"
 	value="${cookie['basket'].value}"
 	scope="application" />
-<c:set
-	var="basketSize"
-	value="${empty basket ? 0 : fn:length(fn:split(basket, '|'))}"
-	scope="application" />
 <header
 	class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between mb-4 border-bottom">
 	<a
@@ -100,18 +96,21 @@
 			</div></li>
 	</ul>
 	<ul class="nav col-12 col-md-auto mb-2 mb-md-0 text-end">
-		<li><button
-				id="basket-area"
-				type="submit"
-				class="btn empty-shadow revert-padding"
-				name="basket"
-				style="text-align: -webkit-center;">
-				<div
-					class="basket icon-image"
-					style="display: block;"></div>
-				<fmt:message key="local.header.basket.name" />
-				<c:if test="${basketSize > 0}">(${basketSize})</c:if>
-			</button></li>
+		<li><form action="basket">
+				<input
+					type="hidden"
+					name="nextPage"
+					value="/basket">
+				<button
+					id="basket-area"
+					type="submit"
+					class="btn empty-shadow revert-padding"
+					style="text-align: -webkit-center;">
+					<div class="basket icon-image"></div>
+					<fmt:message key="local.header.basket.name" />
+					(<span id="basketSize">0</span>)
+				</button>
+			</form></li>
 		<c:choose>
 			<c:when test="${user != null}">
 				<li class="header-link-border header-link-border-stat">

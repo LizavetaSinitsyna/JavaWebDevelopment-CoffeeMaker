@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
  *
  */
 public class Order {
-	private int id;
-	private User user;
+	private int orderId;
+	private int userId;
 	private OrderInfo info;
 	
 

@@ -101,8 +101,17 @@ public class DrinkInfo implements Serializable {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " [name=" + name + ", imagePath=" + imagePath + ", price=" + price
-				+ ", description=" + description + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("DrinkInfo [name=");
+		builder.append(name);
+		builder.append(", imagePath=");
+		builder.append(imagePath);
+		builder.append(", price=");
+		builder.append(price);
+		builder.append(", description=");
+		builder.append(description);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

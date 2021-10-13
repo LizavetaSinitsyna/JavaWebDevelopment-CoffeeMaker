@@ -17,4 +17,19 @@ public class OrderInfo {
 	public enum OrderStatus {
 		FORMED, PAID, READY
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("OrderInfo [date_time=");
+		builder.append(date_time);
+		builder.append(", status=");
+		builder.append(status);
+		builder.append(", cost=");
+		builder.append(cost);
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	
 }

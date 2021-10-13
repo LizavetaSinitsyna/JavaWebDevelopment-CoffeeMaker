@@ -29,5 +29,6 @@
 	<%@include file="partial_pages/footer.jsp"%>
 	<script src="js/bootstrap.bundle.min.js"></script>
 	<script src="js/header.js"></script>
+	<script src="js/addToBasket.js"></script>
 </body>
 </html>

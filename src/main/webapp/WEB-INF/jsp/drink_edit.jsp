@@ -181,7 +181,7 @@
 								value="${ingredient.getIngredientAmount()}"
 								required>
 							<label for="amount-${ingredientNumber.index}">
-								<fmt:message key="local.product.ingredient.amount" />
+								<fmt:message key="local.product.amount" />
 								<span class="star"> *</span>
 							</label>
 						</div>
@@ -266,7 +266,7 @@
 				placeholder="1"
 				required>
 			<label for="amount0">
-				<fmt:message key="local.product.ingredient.amount" />
+				<fmt:message key="local.product.amount" />
 				<span class="star"> *</span>
 			</label>
 		</div>

@@ -74,7 +74,13 @@ public class Drink implements Serializable {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " [id=" + id + ", info=" + info + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("Drink [id=");
+		builder.append(id);
+		builder.append(", info=");
+		builder.append(info);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

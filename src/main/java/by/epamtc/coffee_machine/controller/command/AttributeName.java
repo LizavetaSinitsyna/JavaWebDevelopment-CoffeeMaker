@@ -52,6 +52,7 @@ public class AttributeName {
 
 	// Basket
 	public static final String BASKET = "basket";
+	public static final String DRINK_AMOUNT = "drinkAmount";
 
 	private AttributeName() {
 

@@ -42,7 +42,7 @@ public class AdminAccessFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		String command = httpRequest.getParameter(AttributeName.COMMAND);
-		if (commandsWithAccessControl.contains(command.toLowerCase())) {
+		if (!ValidationHelper.isNull(command) && commandsWithAccessControl.contains(command.toLowerCase())) {
 			Object user = httpRequest.getSession().getAttribute(AttributeName.USER);
 			if (ValidationHelper.isNull(user) || ((UserLoginTransfer) user).getRoleId() != ADMIN_ROLE_ID) {
 				httpResponse.sendRedirect(httpRequest.getContextPath() + FORBIDEN_ACCESS_NEXT_PATH);
