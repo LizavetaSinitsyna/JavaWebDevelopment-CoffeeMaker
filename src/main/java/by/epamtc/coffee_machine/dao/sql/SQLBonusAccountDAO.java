@@ -14,7 +14,7 @@ import by.epamtc.coffee_machine.dao.BonusAccountDAO;
 import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolException;
 import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolImpl;
-import by.epamtc.coffee_machine.validation.ValidationHelper;
+import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 
 /**
  * @author Lizaveta Sinitsyna
@@ -32,7 +32,7 @@ public class SQLBonusAccountDAO implements BonusAccountDAO {
 	}
 
 	@Override
-	public int add(BonusAccount account) throws DAOException {
+	public long add(BonusAccount account) throws DAOException {
 		if (ValidationHelper.isNull(account)) {
 			return -1;
 		}

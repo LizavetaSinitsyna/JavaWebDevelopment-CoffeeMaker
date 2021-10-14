@@ -17,13 +17,13 @@ import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.DAOProvider;
 import by.epamtc.coffee_machine.dao.UserDAO;
 import by.epamtc.coffee_machine.service.AccountService;
-import by.epamtc.coffee_machine.service.BCrypt;
 import by.epamtc.coffee_machine.service.BonusAccountService;
 import by.epamtc.coffee_machine.service.ServiceException;
 import by.epamtc.coffee_machine.service.ServiceProvider;
 import by.epamtc.coffee_machine.service.UserService;
-import by.epamtc.coffee_machine.validation.ValidationHelper;
 import by.epamtc.coffee_machine.service.UserValidationError;
+import by.epamtc.coffee_machine.service.utility.BCrypt;
+import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 
 /**
  * @author Lizaveta Sinitsyna
@@ -76,8 +76,8 @@ public class UserServiceImpl implements UserService {
 		if (ValidationHelper.isNull(account) || ValidationHelper.isNull(bonusAccount)) {
 			throw new ServiceException(ValidationHelper.NULL_ACCOUNT_EXCEPTION);
 		}
-		user.setAccount(account);
-		user.setBonusAccount(bonusAccount);
+		user.setAccountId(account.getId());
+		user.setBonusAccountId(bonusAccount.getId());
 
 		UserInfo userInfo = new UserInfo();
 		userInfo.setEmail(email);

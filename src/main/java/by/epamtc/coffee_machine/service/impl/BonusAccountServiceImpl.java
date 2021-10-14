@@ -19,7 +19,7 @@ public class BonusAccountServiceImpl implements BonusAccountService {
 
 	@Override
 	public BonusAccount createAccount() throws ServiceException {
-		int id;
+		long id;
 		BonusAccount account = null;
 		
 		try {

@@ -24,34 +24,61 @@ import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolImpl;
  */
 public class SQLIngredientDAO implements IngredientDAO {
 	private static final ConnectionPoolImpl CONNECTION_POOL = ConnectionPoolImpl.retrieveConnectionPool();
-	private static final String SELECT_ALL_QUERY = "SELECT ingredient_id, name FROM ingredients";
+	private static final String SELECT_ALL_QUERY = "SELECT name FROM ingredients";
+	private static final String OBTAIN_INGREDIENT_QUERY = "SELECT name, current_amount, image_path FROM ingredients WHERE ingredient_id = %s";
 
 	@Override
-	public Ingredient read(int ingredient_id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Ingredient read(long ingredientId) throws DAOException {
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		Ingredient ingredient = null;
+
+		try {
+			connection = CONNECTION_POOL.retrieveConnection();
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(String.format(OBTAIN_INGREDIENT_QUERY, ingredientId));
+			if (resultSet.next()) {
+				ingredient = new Ingredient();
+				IngredientInfo ingredientInfo = new IngredientInfo();
+				ingredient.setId(ingredientId);
+				ingredient.setCurrentAmount(resultSet.getInt(2));
+				ingredientInfo.setName(resultSet.getString(1));
+				ingredientInfo.setImagePath(resultSet.getString(3));
+				ingredient.setInfo(ingredientInfo);
+			}
+		} catch (ConnectionPoolException | SQLException e) {
+			throw new DAOException(e.getMessage(), e);
+		} finally {
+			try {
+				CONNECTION_POOL.closeConnection(connection, statement, resultSet);
+			} catch (ConnectionPoolException e) {
+				throw new DAOException(e.getMessage(), e);
+			}
+		}
+		return ingredient;
 	}
 
 	@Override
-	public int add(Ingredient ingredient) {
+	public long add(Ingredient ingredient) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public boolean remove(int ingredient_id) {
+	public boolean remove(long ingredientId) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean updateAmount(int ingredient_id, int amount) {
+	public boolean updateAmount(long ingredientId, int amount) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean update(int ingredient_id, IngredientInfo ingredientInfo) {
+	public boolean update(long ingredientId, IngredientInfo ingredientInfo) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -71,7 +98,7 @@ public class SQLIngredientDAO implements IngredientDAO {
 			resultSet = statement.executeQuery(SELECT_ALL_QUERY);
 			while (resultSet.next()) {
 				ingredient = new IngredientTransfer();
-				ingredient.setId(resultSet.getInt(1));
+				ingredient.setId(resultSet.getLong(1));
 				ingredient.setName(resultSet.getString(2));
 				ingredients.add(ingredient);
 			}

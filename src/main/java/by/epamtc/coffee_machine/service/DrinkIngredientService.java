@@ -14,14 +14,8 @@ import by.epamtc.coffee_machine.bean.transfer.DrinkIngredientTransfer;
  *
  */
 public interface DrinkIngredientService {
-	List<DrinkIngredientTransfer> obtainIngredientsForSpecificDrink(int drink_id) throws ServiceException;
+	List<DrinkIngredientTransfer> obtainIngredientsForSpecificDrink(long drinkId) throws ServiceException;
 
-	/**
-	 * @param drinkId
-	 * @param drinkIngredients
-	 * @return
-	 * @throws ServiceException
-	 */
-	Set<DrinkIngredientMessage> edit(int drinkId, List<DrinkIngredient> drinkIngredients) throws ServiceException;
+	Set<DrinkIngredientMessage> edit(long drinkId, List<DrinkIngredient> drinkIngredients) throws ServiceException;
 
 }

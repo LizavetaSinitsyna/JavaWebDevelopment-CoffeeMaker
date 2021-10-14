@@ -32,7 +32,7 @@
 								alt="drinkImage"></td>
 							<td class= "basket-list-td">${drink.name}</td>
 							<td class= "basket-list-td">${showPrice}</td>
-							<td class= "basket-list-td">${amount}</td>
+							<td class= "basket-list-td"><input type="number" class="amount" name="drinkAmount" min="1" max="99" class="form-control" value="${amount}" required></td>
 							<input type="hidden" name="drinkAmount" value="${amount}">
 							<td >${showSum}</td>
 							<td class="delete icon-image"></td>`;

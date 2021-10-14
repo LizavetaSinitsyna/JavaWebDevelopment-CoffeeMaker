@@ -5,7 +5,7 @@ package by.epamtc.coffee_machine.bean;
 
 import java.io.Serializable;
 
-import by.epamtc.coffee_machine.validation.ValidationHelper;
+import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 
 /**
  * @author Lizaveta Sinitsyna
@@ -14,14 +14,14 @@ import by.epamtc.coffee_machine.validation.ValidationHelper;
 public class Drink implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private int id;
+	private long id;
 	private DrinkInfo info;
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -48,7 +48,7 @@ public class Drink implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((info == null) ? 0 : info.hashCode());
 		return result;
 	}

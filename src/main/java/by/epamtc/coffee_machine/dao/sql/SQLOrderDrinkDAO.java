@@ -17,9 +17,9 @@ import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.OrderDrinkDAO;
 import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolException;
 import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolImpl;
-import by.epamtc.coffee_machine.utility.MenuParameter;
-import by.epamtc.coffee_machine.utility.MenuPropertyProvider;
-import by.epamtc.coffee_machine.validation.ValidationHelper;
+import by.epamtc.coffee_machine.service.utility.MenuParameter;
+import by.epamtc.coffee_machine.service.utility.MenuPropertyProvider;
+import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 
 /**
  * @author Lizaveta Sinitsyna
@@ -45,7 +45,7 @@ public class SQLOrderDrinkDAO implements OrderDrinkDAO {
 	}
 
 	@Override
-	public int add(OrderDrink orderDrink) {
+	public long add(OrderDrink orderDrink) {
 		// TODO Auto-generated method stub
 		return 0;
 
@@ -84,7 +84,7 @@ public class SQLOrderDrinkDAO implements OrderDrinkDAO {
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				drink = new DrinkTransfer();
-				drink.setId(resultSet.getInt(1));
+				drink.setId(resultSet.getLong(1));
 				drink.setName(resultSet.getString(2));
 				drink.setImagePath(resultSet.getString(3));
 

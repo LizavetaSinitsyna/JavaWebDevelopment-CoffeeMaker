@@ -12,38 +12,26 @@ import java.io.Serializable;
 public class IngredientTransfer implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	private int id;
+
+	private long id;
 	private String name;
-	
+
 	public IngredientTransfer() {
-		
+
 	}
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param name the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -52,7 +40,7 @@ public class IngredientTransfer implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -78,10 +66,13 @@ public class IngredientTransfer implements Serializable {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " [id=" + id + ", name=" + name + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("IngredientTransfer [id=");
+		builder.append(id);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append("]");
+		return builder.toString();
 	}
-	
-	
-	
-	
+
 }

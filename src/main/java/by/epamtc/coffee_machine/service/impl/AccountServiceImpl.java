@@ -19,7 +19,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public Account createAccount() throws ServiceException {
-		int id;
+		long id;
 		Account account = null;
 		
 		try {

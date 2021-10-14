@@ -18,9 +18,9 @@ import by.epamtc.coffee_machine.dao.DAOProvider;
 import by.epamtc.coffee_machine.service.DrinkService;
 import by.epamtc.coffee_machine.service.DrinkMessage;
 import by.epamtc.coffee_machine.service.ServiceException;
-import by.epamtc.coffee_machine.utility.MenuParameter;
-import by.epamtc.coffee_machine.utility.MenuPropertyProvider;
-import by.epamtc.coffee_machine.validation.ValidationHelper;
+import by.epamtc.coffee_machine.service.utility.MenuParameter;
+import by.epamtc.coffee_machine.service.utility.MenuPropertyProvider;
+import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 
 /**
  * @author Lizaveta Sinitsyna
@@ -35,14 +35,14 @@ public class DrinkServiceImpl implements DrinkService {
 	private static final String MINIMAL_PRICE = "0.01";
 
 	@Override
-	public Drink obtainDrink(int drink_id) throws ServiceException {
+	public Drink obtainDrink(long drinkId) throws ServiceException {
 		Drink drink = null;
-		if (!ValidationHelper.isPositive(drink_id)) {
+		if (!ValidationHelper.isPositive(drinkId)) {
 			return drink;
 		}
 
 		try {
-			drink = DAO_PROVIDER.getDrinkDAO().read(drink_id);
+			drink = DAO_PROVIDER.getDrinkDAO().read(drinkId);
 		} catch (DAOException e) {
 			throw new ServiceException(e.getMessage(), e);
 		}
@@ -89,7 +89,7 @@ public class DrinkServiceImpl implements DrinkService {
 	}
 
 	@Override
-	public Set<DrinkMessage> edit(String imagePath, int drinkId, BigDecimal price, String description)
+	public Set<DrinkMessage> edit(String imagePath, long drinkId, BigDecimal price, String description)
 			throws ServiceException {
 		Set<DrinkMessage> messages = new HashSet<>();
 

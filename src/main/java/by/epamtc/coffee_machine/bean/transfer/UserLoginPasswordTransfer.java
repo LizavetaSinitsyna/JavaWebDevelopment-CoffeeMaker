@@ -12,51 +12,33 @@ import java.io.Serializable;
 public class UserLoginPasswordTransfer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private int roleId;
-	private int id;
+	private long roleId;
+	private long id;
 	private String password;
 
 	public UserLoginPasswordTransfer() {
 	}
 
-	/**
-	 * @return the roleId
-	 */
-	public int getRoleId() {
+	public long getRoleId() {
 		return roleId;
 	}
 
-	/**
-	 * @param roleId the roleId to set
-	 */
-	public void setRoleId(int roleId) {
+	public void setRoleId(long roleId) {
 		this.roleId = roleId;
 	}
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the password
-	 */
 	public String getPassword() {
 		return password;
 	}
 
-	/**
-	 * @param password the password to set
-	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -65,9 +47,9 @@ public class UserLoginPasswordTransfer implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + roleId;
+		result = prime * result + (int) (roleId ^ (roleId >>> 32));
 		return result;
 	}
 

@@ -78,7 +78,7 @@
 
 	<filter>
 		<filter-name>EncodingFilter</filter-name>
-		<filter-class>by.epamtc.coffee_machine.filter.EncodingFilter</filter-class>
+		<filter-class>by.epamtc.coffee_machine.controller.filter.EncodingFilter</filter-class>
 		<init-param>
 			<param-name>encoding</param-name>
 			<param-value>UTF-8</param-value>
@@ -92,7 +92,7 @@
 
 	<filter>
 		<filter-name>AdminAccessFilter</filter-name>
-		<filter-class>by.epamtc.coffee_machine.filter.AdminAccessFilter</filter-class>
+		<filter-class>by.epamtc.coffee_machine.controller.filter.AdminAccessFilter</filter-class>
 		<init-param>
 			<param-name>commands</param-name>
 			<param-value>view_product_edit</param-value>
@@ -106,7 +106,7 @@
 
 	<filter>
 		<filter-name>LoginAccessFilter</filter-name>
-		<filter-class>by.epamtc.coffee_machine.filter.LoginAccessFilter</filter-class>
+		<filter-class>by.epamtc.coffee_machine.controller.filter.LoginAccessFilter</filter-class>
 	</filter>
 
 	<filter-mapping>

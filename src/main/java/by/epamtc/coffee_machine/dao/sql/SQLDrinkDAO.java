@@ -19,9 +19,9 @@ import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.DrinkDAO;
 import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolException;
 import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolImpl;
-import by.epamtc.coffee_machine.utility.MenuParameter;
-import by.epamtc.coffee_machine.utility.MenuPropertyProvider;
-import by.epamtc.coffee_machine.validation.ValidationHelper;
+import by.epamtc.coffee_machine.service.utility.MenuParameter;
+import by.epamtc.coffee_machine.service.utility.MenuPropertyProvider;
+import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 
 /**
  * @author Lizaveta Sinitsyna
@@ -36,13 +36,12 @@ public class SQLDrinkDAO implements DrinkDAO {
 	private static final String OBTAIN_DRINK_QUERY = "SELECT * FROM drinks WHERE drink_id = ?";
 	private static final String OBTAIN_GENERAL_DRINKS_AMOUNT_QUERY = "SELECT COUNT(*) FROM drinks";
 	private static final String UPDATE_DRINK_QUERY = "UPDATE drinks SET image_path = ?, price = ?, description = ? WHERE drink_id = ?";
-	private static final String OBTAIN_NAME_QUERY = "SELECT name FROM drinks WHERE drink_id = ?";
 
 	@Override
-	public Drink read(int drink_id) throws DAOException {
+	public Drink read(long drinkId) throws DAOException {
 		Drink drink = null;
 
-		if (!ValidationHelper.isPositive(drink_id)) {
+		if (!ValidationHelper.isPositive(drinkId)) {
 			return drink;
 		}
 
@@ -54,11 +53,11 @@ public class SQLDrinkDAO implements DrinkDAO {
 		try {
 			connection = CONNECTION_POOL.retrieveConnection();
 			preparedStatement = connection.prepareStatement(OBTAIN_DRINK_QUERY);
-			preparedStatement.setInt(1, drink_id);
+			preparedStatement.setLong(1, drinkId);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				DrinkInfo drinkInfo = new DrinkInfo();
-				drink.setId(resultSet.getInt(1));
+				drink.setId(resultSet.getLong(1));
 				drinkInfo.setName(resultSet.getString(2));
 				drinkInfo.setImagePath(resultSet.getString(3));
 
@@ -104,7 +103,7 @@ public class SQLDrinkDAO implements DrinkDAO {
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				drink = new DrinkTransfer();
-				drink.setId(resultSet.getInt(1));
+				drink.setId(resultSet.getLong(1));
 				drink.setName(resultSet.getString(2));
 				drink.setImagePath(resultSet.getString(3));
 
@@ -154,13 +153,13 @@ public class SQLDrinkDAO implements DrinkDAO {
 	}
 
 	@Override
-	public int add(Drink drink) {
+	public long add(Drink drink) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public boolean remove(int drink_id) {
+	public boolean remove(long drinkId) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -191,7 +190,7 @@ public class SQLDrinkDAO implements DrinkDAO {
 			preparedStatement.setInt(2, priceDB.intValue());
 
 			preparedStatement.setString(3, info.getDescription());
-			preparedStatement.setInt(4, drink.getId());
+			preparedStatement.setLong(4, drink.getId());
 			effectedColumns = preparedStatement.executeUpdate();
 		} catch (ConnectionPoolException | SQLException e) {
 			throw new DAOException(e.getMessage(), e);
@@ -203,38 +202,6 @@ public class SQLDrinkDAO implements DrinkDAO {
 			}
 		}
 		return effectedColumns;
-	}
-	
-	// unused
-	@Override
-	public String obtainDrinkName(int drinkId) throws DAOException {
-		String result = null;
-
-		if (!ValidationHelper.isPositive(drinkId)) {
-			return result;
-		}
-
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
-		try {
-			connection = CONNECTION_POOL.retrieveConnection();
-			statement = connection.prepareStatement(OBTAIN_NAME_QUERY);
-			statement.setInt(1, drinkId);
-			resultSet = statement.executeQuery();
-			while (resultSet.next()) {
-				result = resultSet.getString(1);
-			}
-		} catch (ConnectionPoolException | SQLException e) {
-			throw new DAOException(e.getMessage(), e);
-		} finally {
-			try {
-				CONNECTION_POOL.closeConnection(connection, statement, resultSet);
-			} catch (ConnectionPoolException e) {
-				throw new DAOException(e.getMessage(), e);
-			}
-		}
-		return result;
 	}
 
 }

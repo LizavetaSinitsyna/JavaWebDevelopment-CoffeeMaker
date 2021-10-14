@@ -20,5 +20,7 @@ public interface OrderService {
 	 * @throws ServiceException
 	 */
 	OrderInfo placeOrder(String[] drinksId, String[] drinksAmount, int userId) throws ServiceException;
+	
+	void removeUnpaidOrders() throws ServiceException;
 
 }

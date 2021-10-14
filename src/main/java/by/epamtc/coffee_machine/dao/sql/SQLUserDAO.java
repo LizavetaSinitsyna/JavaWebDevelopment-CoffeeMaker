@@ -16,7 +16,7 @@ import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.UserDAO;
 import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolException;
 import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolImpl;
-import by.epamtc.coffee_machine.validation.ValidationHelper;
+import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 
 /**
  * @author Lizaveta Sinitsyna
@@ -29,12 +29,6 @@ public class SQLUserDAO implements UserDAO {
 	private static final String SEARCH_EMAIL_QUERY = "SELECT * FROM users WHERE email = ?";
 	private static final String SEARCH_LOGIN_QUERY = "SELECT * FROM users WHERE login = ?";
 	private static final String LOGIN_QUERY = "SELECT user_id, role_id, password FROM users WHERE login = ? OR email = ?";
-
-	@Override
-	public boolean authorization(String login, String password) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public UserLoginPasswordTransfer login(String login) throws DAOException {
@@ -131,7 +125,7 @@ public class SQLUserDAO implements UserDAO {
 	}
 
 	@Override
-	public int add(User user) throws DAOException {
+	public long add(User user) throws DAOException {
 		if (ValidationHelper.isNull(user)) {
 			return -1;
 		}
@@ -150,15 +144,15 @@ public class SQLUserDAO implements UserDAO {
 			preparedStatement = connection.prepareStatement(ADD_QUERY, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, userInfo.getLogin());
 			preparedStatement.setString(2, userInfo.getPassword());
-			preparedStatement.setInt(3, user.getBonusAccount().getId());
-			preparedStatement.setInt(4, user.getAccount().getId());
+			preparedStatement.setLong(3, user.getBonusAccountId());
+			preparedStatement.setLong(4, user.getAccountId());
 			preparedStatement.setString(5, userInfo.getName());
 			preparedStatement.setString(6, userInfo.getEmail());
 			preparedStatement.setString(7, userInfo.getPhone());
 			preparedStatement.executeUpdate();
 			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
 				if (generatedKeys.next()) {
-					return generatedKeys.getInt(1);
+					return generatedKeys.getLong(1);
 				} else {
 					throw new DAOException(ValidationHelper.NO_GENERATED_ID_EXCEPTION);
 				}

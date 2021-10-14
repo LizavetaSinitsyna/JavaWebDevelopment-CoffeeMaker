@@ -15,7 +15,7 @@ import by.epamtc.coffee_machine.dao.DAOProvider;
 import by.epamtc.coffee_machine.service.DrinkIngredientMessage;
 import by.epamtc.coffee_machine.service.DrinkIngredientService;
 import by.epamtc.coffee_machine.service.ServiceException;
-import by.epamtc.coffee_machine.validation.ValidationHelper;
+import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 
 /**
  * @author Lizaveta Sinitsyna
@@ -25,14 +25,14 @@ public class DrinkIngredientServiceImpl implements DrinkIngredientService {
 	private DAOProvider daoProvider = DAOProvider.getInstance();
 
 	@Override
-	public List<DrinkIngredientTransfer> obtainIngredientsForSpecificDrink(int drink_id) throws ServiceException {
+	public List<DrinkIngredientTransfer> obtainIngredientsForSpecificDrink(long drinkId) throws ServiceException {
 		List<DrinkIngredientTransfer> result = null;
-		if (!ValidationHelper.isPositive(drink_id)) {
+		if (!ValidationHelper.isPositive(drinkId)) {
 			return result;
 		}
 
 		try {
-			result = daoProvider.getDrinkIngredientDAO().readIngredientsForSpecificDrink(drink_id);
+			result = daoProvider.getDrinkIngredientDAO().readIngredientsForSpecificDrink(drinkId);
 		} catch (DAOException e) {
 			throw new ServiceException(e.getMessage(), e);
 		}
@@ -40,7 +40,7 @@ public class DrinkIngredientServiceImpl implements DrinkIngredientService {
 	}
 
 	@Override
-	public Set<DrinkIngredientMessage> edit(int drinkId, List<DrinkIngredient> drinkIngredients)
+	public Set<DrinkIngredientMessage> edit(long drinkId, List<DrinkIngredient> drinkIngredients)
 			throws ServiceException {
 		Set<DrinkIngredientMessage> messages = new HashSet<>();
 
@@ -71,13 +71,13 @@ public class DrinkIngredientServiceImpl implements DrinkIngredientService {
 	private Set<DrinkIngredientMessage> validateFields(List<DrinkIngredient> drinkIngredients) {
 		Set<DrinkIngredientMessage> messages = new HashSet<>();
 
-		Set<Integer> usedIngredients = new HashSet<>();
+		Set<Long> usedIngredients = new HashSet<>();
 
 		if (ValidationHelper.isNull(drinkIngredients) || drinkIngredients.isEmpty()) {
 			messages.add(DrinkIngredientMessage.ILLEGAL_DRINK_INGREDIENT_AMOUNT);
 		} else {
 			for (DrinkIngredient element : drinkIngredients) {
-				int ingredientId = element.getIngredientId();
+				long ingredientId = element.getIngredientId();
 				if (!ValidationHelper.isPositive(ingredientId)) {
 					messages.add(DrinkIngredientMessage.INVALID_INGREDIENT_ID);
 					break;

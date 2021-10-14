@@ -9,38 +9,32 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import by.epamtc.coffee_machine.validation.ValidationHelper;
+import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 
 /**
  * @author Lizaveta Sinitsyna
  *
  */
-public class OrderDrink implements Serializable, Iterable {
+public class OrderDrink implements Serializable, Iterable<Entry<Long, Integer>> {
 
 	private static final long serialVersionUID = 1L;
 
-	private int orderId;
-	private Map<Integer, Integer> drinksAmount;
+	private long orderId;
+	private Map<Long, Integer> drinksAmount;
 
 	public OrderDrink() {
 
 	}
 
-	/**
-	 * @return the orderId
-	 */
-	public int getOrderId() {
+	public long getOrderId() {
 		return orderId;
 	}
 
-	/**
-	 * @param orderId the orderId to set
-	 */
-	public void setOrderId(int orderId) {
+	public void setOrderId(long orderId) {
 		this.orderId = orderId;
 	}
 
-	public boolean addDrink(int drinkId, int amount) {
+	public boolean addDrink(long drinkId, int amount) {
 		if (!ValidationHelper.isPositive(drinkId) || !ValidationHelper.isPositive(amount)) {
 			return false;
 		}
@@ -51,36 +45,30 @@ public class OrderDrink implements Serializable, Iterable {
 		return true;
 	}
 
-	/**
-	 * @return the drinksAmount
-	 */
-	public Map<Integer, Integer> getDrinksAmount() {
+	public Map<Long, Integer> getDrinksAmount() {
 		return retrieveMapCopy(drinksAmount);
 	}
 
-	/**
-	 * @param drinksAmount the drinksAmount to set
-	 */
-	public void setDrinksAmount(Map<Integer, Integer> drinksAmount) {
+	public void setDrinksAmount(Map<Long, Integer> drinksAmount) {
 		this.drinksAmount = retrieveMapCopy(drinksAmount);
 	}
 
 	@Override
-	public Iterator<Entry<Integer, Integer>> iterator() {
+	public Iterator<Entry<Long, Integer>> iterator() {
 		if (drinksAmount != null) {
 			return drinksAmount.entrySet().iterator();
 		}
 		return null;
 	}
 
-	private Map<Integer, Integer> retrieveMapCopy(Map<Integer, Integer> drinksAmount) {
-		Map<Integer, Integer> copy = new HashMap<>();
+	private Map<Long, Integer> retrieveMapCopy(Map<Long, Integer> drinksAmount) {
+		Map<Long, Integer> copy = new HashMap<>();
 		if (drinksAmount == null) {
 			return copy;
 		}
-		Integer key;
+		Long key;
 		Integer amount;
-		for (Map.Entry<Integer, Integer> element : drinksAmount.entrySet()) {
+		for (Map.Entry<Long, Integer> element : drinksAmount.entrySet()) {
 			key = element.getKey();
 			amount = element.getValue();
 			if (key != null) {
@@ -95,7 +83,7 @@ public class OrderDrink implements Serializable, Iterable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((drinksAmount == null) ? 0 : drinksAmount.hashCode());
-		result = prime * result + orderId;
+		result = prime * result + (int) (orderId ^ (orderId >>> 32));
 		return result;
 	}
 
@@ -120,7 +108,13 @@ public class OrderDrink implements Serializable, Iterable {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() +" [orderId=" + orderId + ", drinksAmount=" + drinksAmount + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("OrderDrink [orderId=");
+		builder.append(orderId);
+		builder.append(", drinksAmount=");
+		builder.append(drinksAmount);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

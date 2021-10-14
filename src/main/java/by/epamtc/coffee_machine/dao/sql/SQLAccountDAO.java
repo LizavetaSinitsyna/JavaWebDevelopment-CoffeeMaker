@@ -14,7 +14,7 @@ import by.epamtc.coffee_machine.dao.AccountDAO;
 import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolException;
 import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolImpl;
-import by.epamtc.coffee_machine.validation.ValidationHelper;
+import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 
 /**
  * @author Lizaveta Sinitsyna
@@ -28,58 +28,94 @@ public class SQLAccountDAO implements AccountDAO {
 	private static final String SELECT_BY_ID_QUERY = "SELECT * FROM accounts WHERE account_id = ?";
 
 	@Override
-	public Account read(int account_id) throws DAOException {
+	public Account read(long accountId) throws DAOException {
 		Account account = null;
-		try (Connection connection = ConnectionPoolImpl.retrieveConnectionPool().retrieveConnection()) {
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			connection = CONNECTION_POOL.retrieveConnection();
+
 			if (ValidationHelper.isNull(connection)) {
-				throw new DAOException("Database �onnection can't be null.");
+				throw new DAOException(ValidationHelper.NULL_CONNECTION_EXCEPTION);
 			}
-			try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY)) {
-				preparedStatement.setInt(1, account_id);
-				try (ResultSet resultSet = preparedStatement.executeQuery()) {
-					if (resultSet.next()) {
-						account = new Account();
-						account.setId(resultSet.getInt(1));
-						account.setBalance(resultSet.getInt(2));
-					}
-				} catch (SQLException e) {
-					throw new DAOException(e.getMessage(), e);
-				}
-			} catch (SQLException e) {
+			preparedStatement = connection.prepareStatement(SELECT_BY_ID_QUERY);
+			preparedStatement.setLong(1, accountId);
+			resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				account = new Account();
+				account.setId(resultSet.getLong(1));
+				account.setBalance(resultSet.getInt(2));
+			}
+
+		} catch (ConnectionPoolException | SQLException e) {
+			throw new DAOException(e.getMessage(), e);
+		} finally {
+			try {
+				CONNECTION_POOL.closeConnection(connection, preparedStatement, resultSet);
+			} catch (ConnectionPoolException e) {
 				throw new DAOException(e.getMessage(), e);
 			}
-		} catch (SQLException | ConnectionPoolException e) {
-			throw new DAOException(e.getMessage(), e);
 		}
+
 		return account;
 
 	}
 
 	@Override
-	public int add(Account account) throws DAOException {
+	public long add(Account account) throws DAOException {
 		if (ValidationHelper.isNull(account)) {
 			return -1;
 		}
 
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		ResultSet generatedKeys = null;
 
 		try {
 			connection = ConnectionPoolImpl.retrieveConnectionPool().retrieveConnection();
-			if (connection == null) {
+			if (ValidationHelper.isNull(connection)) {
 				throw new DAOException(ValidationHelper.NULL_CONNECTION_EXCEPTION);
 			}
 			preparedStatement = connection.prepareStatement(ADD_QUERY, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setInt(1, account.getBalance());
 			preparedStatement.executeUpdate();
-			try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-				if (generatedKeys.next()) {
-					return generatedKeys.getInt(1);
-				} else {
-					throw new DAOException(ValidationHelper.NO_GENERATED_ID_EXCEPTION);
-				}
+			generatedKeys = preparedStatement.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				return generatedKeys.getLong(1);
+			} else {
+				throw new DAOException(ValidationHelper.NO_GENERATED_ID_EXCEPTION);
 			}
+
 		} catch (SQLException | ConnectionPoolException e) {
+			throw new DAOException(e.getMessage(), e);
+		} finally {
+			try {
+				CONNECTION_POOL.closeConnection(connection, preparedStatement, generatedKeys);
+			} catch (ConnectionPoolException e) {
+				throw new DAOException(e.getMessage(), e);
+			}
+		}
+
+	}
+
+	@Override
+	public void update(long accountId, int amount) throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		try {
+			connection = CONNECTION_POOL.retrieveConnection();
+			if (ValidationHelper.isNull(connection)) {
+				throw new DAOException(ValidationHelper.NULL_CONNECTION_EXCEPTION);
+			}
+			preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+			preparedStatement.setInt(1, amount);
+			preparedStatement.setLong(2, accountId);
+			preparedStatement.executeUpdate();
+
+		} catch (ConnectionPoolException | SQLException e) {
 			throw new DAOException(e.getMessage(), e);
 		} finally {
 			try {
@@ -89,23 +125,5 @@ public class SQLAccountDAO implements AccountDAO {
 			}
 		}
 
-	}
-
-	@Override
-	public void update(int account_id, int amount) throws DAOException {
-		try (Connection connection = ConnectionPoolImpl.retrieveConnectionPool().retrieveConnection()) {
-			if (ValidationHelper.isNull(connection)) {
-				throw new DAOException("Database connection can't be null.");
-			}
-			try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY)) {
-				preparedStatement.setInt(1, amount);
-				preparedStatement.setInt(2, account_id);
-				preparedStatement.executeUpdate();
-			} catch (SQLException e) {
-				throw new DAOException(e);
-			}
-		} catch (SQLException | ConnectionPoolException e) {
-			throw new DAOException(e.getMessage(), e);
-		}
 	}
 }

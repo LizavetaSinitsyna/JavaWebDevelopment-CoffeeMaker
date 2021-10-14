@@ -12,9 +12,9 @@ import by.epamtc.coffee_machine.bean.Feedback;
  *
  */
 public interface FeedbackDAO extends GenericDAO<Feedback> {
-	List<Feedback> readByDrinkId(int drink_id);
+	List<Feedback> readByDrinkId(int drink_id) throws DAOException;
 
 	@Override
-	int add(Feedback feedback);
+	long add(Feedback feedback) throws DAOException;
 
 }

@@ -17,8 +17,8 @@ import java.math.BigDecimal;
 public class DrinkTransfer implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	private int id;
+
+	private long id;
 	private String name;
 	private BigDecimal price;
 	private String imagePath;
@@ -26,58 +26,34 @@ public class DrinkTransfer implements Serializable {
 	public DrinkTransfer() {
 	}
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param name the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * @return the price
-	 */
 	public BigDecimal getPrice() {
 		return price;
 	}
 
-	/**
-	 * @param price the price to set
-	 */
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
-	/**
-	 * @return the imagePath
-	 */
 	public String getImagePath() {
 		return imagePath;
 	}
 
-	/**
-	 * @param imagePath the imagePath to set
-	 */
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
@@ -86,7 +62,7 @@ public class DrinkTransfer implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((imagePath == null) ? 0 : imagePath.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
@@ -137,5 +113,4 @@ public class DrinkTransfer implements Serializable {
 		return builder.toString();
 	}
 
-	
 }

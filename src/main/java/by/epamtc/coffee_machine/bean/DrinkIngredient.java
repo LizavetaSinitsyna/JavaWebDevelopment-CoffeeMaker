@@ -13,7 +13,7 @@ public class DrinkIngredient implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private int ingredientId;
+	private long ingredientId;
 	private int ingredientAmount;
 	private boolean optional;
 
@@ -21,44 +21,26 @@ public class DrinkIngredient implements Serializable {
 
 	}
 
-	/**
-	 * @return the ingredientId
-	 */
-	public int getIngredientId() {
+	public long getIngredientId() {
 		return ingredientId;
 	}
 
-	/**
-	 * @param ingredientId the ingredientId to set
-	 */
-	public void setIngredientId(int ingredientId) {
+	public void setIngredientId(long ingredientId) {
 		this.ingredientId = ingredientId;
 	}
 
-	/**
-	 * @return the ingredientAmount
-	 */
 	public int getIngredientAmount() {
 		return ingredientAmount;
 	}
 
-	/**
-	 * @param ingredientAmount the ingredientAmount to set
-	 */
 	public void setIngredientAmount(int ingredientAmount) {
 		this.ingredientAmount = ingredientAmount;
 	}
 
-	/**
-	 * @return the optional
-	 */
 	public boolean isOptional() {
 		return optional;
 	}
 
-	/**
-	 * @param optional the optional to set
-	 */
 	public void setOptional(boolean optional) {
 		this.optional = optional;
 	}
@@ -68,7 +50,7 @@ public class DrinkIngredient implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ingredientAmount;
-		result = prime * result + ingredientId;
+		result = prime * result + (int) (ingredientId ^ (ingredientId >>> 32));
 		result = prime * result + (optional ? 1231 : 1237);
 		return result;
 	}
@@ -103,5 +85,5 @@ public class DrinkIngredient implements Serializable {
 		builder.append("]");
 		return builder.toString();
 	}
-	
+
 }

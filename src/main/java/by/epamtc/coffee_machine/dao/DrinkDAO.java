@@ -13,24 +13,14 @@ import by.epamtc.coffee_machine.bean.transfer.DrinkTransfer;
  *
  */
 public interface DrinkDAO extends GenericDAO<Drink> {
-	Drink read(int drink_id) throws DAOException;
+	Drink read(long drinkId) throws DAOException;
 
 	List<DrinkTransfer> obtainDrinks(int startIndex, int amount) throws DAOException;
 
-	boolean remove(int drink_id);
+	boolean remove(long drinkId) throws DAOException;
 
 	int update(Drink drink) throws DAOException;
 
-	/**
-	 * @return
-	 * @throws DAOException
-	 */
 	int obtainGeneralDrinksAmount() throws DAOException;
 
-	/**
-	 * @param drinkId
-	 * @return
-	 * @throws DAOException
-	 */
-	String obtainDrinkName(int drinkId) throws DAOException;
 }

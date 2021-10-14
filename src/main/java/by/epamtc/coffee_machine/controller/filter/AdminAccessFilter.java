@@ -1,4 +1,4 @@
-package by.epamtc.coffee_machine.filter;
+package by.epamtc.coffee_machine.controller.filter;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.epamtc.coffee_machine.bean.transfer.UserLoginTransfer;
 import by.epamtc.coffee_machine.controller.command.AttributeName;
-import by.epamtc.coffee_machine.validation.ValidationHelper;
+import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 
 /**
  * Servlet Filter implementation class AdminAccessFilter

@@ -28,7 +28,7 @@ public interface DrinkService {
 	 * @return
 	 * @throws ServiceException
 	 */
-	Drink obtainDrink(int drink_id) throws ServiceException;
+	Drink obtainDrink(long drinkId) throws ServiceException;
 
 	/**
 	 * @return
@@ -44,6 +44,6 @@ public interface DrinkService {
 	 * @return
 	 * @throws ServiceException
 	 */
-	Set<DrinkMessage> edit(String imagePath, int drinkId, BigDecimal price, String description) throws ServiceException;
+	Set<DrinkMessage> edit(String imagePath, long drinkId, BigDecimal price, String description) throws ServiceException;
 
 }

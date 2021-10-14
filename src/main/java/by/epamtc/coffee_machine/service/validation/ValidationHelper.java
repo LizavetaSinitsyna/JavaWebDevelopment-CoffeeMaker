@@ -1,7 +1,7 @@
 /**
  * 
  */
-package by.epamtc.coffee_machine.validation;
+package by.epamtc.coffee_machine.service.validation;
 
 /**
  * @author Lizaveta Sinitsyna

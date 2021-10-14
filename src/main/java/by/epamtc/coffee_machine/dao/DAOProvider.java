@@ -10,6 +10,7 @@ import by.epamtc.coffee_machine.dao.sql.SQLBonusAccountDAO;
 import by.epamtc.coffee_machine.dao.sql.SQLDrinkDAO;
 import by.epamtc.coffee_machine.dao.sql.SQLDrinkIngredientDAO;
 import by.epamtc.coffee_machine.dao.sql.SQLIngredientDAO;
+import by.epamtc.coffee_machine.dao.sql.SQLOrderDAO;
 
 /**
  * @author Lizaveta Sinitsyna
@@ -23,6 +24,7 @@ public class DAOProvider {
 	private DrinkDAO drinkDAO = new SQLDrinkDAO();
 	private DrinkIngredientDAO drinkIngredientDAO = new SQLDrinkIngredientDAO();
 	private IngredientDAO ingredientDAO = new SQLIngredientDAO();
+	private OrderDAO orderDAO = new SQLOrderDAO();
 	
 	private DAOProvider() {
 	}
@@ -67,46 +69,36 @@ public class DAOProvider {
 		this.bonusAccountDAO = bonusAccountDAO;
 	}
 
-	/**
-	 * @return the drinkDAO
-	 */
 	public DrinkDAO getDrinkDAO() {
 		return drinkDAO;
 	}
 
-	/**
-	 * @param drinkDAO the drinkDAO to set
-	 */
 	public void setDrinkDAO(DrinkDAO drinkDAO) {
 		this.drinkDAO = drinkDAO;
 	}
 
-	/**
-	 * @return the drinkIngredientDAO
-	 */
 	public DrinkIngredientDAO getDrinkIngredientDAO() {
 		return drinkIngredientDAO;
 	}
 
-	/**
-	 * @param drinkIngredientDAO the drinkIngredientDAO to set
-	 */
 	public void setDrinkIngredientDAO(DrinkIngredientDAO drinkIngredientDAO) {
 		this.drinkIngredientDAO = drinkIngredientDAO;
 	}
 
-	/**
-	 * @return the ingredientDAO
-	 */
 	public IngredientDAO getIngredientDAO() {
 		return ingredientDAO;
 	}
 
-	/**
-	 * @param ingredientDAO the ingredientDAO to set
-	 */
 	public void setIngredientDAO(IngredientDAO ingredientDAO) {
 		this.ingredientDAO = ingredientDAO;
+	}
+
+	public OrderDAO getOrderDAO() {
+		return orderDAO;
+	}
+
+	public void setOrderDAO(OrderDAO orderDAO) {
+		this.orderDAO = orderDAO;
 	}
 	
 	

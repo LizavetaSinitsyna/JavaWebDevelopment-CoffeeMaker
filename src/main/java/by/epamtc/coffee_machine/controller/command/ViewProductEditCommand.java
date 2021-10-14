@@ -28,9 +28,9 @@ public class ViewProductEditCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		try {
 			Drink drink;
-			int drinkId;
+			long drinkId;
 
-			drinkId = Integer.parseInt(request.getParameter(AttributeName.DRINK_ID));
+			drinkId = Long.parseLong(request.getParameter(AttributeName.DRINK_ID));
 			drink = SERVICE_PROVIDER.getDrinkService().obtainDrink(drinkId);
 
 			List<DrinkIngredientTransfer> drinkIingredients = SERVICE_PROVIDER.getDrinkIngredientService()

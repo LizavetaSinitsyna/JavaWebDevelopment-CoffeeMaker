@@ -12,8 +12,7 @@ import by.epamtc.coffee_machine.bean.User;
  *
  */
 public interface UserDAO extends GenericDAO<User> {
-	boolean authorization(String login, String password) throws DAOException;
-
+	
 	boolean containsEmail(String email) throws DAOException;
 
 	boolean containsUsername(String username) throws DAOException;
@@ -22,11 +21,6 @@ public interface UserDAO extends GenericDAO<User> {
 
 	boolean update(int user_id, UserInfo userInfo) throws DAOException;
 
-	/**
-	 * @param login
-	 * @return
-	 * @throws DAOException
-	 */
 	UserLoginPasswordTransfer login(String login) throws DAOException;
 
 }

@@ -298,3 +298,9 @@ header .nav-link:hover {
 .do-btn {
 	margin: 3%;
 }
+
+.amount {
+	width: 50px;
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+}

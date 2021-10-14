@@ -14,18 +14,12 @@ import by.epamtc.coffee_machine.bean.transfer.DrinkIngredientTransfer;
  *
  */
 public interface DrinkIngredientDAO extends GenericDAO<DrinkIngredient> {
-	List<DrinkIngredient> findDrinksWithSpecificIngredient(int ingredient_id);
+	List<DrinkIngredient> findDrinksWithSpecificIngredient(long ingredientId) throws DAOException;
 
-	List<DrinkIngredientTransfer> readIngredientsForSpecificDrink(int drink_id) throws DAOException;
+	List<DrinkIngredientTransfer> readIngredientsForSpecificDrink(long drinkId) throws DAOException;
 
-	DrinkIngredient read(int drink_id, int ingredient_id);
+	boolean remove(DrinkIngredient drinkIngredient) throws DAOException;
 
-	boolean remove(DrinkIngredient drinkIngredient);
-
-	/**
-	 * @param drinkIngredientMap
-	 * @return
-	 * @throws DAOException
-	 */
+	
 	int update(DrinkIngredientMap drinkIngredientMap) throws DAOException;
 }

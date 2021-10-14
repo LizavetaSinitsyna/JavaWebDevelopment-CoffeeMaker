@@ -6,20 +6,20 @@ package by.epamtc.coffee_machine.bean;
 import java.io.Serializable;
 
 /**
- * @author Dell
+ * @author Lizaveta Sinitsyna
  *
  */
 public class Account implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	private int id;
+
+	private long id;
 	private int balance;
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -36,7 +36,7 @@ public class Account implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + balance;
-		result = prime * result + id;
+		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
 
@@ -66,6 +66,5 @@ public class Account implements Serializable {
 		builder.append("]");
 		return builder.toString();
 	}
-
 
 }

@@ -1,4 +1,4 @@
-package by.epamtc.coffee_machine.filter;
+package by.epamtc.coffee_machine.controller.filter;
 
 import java.io.IOException;
 import javax.servlet.Filter;

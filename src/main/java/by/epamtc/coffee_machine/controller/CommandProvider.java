@@ -12,12 +12,12 @@ import by.epamtc.coffee_machine.controller.command.EditProductCommand;
 import by.epamtc.coffee_machine.controller.command.ViewMenuCommand;
 import by.epamtc.coffee_machine.controller.command.ViewProductCommand;
 import by.epamtc.coffee_machine.controller.command.ViewProductEditCommand;
+import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 import by.epamtc.coffee_machine.controller.command.LogOutCommand;
 import by.epamtc.coffee_machine.controller.command.LoginCommand;
 import by.epamtc.coffee_machine.controller.command.NoSuchCommand;
 import by.epamtc.coffee_machine.controller.command.RegistrationCommand;
 import by.epamtc.coffee_machine.controller.command.SelectPopularDrinksCommand;
-import by.epamtc.coffee_machine.validation.ValidationHelper;
 
 /**
  * @author Lizaveta Sinitsyna

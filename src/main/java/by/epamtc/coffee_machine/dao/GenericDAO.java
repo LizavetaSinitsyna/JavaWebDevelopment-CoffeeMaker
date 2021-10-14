@@ -8,5 +8,5 @@ package by.epamtc.coffee_machine.dao;
  *
  */
 public interface GenericDAO<T> {
-	int add(T object) throws DAOException;
+	long add(T object) throws DAOException;
 }

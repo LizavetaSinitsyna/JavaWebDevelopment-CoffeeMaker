@@ -14,17 +14,17 @@ import by.epamtc.coffee_machine.bean.transfer.IngredientTransfer;
  *
  */
 public interface IngredientDAO extends GenericDAO<Ingredient> {
-	Ingredient read(int ingredient_id);
-	
+	Ingredient read(long ingredientId) throws DAOException;
+
 	List<IngredientTransfer> readAll() throws DAOException;
 
 	@Override
-	int add(Ingredient ingredient);
+	long add(Ingredient ingredient) throws DAOException;
 
-	boolean remove(int ingredient_id);
+	boolean remove(long ingredientId) throws DAOException;
 
-	boolean updateAmount(int ingredient_id, int amount);
+	boolean updateAmount(long ingredientId, int amount) throws DAOException;
 
-	boolean update(int ingredient_id, IngredientInfo ingredientInfo);
+	boolean update(long ingredientId, IngredientInfo ingredientInfo) throws DAOException;
 
 }

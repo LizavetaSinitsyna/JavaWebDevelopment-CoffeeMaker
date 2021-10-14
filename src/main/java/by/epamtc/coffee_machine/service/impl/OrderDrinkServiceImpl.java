@@ -10,9 +10,9 @@ import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.DAOProvider;
 import by.epamtc.coffee_machine.service.OrderDrinkService;
 import by.epamtc.coffee_machine.service.ServiceException;
-import by.epamtc.coffee_machine.utility.MenuParameter;
-import by.epamtc.coffee_machine.utility.MenuPropertyProvider;
-import by.epamtc.coffee_machine.validation.ValidationHelper;
+import by.epamtc.coffee_machine.service.utility.MenuParameter;
+import by.epamtc.coffee_machine.service.utility.MenuPropertyProvider;
+import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 
 /**
  * @author Lizaveta Sinitsyna

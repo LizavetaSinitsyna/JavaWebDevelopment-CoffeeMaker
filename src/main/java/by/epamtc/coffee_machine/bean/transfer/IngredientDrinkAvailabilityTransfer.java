@@ -9,16 +9,16 @@ import java.io.Serializable;
  * @author Lizaveta Sinitsyna
  *
  */
-public class DrinkIngredientTransfer implements Serializable {
+public class IngredientDrinkAvailabilityTransfer implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private long ingredientId;
 	private String ingredientName;
-	private int ingredientAmount;
-	private boolean isOptional;
+	private long drinkId;
+	private int drinkAmount;
 
-	public DrinkIngredientTransfer() {
+	public IngredientDrinkAvailabilityTransfer() {
 
 	}
 
@@ -38,30 +38,30 @@ public class DrinkIngredientTransfer implements Serializable {
 		this.ingredientName = ingredientName;
 	}
 
-	public int getIngredientAmount() {
-		return ingredientAmount;
+	public long getDrinkId() {
+		return drinkId;
 	}
 
-	public void setIngredientAmount(int ingredientAmount) {
-		this.ingredientAmount = ingredientAmount;
+	public void setDrinkId(long drinkId) {
+		this.drinkId = drinkId;
 	}
 
-	public boolean isOptional() {
-		return isOptional;
+	public int getDrinkAmount() {
+		return drinkAmount;
 	}
 
-	public void setOptional(boolean isOptional) {
-		this.isOptional = isOptional;
+	public void setDrinkAmount(int drinkAmount) {
+		this.drinkAmount = drinkAmount;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ingredientAmount;
+		result = prime * result + drinkAmount;
+		result = prime * result + (int) (drinkId ^ (drinkId >>> 32));
 		result = prime * result + (int) (ingredientId ^ (ingredientId >>> 32));
 		result = prime * result + ((ingredientName == null) ? 0 : ingredientName.hashCode());
-		result = prime * result + (isOptional ? 1231 : 1237);
 		return result;
 	}
 
@@ -73,8 +73,10 @@ public class DrinkIngredientTransfer implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		DrinkIngredientTransfer other = (DrinkIngredientTransfer) obj;
-		if (ingredientAmount != other.ingredientAmount)
+		IngredientDrinkAvailabilityTransfer other = (IngredientDrinkAvailabilityTransfer) obj;
+		if (drinkAmount != other.drinkAmount)
+			return false;
+		if (drinkId != other.drinkId)
 			return false;
 		if (ingredientId != other.ingredientId)
 			return false;
@@ -83,22 +85,20 @@ public class DrinkIngredientTransfer implements Serializable {
 				return false;
 		} else if (!ingredientName.equals(other.ingredientName))
 			return false;
-		if (isOptional != other.isOptional)
-			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("DrinkIngredientTransfer [ingredientId=");
+		builder.append("IngredientDrinkAvailabilityTransfer [ingredientId=");
 		builder.append(ingredientId);
 		builder.append(", ingredientName=");
 		builder.append(ingredientName);
-		builder.append(", ingredientAmount=");
-		builder.append(ingredientAmount);
-		builder.append(", isOptional=");
-		builder.append(isOptional);
+		builder.append(", drinkId=");
+		builder.append(drinkId);
+		builder.append(", drinkAmount=");
+		builder.append(drinkAmount);
 		builder.append("]");
 		return builder.toString();
 	}

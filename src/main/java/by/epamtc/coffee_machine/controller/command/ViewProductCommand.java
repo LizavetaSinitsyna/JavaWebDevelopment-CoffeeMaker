@@ -22,7 +22,7 @@ public class ViewProductCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		int productId = Integer.parseInt(request.getParameter(AttributeName.DRINK_ID));
+		long productId = Long.parseLong(request.getParameter(AttributeName.DRINK_ID));
 		try {
 			Drink drink = ServiceProvider.getInstance().getDrinkService().obtainDrink(productId);
 			request.setAttribute(AttributeName.DRINK, drink);

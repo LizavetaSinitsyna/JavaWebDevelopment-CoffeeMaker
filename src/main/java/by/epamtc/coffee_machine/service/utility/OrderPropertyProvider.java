@@ -1,7 +1,7 @@
 /**
  * 
  */
-package by.epamtc.coffee_machine.utility;
+package by.epamtc.coffee_machine.service.utility;
 
 import java.util.ResourceBundle;
 

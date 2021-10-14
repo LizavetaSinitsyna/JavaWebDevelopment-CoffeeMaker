@@ -32,7 +32,7 @@ public class EditProductCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		String currentPage = request.getParameter(AttributeName.CURRENT_PAGE);
 		String imagePath = request.getParameter(AttributeName.IMAGE_PATH);
-		int drinkId = Integer.parseInt(request.getParameter(AttributeName.DRINK_ID));
+		long drinkId = Long.parseLong(request.getParameter(AttributeName.DRINK_ID));
 		BigDecimal price = new BigDecimal(request.getParameter(AttributeName.PRICE));
 		String description = request.getParameter(AttributeName.DESCRIPTION);
 		String[] ingredientsId = request.getParameterValues(AttributeName.INGREDIENT);
@@ -51,7 +51,7 @@ public class EditProductCommand implements Command {
 			DrinkIngredient drinkIngredient;
 			for (int i = 0; i < ingredientsId.length; i++) {
 				drinkIngredient = new DrinkIngredient();
-				drinkIngredient.setIngredientId(Integer.parseInt(ingredientsId[i]));
+				drinkIngredient.setIngredientId(Long.parseLong(ingredientsId[i]));
 				drinkIngredient.setIngredientAmount(Integer.parseInt(ingredientsAmount[i]));
 				drinkIngredient.setOptional(Boolean.parseBoolean(ingredientsOptional[i]));
 				drinkIngredients.add(drinkIngredient);
