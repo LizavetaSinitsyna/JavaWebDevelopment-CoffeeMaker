@@ -1,7 +1,4 @@
-/**
- * 
- */
-package by.epamtc.coffee_machine.dao.sql.pool;
+package by.epamtc.coffee_machine.dao.impl.pool;
 
 import java.sql.Array;
 import java.sql.Blob;
@@ -28,13 +25,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
-import by.epamtc.coffee_machine.service.validation.ValidationHelper;
-
-/**
- * @author Lizaveta Sinitsyna
- *
- */
-public class ConnectionPoolImpl implements ConnectionPool {
+public class ConnectionPool {
 	private final static int DEFAULT_MAX_POOL_SIZE = 100;
 	private final static int DEFAULT_MAX_IDLE = 15;
 	private final static int DEFAULT_MAX_WAIT = 2;
@@ -49,7 +40,7 @@ public class ConnectionPoolImpl implements ConnectionPool {
 	private int maxWait;
 	private boolean isPoolClosing;
 
-	private ConnectionPoolImpl() {
+	private ConnectionPool() {
 		DBResourceManager dbResourceManager = DBResourceManager.getInstance();
 		this.driverClassName = dbResourceManager.retrieveValue(DBParameter.DB_DRIVER);
 		this.url = dbResourceManager.retrieveValue(DBParameter.DB_URL);
@@ -67,10 +58,10 @@ public class ConnectionPoolImpl implements ConnectionPool {
 	}
 
 	private static class SingletonHelper {
-		private final static ConnectionPoolImpl INSTANCE = new ConnectionPoolImpl();
+		private final static ConnectionPool INSTANCE = new ConnectionPool();
 	}
 
-	public static ConnectionPoolImpl retrieveConnectionPool() {
+	public static ConnectionPool retrieveConnectionPool() {
 		return SingletonHelper.INSTANCE;
 	}
 
@@ -98,7 +89,6 @@ public class ConnectionPoolImpl implements ConnectionPool {
 		}
 	}
 
-	@Override
 	public Connection retrieveConnection() throws ConnectionPoolException {
 		Connection connection = null;
 		if (isPoolClosing) {
@@ -126,7 +116,7 @@ public class ConnectionPoolImpl implements ConnectionPool {
 	private void closeConnectionsQueue(BlockingQueue<Connection> connectionsQueue) throws ConnectionPoolException {
 		Connection connection;
 		try {
-			while (!ValidationHelper.isNull(connection = connectionsQueue.poll()) && !connection.isClosed()) {
+			while ((connection = connectionsQueue.poll()) != null && !connection.isClosed()) {
 				if (!connection.getAutoCommit()) {
 					connection.commit();
 				}
@@ -139,7 +129,7 @@ public class ConnectionPoolImpl implements ConnectionPool {
 	}
 
 	public void closeConnection(Connection connection) throws ConnectionPoolException {
-		if (!ValidationHelper.isNull(connection)) {
+		if (connection != null) {
 			try {
 				connection.close();
 			} catch (SQLException e) {
@@ -149,7 +139,7 @@ public class ConnectionPoolImpl implements ConnectionPool {
 	}
 
 	public void closeConnection(Connection connection, Statement statement) throws ConnectionPoolException {
-		if (!ValidationHelper.isNull(statement)) {
+		if (statement != null) {
 			try {
 				statement.close();
 			} catch (SQLException e) {
@@ -162,7 +152,7 @@ public class ConnectionPoolImpl implements ConnectionPool {
 
 	public void closeConnection(Connection connection, Statement statement, ResultSet resultSet)
 			throws ConnectionPoolException {
-		if (!ValidationHelper.isNull(resultSet)) {
+		if (resultSet != null) {
 			try {
 				resultSet.close();
 			} catch (SQLException e) {
@@ -187,7 +177,7 @@ public class ConnectionPoolImpl implements ConnectionPool {
 		@Override
 		public void close() throws SQLException {
 
-			if (!ValidationHelper.isNull(connection) && !connection.isClosed()) {
+			if (connection != null && !connection.isClosed()) {
 
 				if (connection.isReadOnly()) {
 					connection.setReadOnly(false);

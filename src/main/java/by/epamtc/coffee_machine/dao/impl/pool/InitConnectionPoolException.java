@@ -1,12 +1,5 @@
-/**
- * 
- */
-package by.epamtc.coffee_machine.dao.sql.pool;
+package by.epamtc.coffee_machine.dao.impl.pool;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class InitConnectionPoolException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 

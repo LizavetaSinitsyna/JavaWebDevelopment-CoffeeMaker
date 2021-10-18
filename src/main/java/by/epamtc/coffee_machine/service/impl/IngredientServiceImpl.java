@@ -1,6 +1,3 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.service.impl;
 
 import java.util.List;
@@ -11,10 +8,6 @@ import by.epamtc.coffee_machine.dao.DAOProvider;
 import by.epamtc.coffee_machine.service.IngredientService;
 import by.epamtc.coffee_machine.service.ServiceException;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class IngredientServiceImpl implements IngredientService {
 	private DAOProvider daoProvider = DAOProvider.getInstance();
 	//private static final String INGREDIENT_NAME_REGEX = ".{1,150}";

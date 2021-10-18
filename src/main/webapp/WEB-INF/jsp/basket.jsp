@@ -26,7 +26,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title><c:out value="Basket" /></title>
+<title><fmt:message key="local.header.basket.name" /></title>
 <link
 	href="css/bootstrap.min.css"
 	rel="stylesheet">
@@ -45,7 +45,14 @@
 	</h3>
 	<div class="half-padding">
 		<div class="container">
-			<form action="Controller">
+			<c:if test="${! empty unavailableIngredient}">
+				<div class="error">
+					<fmt:message key="local.basket.error.unavailable_ingredient" />
+				</div>
+			</c:if>
+			<form
+				action="Controller"
+				method="post">
 				<input
 					type="hidden"
 					name="command"

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.controller.command;
 
 import java.io.IOException;
@@ -10,16 +7,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import by.epamtc.coffee_machine.bean.transfer.UserLoginTransfer;
+import by.epamtc.coffee_machine.controller.AttributeName;
 import by.epamtc.coffee_machine.service.ServiceException;
 import by.epamtc.coffee_machine.service.ServiceProvider;
 import by.epamtc.coffee_machine.service.UserService;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class LoginCommand implements Command {
+	private static final Logger LOG = LogManager.getLogger(LoginCommand.class.getName());
+	
 	private static final String NEXT_PATH_SUCCESS_LOGIN = "/index.jsp";
 	private static final String NEXT_PATH_FAILED_LOGIN = "/login";
 
@@ -29,6 +28,7 @@ public class LoginCommand implements Command {
 		String password = request.getParameter(AttributeName.PASSWORD);
 		UserService userService = ServiceProvider.getInstance().getUserService();
 		String nextPath = request.getParameter(AttributeName.NEXT_PAGE);
+		
 		try {
 			UserLoginTransfer user = userService.login(login, password);
 			if (user == null) {
@@ -43,8 +43,7 @@ public class LoginCommand implements Command {
 			}
 			request.getRequestDispatcher(nextPath).forward(request, response);
 		} catch (ServiceException | ServletException | IOException e) {
-			// log4j2
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 
 	}

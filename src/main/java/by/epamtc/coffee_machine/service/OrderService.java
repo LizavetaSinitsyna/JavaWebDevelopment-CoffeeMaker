@@ -1,26 +1,11 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.service;
 
-import by.epamtc.coffee_machine.bean.OrderInfo;
+import by.epamtc.coffee_machine.bean.transfer.OrderTransfer;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public interface OrderService {
-
-
-	/**
-	 * @param drinksId
-	 * @param drinksAmount
-	 * @param userId
-	 * @return
-	 * @throws ServiceException
-	 */
-	OrderInfo placeOrder(String[] drinksId, String[] drinksAmount, int userId) throws ServiceException;
 	
 	void removeUnpaidOrders() throws ServiceException;
+
+	OrderTransfer placeOrder(String[] drinksId, String[] drinksAmount, long userId) throws ServiceException;
 
 }

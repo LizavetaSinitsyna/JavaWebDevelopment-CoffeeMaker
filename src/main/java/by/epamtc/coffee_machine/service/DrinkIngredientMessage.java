@@ -1,12 +1,5 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.service;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public enum DrinkIngredientMessage {
 	ILLEGAL_INGREDIENT_AMOUNT("illegal_ingredient_amount"), INVALID_DRINK_ID("invalid_drink_id"),
 	ILLEGAL_DRINK_INGREDIENT_AMOUNT("illegal_drink_ingredient_amount"), UNABLE_EDIT("unable_edit"),
@@ -18,16 +11,10 @@ public enum DrinkIngredientMessage {
 		this.value = value;
 	}
 
-	/**
-	 * @return the value
-	 */
 	public String getValue() {
 		return value;
 	}
 
-	/**
-	 * @param value the value to set
-	 */
 	public void setValue(String value) {
 		this.value = value;
 	}

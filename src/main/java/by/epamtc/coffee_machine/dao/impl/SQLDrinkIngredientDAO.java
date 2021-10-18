@@ -1,7 +1,4 @@
-/**
- * 
- */
-package by.epamtc.coffee_machine.dao.sql;
+package by.epamtc.coffee_machine.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,16 +13,11 @@ import by.epamtc.coffee_machine.bean.DrinkIngredientMap;
 import by.epamtc.coffee_machine.bean.transfer.DrinkIngredientTransfer;
 import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.DrinkIngredientDAO;
-import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolException;
-import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolImpl;
-import by.epamtc.coffee_machine.service.validation.ValidationHelper;
+import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPoolException;
+import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPool;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
-	private static final ConnectionPoolImpl CONNECTION_POOL = ConnectionPoolImpl.retrieveConnectionPool();
+	private static final ConnectionPool CONNECTION_POOL = ConnectionPool.retrieveConnectionPool();
 	private static final String READ_INGREDIENTS_FOR_SPECIFIC_DRINK_QUERY = "SELECT ingredients.ingredient_id, ingredients.name, ingredient_amount, is_optional FROM "
 			+ "ingredients INNER JOIN drink_ingredients ON "
 			+ "drink_ingredients.ingredient_id = ingredients.ingredient_id WHERE drink_id = ";
@@ -41,7 +33,7 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 	@Override
 	public List<DrinkIngredientTransfer> readIngredientsForSpecificDrink(long drinkId) throws DAOException {
 		List<DrinkIngredientTransfer> result = null;
-		if (!ValidationHelper.isPositive(drinkId)) {
+		if (drinkId <= 0) {
 			return result;
 		}
 
@@ -89,26 +81,26 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 	}
 
 	@Override
-	public int update(DrinkIngredientMap drinkIngredientMap) throws DAOException {
-		int effectedColumns = 0;
+	public boolean update(DrinkIngredientMap drinkIngredientMap) throws DAOException {
 
-		if (ValidationHelper.isNull(drinkIngredientMap)) {
-			return effectedColumns;
+		if (drinkIngredientMap == null) {
+			return false;
 		}
 
 		List<DrinkIngredient> ingredients = drinkIngredientMap.getIngredients();
 
-		if (ValidationHelper.isNull(ingredients) || ingredients.isEmpty()) {
-			return effectedColumns;
+		if (ingredients == null || ingredients.isEmpty()) {
+			return false;
 		}
 
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		Statement statement = null;
-
+		int effectedRows = 0; 
+		
 		long drinkId = drinkIngredientMap.getDrinkId();
-		if (!ValidationHelper.isPositive(drinkId)) {
-			return effectedColumns;
+		if (drinkId <= 0) {
+			return false;
 		}
 
 		try {
@@ -116,22 +108,22 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 			connection.setAutoCommit(false);
 
 			statement = connection.createStatement();
-			effectedColumns = statement.executeUpdate(DELETE_DRINK_INGREDIENTS_QUERY + drinkId);
+			effectedRows = statement.executeUpdate(DELETE_DRINK_INGREDIENTS_QUERY + drinkId);
 
-			if (!ValidationHelper.isPositive(effectedColumns)) {
-				return effectedColumns;
+			if (effectedRows < 0) {
+				return false;
 			}
+
 			preparedStatement = connection.prepareStatement(INSERT_DRINK_INGREDIENTS_QUERY);
 			for (DrinkIngredient element : ingredients) {
 				preparedStatement.setLong(1, drinkId);
 				preparedStatement.setLong(2, element.getIngredientId());
 				preparedStatement.setInt(3, element.getIngredientAmount());
 				preparedStatement.setBoolean(4, element.isOptional());
-				effectedColumns += preparedStatement.executeUpdate();
+				effectedRows += preparedStatement.executeUpdate();
 			}
 
 			connection.commit();
-			connection.setAutoCommit(true);
 		} catch (ConnectionPoolException | SQLException e) {
 			try {
 				connection.rollback();
@@ -141,11 +133,12 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 			throw new DAOException(e.getMessage(), e);
 		} finally {
 			try {
+				connection.setAutoCommit(true);
 				CONNECTION_POOL.closeConnection(connection, preparedStatement);
-			} catch (ConnectionPoolException e) {
+			} catch (ConnectionPoolException | SQLException e) {
 				throw new DAOException(e.getMessage(), e);
 			}
 		}
-		return effectedColumns;
+		return effectedRows > 0;
 	}
 }

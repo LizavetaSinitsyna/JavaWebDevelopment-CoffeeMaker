@@ -1,6 +1,3 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.service.impl;
 
 import by.epamtc.coffee_machine.bean.BonusAccount;
@@ -10,10 +7,6 @@ import by.epamtc.coffee_machine.dao.DAOProvider;
 import by.epamtc.coffee_machine.service.BonusAccountService;
 import by.epamtc.coffee_machine.service.ServiceException;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class BonusAccountServiceImpl implements BonusAccountService {
 	private final BonusAccountDAO accountDAO = DAOProvider.getInstance().getBonusAccountDAO();
 

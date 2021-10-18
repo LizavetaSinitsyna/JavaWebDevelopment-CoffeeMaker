@@ -1,10 +1,7 @@
-/**
- * 
- */
-package by.epamtc.coffee_machine.controller.command;
+package by.epamtc.coffee_machine.controller;
 
 /**
- * @author Lizaveta Sinitsyna
+ * Contains attribute names for jsp pages
  *
  */
 public class AttributeName {
@@ -53,6 +50,10 @@ public class AttributeName {
 	// Basket
 	public static final String BASKET = "basket";
 	public static final String DRINK_AMOUNT = "drinkAmount";
+	
+	//Order
+	public static final String UNAVAILABLE_INGREDIENT = "unavailableIngredient";
+	public static final String ORDER = "order";
 
 	private AttributeName() {
 

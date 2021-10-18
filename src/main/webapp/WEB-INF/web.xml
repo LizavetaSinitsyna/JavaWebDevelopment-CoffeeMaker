@@ -4,6 +4,11 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
 	version="4.0">
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
 	<servlet>
 		<servlet-name>Controller</servlet-name>
 		<servlet-class>by.epamtc.coffee_machine.controller.Controller</servlet-class>
@@ -76,6 +81,15 @@
 		<url-pattern>/basket</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>Order</servlet-name>
+		<jsp-file>/WEB-INF/jsp/orderCheckout.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Order</servlet-name>
+		<url-pattern>/order</url-pattern>
+	</servlet-mapping>
+
 	<filter>
 		<filter-name>EncodingFilter</filter-name>
 		<filter-class>by.epamtc.coffee_machine.controller.filter.EncodingFilter</filter-class>
@@ -112,14 +126,19 @@
 	<filter-mapping>
 		<filter-name>LoginAccessFilter</filter-name>
 		<url-pattern>/basket</url-pattern>
+		<url-pattern>/order</url-pattern>
 	</filter-mapping>
+
+	<listener>
+		<listener-class>by.epamtc.coffee_machine.controller.listener.ContextListener</listener-class>
+	</listener>
 
 	<error-page>
 		<exception-type>java.lang.Throwable</exception-type>
-		<location>/WEB-INF/jsp/errorPage.jsp</location>
+		<location>/errorPage.jsp</location>
 	</error-page>
-	
+
 	<error-page>
-		<location>/WEB-INF/jsp/errorPage.jsp</location>
+		<location>/errorPage.jsp</location>
 	</error-page>
 </web-app>

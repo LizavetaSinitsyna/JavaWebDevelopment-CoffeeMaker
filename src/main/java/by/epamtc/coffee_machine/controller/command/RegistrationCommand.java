@@ -1,6 +1,3 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.controller.command;
 
 import java.io.IOException;
@@ -10,16 +7,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import by.epamtc.coffee_machine.controller.AttributeName;
 import by.epamtc.coffee_machine.service.ServiceException;
 import by.epamtc.coffee_machine.service.ServiceProvider;
 import by.epamtc.coffee_machine.service.UserService;
 import by.epamtc.coffee_machine.service.UserValidationError;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class RegistrationCommand implements Command {
+	private static final Logger LOG = LogManager.getLogger(RegistrationCommand.class.getName());
+	
 	private static final String NEXT_PATH_SUCCESS_REGISTRATION = "/successRegistration";
 	private static final String NEXT_PATH_FAILED_REGISTRATION = "/registration";
 
@@ -48,8 +47,7 @@ public class RegistrationCommand implements Command {
 			}
 
 		} catch (ServiceException | IOException | ServletException e) {
-			// log4j2
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 
 	}

@@ -1,28 +1,20 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.controller;
 
 import java.util.HashMap;
 
-import by.epamtc.coffee_machine.controller.command.MakeOrderCommand;
 import by.epamtc.coffee_machine.controller.command.ChangeLanguageCommand;
 import by.epamtc.coffee_machine.controller.command.Command;
 import by.epamtc.coffee_machine.controller.command.EditProductCommand;
-import by.epamtc.coffee_machine.controller.command.ViewMenuCommand;
-import by.epamtc.coffee_machine.controller.command.ViewProductCommand;
-import by.epamtc.coffee_machine.controller.command.ViewProductEditCommand;
-import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 import by.epamtc.coffee_machine.controller.command.LogOutCommand;
 import by.epamtc.coffee_machine.controller.command.LoginCommand;
+import by.epamtc.coffee_machine.controller.command.MakeOrderCommand;
 import by.epamtc.coffee_machine.controller.command.NoSuchCommand;
 import by.epamtc.coffee_machine.controller.command.RegistrationCommand;
 import by.epamtc.coffee_machine.controller.command.SelectPopularDrinksCommand;
+import by.epamtc.coffee_machine.controller.command.ViewMenuCommand;
+import by.epamtc.coffee_machine.controller.command.ViewProductCommand;
+import by.epamtc.coffee_machine.controller.command.ViewProductEditCommand;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class CommandProvider {
 	private HashMap<CommandName, Command> commands = new HashMap<>();
 
@@ -51,7 +43,7 @@ public class CommandProvider {
 	public Command retriveCommand(String commandName) {
 		Command command = commands.get(CommandName.NO_SUCH_COMMAND);
 
-		if (ValidationHelper.isNull(commandName)) {
+		if (commandName == null) {
 			return command;
 		}
 

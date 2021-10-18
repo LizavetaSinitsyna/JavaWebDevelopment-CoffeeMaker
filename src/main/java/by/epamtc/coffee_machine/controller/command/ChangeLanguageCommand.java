@@ -1,6 +1,3 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.controller.command;
 
 import java.io.IOException;
@@ -9,12 +6,14 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
-public class ChangeLanguageCommand implements Command {
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
+import by.epamtc.coffee_machine.controller.AttributeName;
+
+public class ChangeLanguageCommand implements Command {
+	private static final Logger LOG = LogManager.getLogger(ChangeLanguageCommand.class.getName());
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -24,8 +23,7 @@ public class ChangeLanguageCommand implements Command {
 			response.addCookie(cookie);
 			response.sendRedirect(request.getContextPath() + path);
 		} catch (IOException e) {
-			// log4j2
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 
 	}

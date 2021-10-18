@@ -1,6 +1,3 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.service.impl;
 
 import java.util.HashSet;
@@ -15,19 +12,15 @@ import by.epamtc.coffee_machine.dao.DAOProvider;
 import by.epamtc.coffee_machine.service.DrinkIngredientMessage;
 import by.epamtc.coffee_machine.service.DrinkIngredientService;
 import by.epamtc.coffee_machine.service.ServiceException;
-import by.epamtc.coffee_machine.service.validation.ValidationHelper;
+import by.epamtc.coffee_machine.service.validation.IngredientValidator;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class DrinkIngredientServiceImpl implements DrinkIngredientService {
 	private DAOProvider daoProvider = DAOProvider.getInstance();
 
 	@Override
 	public List<DrinkIngredientTransfer> obtainIngredientsForSpecificDrink(long drinkId) throws ServiceException {
 		List<DrinkIngredientTransfer> result = null;
-		if (!ValidationHelper.isPositive(drinkId)) {
+		if (drinkId <= 0) {
 			return result;
 		}
 
@@ -44,20 +37,20 @@ public class DrinkIngredientServiceImpl implements DrinkIngredientService {
 			throws ServiceException {
 		Set<DrinkIngredientMessage> messages = new HashSet<>();
 
-		if (!ValidationHelper.isPositive(drinkId)) {
+		if (drinkId <= 0) {
 			messages.add(DrinkIngredientMessage.INVALID_DRINK_ID);
 			return messages;
 		}
 
-		messages = validateFields(drinkIngredients);
+		messages = IngredientValidator.validateFields(drinkIngredients);
 
-		if (ValidationHelper.isNull(messages) || messages.isEmpty()) {
+		if (messages == null || messages.isEmpty()) {
 			DrinkIngredientMap drinkIngredientMap = new DrinkIngredientMap();
 			drinkIngredientMap.setDrinkId(drinkId);
 			drinkIngredientMap.setIngredients(drinkIngredients);
 			try {
-				int result = DAOProvider.getInstance().getDrinkIngredientDAO().update(drinkIngredientMap);
-				if (!ValidationHelper.isPositive(result)) {
+				boolean result = DAOProvider.getInstance().getDrinkIngredientDAO().update(drinkIngredientMap);
+				if (!result) {
 					messages.add(DrinkIngredientMessage.UNABLE_EDIT);
 				}
 			} catch (DAOException e) {
@@ -67,34 +60,4 @@ public class DrinkIngredientServiceImpl implements DrinkIngredientService {
 
 		return messages;
 	}
-
-	private Set<DrinkIngredientMessage> validateFields(List<DrinkIngredient> drinkIngredients) {
-		Set<DrinkIngredientMessage> messages = new HashSet<>();
-
-		Set<Long> usedIngredients = new HashSet<>();
-
-		if (ValidationHelper.isNull(drinkIngredients) || drinkIngredients.isEmpty()) {
-			messages.add(DrinkIngredientMessage.ILLEGAL_DRINK_INGREDIENT_AMOUNT);
-		} else {
-			for (DrinkIngredient element : drinkIngredients) {
-				long ingredientId = element.getIngredientId();
-				if (!ValidationHelper.isPositive(ingredientId)) {
-					messages.add(DrinkIngredientMessage.INVALID_INGREDIENT_ID);
-					break;
-				}
-				if (!ValidationHelper.isPositive(element.getIngredientAmount())) {
-					messages.add(DrinkIngredientMessage.ILLEGAL_INGREDIENT_AMOUNT);
-					break;
-				}
-				if (usedIngredients.contains(ingredientId)) {
-					messages.add(DrinkIngredientMessage.DUPLICATE_INGREDIENT);
-					break;
-				}
-				usedIngredients.add(ingredientId);
-			}
-		}
-
-		return messages;
-	}
-
 }

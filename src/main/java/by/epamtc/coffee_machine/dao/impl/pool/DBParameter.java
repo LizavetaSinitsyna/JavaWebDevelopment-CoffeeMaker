@@ -1,12 +1,5 @@
-/**
- * 
- */
-package by.epamtc.coffee_machine.dao.sql.pool;
+package by.epamtc.coffee_machine.dao.impl.pool;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class DBParameter {
 	private DBParameter() {
 	}

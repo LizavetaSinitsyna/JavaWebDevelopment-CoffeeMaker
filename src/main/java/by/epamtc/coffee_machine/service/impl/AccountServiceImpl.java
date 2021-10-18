@@ -1,6 +1,3 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.service.impl;
 
 import by.epamtc.coffee_machine.bean.Account;
@@ -10,10 +7,6 @@ import by.epamtc.coffee_machine.dao.DAOProvider;
 import by.epamtc.coffee_machine.service.AccountService;
 import by.epamtc.coffee_machine.service.ServiceException;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class AccountServiceImpl implements AccountService {
 	private final AccountDAO accountDAO = DAOProvider.getInstance().getAccountDAO();
 

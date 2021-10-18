@@ -1,19 +1,8 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.bean.transfer;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class DrinkTransfer implements Serializable {
 
 	private static final long serialVersionUID = 1L;

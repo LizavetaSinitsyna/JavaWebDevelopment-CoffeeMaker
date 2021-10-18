@@ -1,16 +1,7 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.bean;
 
 import java.io.Serializable;
 
-import by.epamtc.coffee_machine.service.validation.ValidationHelper;
-
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class Ingredient implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -40,11 +31,11 @@ public class Ingredient implements Serializable {
 	}
 
 	public IngredientInfo getInfo() {
-		return ValidationHelper.isNull(info) ? info : infoCopy(info);
+		return info == null ? info : infoCopy(info);
 	}
 
 	public void setInfo(IngredientInfo info) {
-		if (!ValidationHelper.isNull(info)) {
+		if (info != null) {
 			this.info = infoCopy(info);
 		}
 	}

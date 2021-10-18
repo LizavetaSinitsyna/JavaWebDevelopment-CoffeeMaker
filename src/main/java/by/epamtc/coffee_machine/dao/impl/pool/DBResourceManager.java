@@ -1,14 +1,7 @@
-/**
- * 
- */
-package by.epamtc.coffee_machine.dao.sql.pool;
+package by.epamtc.coffee_machine.dao.impl.pool;
 
 import java.util.ResourceBundle;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class DBResourceManager {
 	private ResourceBundle bundle = ResourceBundle.getBundle("database");
 

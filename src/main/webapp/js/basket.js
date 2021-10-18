@@ -26,16 +26,15 @@
 
 			let tr = document.createElement("tr");
 			tr.classList.add("basket-list-tr");
-			tr.innerHTML = `<input type="hidden" name="drinkId" value="${element}">
-							<td><img class="basket-list-image"
+			tr.innerHTML = `<td><img class="basket-list-image"
 								src="${drink.image}"
-								alt="drinkImage"></td>
+								alt="drinkImage">
+								<input type="hidden" name="drink_id" value="${element}"></td>
 							<td class= "basket-list-td">${drink.name}</td>
 							<td class= "basket-list-td">${showPrice}</td>
-							<td class= "basket-list-td"><input type="number" class="amount" name="drinkAmount" min="1" max="99" class="form-control" value="${amount}" required></td>
-							<input type="hidden" name="drinkAmount" value="${amount}">
+							<td class= "basket-list-td"><input type="number" class="amount" name="drinkAmount" min="1" max="99" class="form-control" value="${amount}" onchange="recalculateBasket()" required></td>
 							<td >${showSum}</td>
-							<td class="delete icon-image"></td>`;
+							<td ><button type="button" class="delete icon-image" onclick="removeDrink()"></button></td>`;
 			parent.append(tr);
 		}
 		document.getElementById("total").innerHTML = retrievePriceForPrint(total);
@@ -47,3 +46,33 @@ function retrievePriceForPrint(price) {
 	let doublePrice = price / 100;
 	return doublePrice.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+
+function recalculateBasket() {
+	var parent = this.event.target.parentNode.parentNode;
+	let id = parent.querySelector('[name="drink_id"]').value;
+	let amount = parent.querySelector('[name="drinkAmount"]').value;
+	let storage = localStorage.getItem("drinks");
+	let drinks = JSON.parse(storage);
+	drinks[id].amount = amount;
+	let drinksForSave = JSON.stringify(drinks);
+
+	localStorage.setItem("drinks", drinksForSave);
+
+	window.location.replace("/CoffeeMachine/basket");
+}
+
+function removeDrink() {
+	var parent = this.event.target.parentNode.parentNode;
+	let id = parent.querySelector('[name="drink_id"]').value;
+	let storage = localStorage.getItem("drinks");
+	let drinks = JSON.parse(storage);
+	delete drinks[id];
+	let drinksForSave = JSON.stringify(drinks);
+	if (drinksForSave == "{}") {
+		localStorage.removeItem("drinks");
+	} else {
+		localStorage.setItem("drinks", drinksForSave);
+	}
+	window.location.replace("/CoffeeMachine/basket");
+}
+

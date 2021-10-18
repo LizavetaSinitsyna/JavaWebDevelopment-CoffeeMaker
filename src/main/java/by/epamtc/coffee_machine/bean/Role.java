@@ -1,14 +1,7 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.bean;
 
 import java.io.Serializable;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class Role implements Serializable {
 
 	private static final long serialVersionUID = 1L;

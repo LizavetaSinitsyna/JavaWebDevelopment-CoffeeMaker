@@ -1,21 +1,14 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.dao;
 
-import by.epamtc.coffee_machine.dao.sql.SQLAccountDAO;
-import by.epamtc.coffee_machine.dao.sql.SQLOrderDrinkDAO;
-import by.epamtc.coffee_machine.dao.sql.SQLUserDAO;
-import by.epamtc.coffee_machine.dao.sql.SQLBonusAccountDAO;
-import by.epamtc.coffee_machine.dao.sql.SQLDrinkDAO;
-import by.epamtc.coffee_machine.dao.sql.SQLDrinkIngredientDAO;
-import by.epamtc.coffee_machine.dao.sql.SQLIngredientDAO;
-import by.epamtc.coffee_machine.dao.sql.SQLOrderDAO;
+import by.epamtc.coffee_machine.dao.impl.SQLAccountDAO;
+import by.epamtc.coffee_machine.dao.impl.SQLBonusAccountDAO;
+import by.epamtc.coffee_machine.dao.impl.SQLDrinkDAO;
+import by.epamtc.coffee_machine.dao.impl.SQLDrinkIngredientDAO;
+import by.epamtc.coffee_machine.dao.impl.SQLIngredientDAO;
+import by.epamtc.coffee_machine.dao.impl.SQLOrderDAO;
+import by.epamtc.coffee_machine.dao.impl.SQLOrderDrinkDAO;
+import by.epamtc.coffee_machine.dao.impl.SQLUserDAO;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class DAOProvider {
 	private AccountDAO accountDAO = new SQLAccountDAO();
 	private OrderDrinkDAO orderDrinkDAO = new SQLOrderDrinkDAO();

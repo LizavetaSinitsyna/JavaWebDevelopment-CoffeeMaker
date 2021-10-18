@@ -1,12 +1,5 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.service;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class ServiceException extends Exception {
 	private static final long serialVersionUID = 1L;
 

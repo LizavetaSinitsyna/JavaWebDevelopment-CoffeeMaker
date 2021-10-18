@@ -1,24 +1,17 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.bean.transfer;
 
 import java.io.Serializable;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
-public class IngredientDrinkAvailabilityTransfer implements Serializable {
+public class UnavailableIngredientTransfer implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private long ingredientId;
 	private String ingredientName;
 	private long drinkId;
-	private int drinkAmount;
+	private int availableDrinkAmount;
 
-	public IngredientDrinkAvailabilityTransfer() {
+	public UnavailableIngredientTransfer() {
 
 	}
 
@@ -46,19 +39,19 @@ public class IngredientDrinkAvailabilityTransfer implements Serializable {
 		this.drinkId = drinkId;
 	}
 
-	public int getDrinkAmount() {
-		return drinkAmount;
+	public int getAvailableDrinkAmount() {
+		return availableDrinkAmount;
 	}
 
-	public void setDrinkAmount(int drinkAmount) {
-		this.drinkAmount = drinkAmount;
+	public void setAvailableDrinkAmount(int drinkAmount) {
+		this.availableDrinkAmount = drinkAmount;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + drinkAmount;
+		result = prime * result + availableDrinkAmount;
 		result = prime * result + (int) (drinkId ^ (drinkId >>> 32));
 		result = prime * result + (int) (ingredientId ^ (ingredientId >>> 32));
 		result = prime * result + ((ingredientName == null) ? 0 : ingredientName.hashCode());
@@ -73,8 +66,8 @@ public class IngredientDrinkAvailabilityTransfer implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		IngredientDrinkAvailabilityTransfer other = (IngredientDrinkAvailabilityTransfer) obj;
-		if (drinkAmount != other.drinkAmount)
+		UnavailableIngredientTransfer other = (UnavailableIngredientTransfer) obj;
+		if (availableDrinkAmount != other.availableDrinkAmount)
 			return false;
 		if (drinkId != other.drinkId)
 			return false;
@@ -91,14 +84,14 @@ public class IngredientDrinkAvailabilityTransfer implements Serializable {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("IngredientDrinkAvailabilityTransfer [ingredientId=");
+		builder.append("UnavailableIngredientTransfer [ingredientId=");
 		builder.append(ingredientId);
 		builder.append(", ingredientName=");
 		builder.append(ingredientName);
 		builder.append(", drinkId=");
 		builder.append(drinkId);
-		builder.append(", drinkAmount=");
-		builder.append(drinkAmount);
+		builder.append(", availableDrinkAmount=");
+		builder.append(availableDrinkAmount);
 		builder.append("]");
 		return builder.toString();
 	}

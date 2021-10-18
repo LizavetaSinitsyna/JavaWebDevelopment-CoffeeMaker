@@ -1,18 +1,9 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import by.epamtc.coffee_machine.service.validation.ValidationHelper;
-
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class DrinkIngredientMap implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -37,7 +28,7 @@ public class DrinkIngredientMap implements Serializable {
 	}
 
 	public void setIngredients(List<DrinkIngredient> drinkIngredients) {
-		if (ValidationHelper.isNull(drinkIngredients)) {
+		if (drinkIngredients == null) {
 			this.ingredients = new ArrayList<>();
 		} else {
 			this.ingredients = new ArrayList<>(drinkIngredients);
@@ -45,7 +36,7 @@ public class DrinkIngredientMap implements Serializable {
 	}
 
 	public boolean addIngredient(DrinkIngredient ingredient) {
-		if (ValidationHelper.isNull(ingredients) || ValidationHelper.isNull(ingredient)) {
+		if (ingredients == null || ingredient == null) {
 			return false;
 		}
 		return ingredients.add(ingredient);
@@ -53,7 +44,7 @@ public class DrinkIngredientMap implements Serializable {
 	}
 
 	public boolean removeIngredient(DrinkIngredient ingredient) {
-		if (ValidationHelper.isNull(ingredients) || ValidationHelper.isNull(ingredient)) {
+		if (ingredients == null || ingredient == null) {
 			return false;
 		}
 		return ingredients.remove(ingredient);

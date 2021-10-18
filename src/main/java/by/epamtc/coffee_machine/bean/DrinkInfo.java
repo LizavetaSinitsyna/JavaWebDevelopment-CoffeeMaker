@@ -1,15 +1,8 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.bean;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class DrinkInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -17,6 +10,10 @@ public class DrinkInfo implements Serializable {
 	private String imagePath;
 	private BigDecimal price;
 	private String description;
+	
+	public DrinkInfo() {
+		
+	}
 
 	public String getName() {
 		return name;

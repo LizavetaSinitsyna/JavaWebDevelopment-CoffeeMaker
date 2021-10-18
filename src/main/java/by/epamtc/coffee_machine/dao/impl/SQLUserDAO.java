@@ -1,7 +1,4 @@
-/**
- * 
- */
-package by.epamtc.coffee_machine.dao.sql;
+package by.epamtc.coffee_machine.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,16 +11,12 @@ import by.epamtc.coffee_machine.bean.UserInfo;
 import by.epamtc.coffee_machine.bean.transfer.UserLoginPasswordTransfer;
 import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.UserDAO;
-import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolException;
-import by.epamtc.coffee_machine.dao.sql.pool.ConnectionPoolImpl;
-import by.epamtc.coffee_machine.service.validation.ValidationHelper;
+import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPoolException;
+import by.epamtc.coffee_machine.service.CommonExceptionMessage;
+import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPool;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class SQLUserDAO implements UserDAO {
-	private static final ConnectionPoolImpl CONNECTION_POOL = ConnectionPoolImpl.retrieveConnectionPool();
+	private static final ConnectionPool CONNECTION_POOL = ConnectionPool.retrieveConnectionPool();
 	private static final String ADD_QUERY = "INSERT INTO users "
 			+ "(login, password, bonus_account_id, account_id, name, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	private static final String SEARCH_EMAIL_QUERY = "SELECT * FROM users WHERE email = ?";
@@ -33,7 +26,7 @@ public class SQLUserDAO implements UserDAO {
 	@Override
 	public UserLoginPasswordTransfer login(String login) throws DAOException {
 		UserLoginPasswordTransfer result = null;
-		if (ValidationHelper.isNull(login)) {
+		if (login == null) {
 			return result;
 		}
 
@@ -69,7 +62,7 @@ public class SQLUserDAO implements UserDAO {
 	public boolean containsEmail(String email) throws DAOException {
 		boolean result = false;
 
-		if (ValidationHelper.isNull(email)) {
+		if (email == null) {
 			return result;
 		}
 
@@ -98,7 +91,7 @@ public class SQLUserDAO implements UserDAO {
 	public boolean containsUsername(String username) throws DAOException {
 		boolean result = false;
 
-		if (ValidationHelper.isNull(username)) {
+		if (username == null) {
 			return result;
 		}
 
@@ -126,20 +119,20 @@ public class SQLUserDAO implements UserDAO {
 
 	@Override
 	public long add(User user) throws DAOException {
-		if (ValidationHelper.isNull(user)) {
+		if (user == null) {
 			return -1;
 		}
 		UserInfo userInfo = user.getInfo();
-		if (ValidationHelper.isNull(userInfo)) {
+		if (userInfo == null) {
 			return -1;
 		}
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
 		try {
-			connection = ConnectionPoolImpl.retrieveConnectionPool().retrieveConnection();
+			connection = ConnectionPool.retrieveConnectionPool().retrieveConnection();
 			if (connection == null) {
-				throw new DAOException(ValidationHelper.NULL_CONNECTION_EXCEPTION);
+				throw new DAOException(CommonExceptionMessage.NULL_CONNECTION);
 			}
 			preparedStatement = connection.prepareStatement(ADD_QUERY, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, userInfo.getLogin());
@@ -154,7 +147,7 @@ public class SQLUserDAO implements UserDAO {
 				if (generatedKeys.next()) {
 					return generatedKeys.getLong(1);
 				} else {
-					throw new DAOException(ValidationHelper.NO_GENERATED_ID_EXCEPTION);
+					throw new DAOException(CommonExceptionMessage.NO_GENERATED_ID);
 				}
 			}
 		} catch (SQLException | ConnectionPoolException e) {

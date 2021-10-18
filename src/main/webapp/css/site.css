@@ -71,6 +71,7 @@ body {
 	height: 24px;
 	margin-top: .5rem;
 	text-decoration: none;
+	border: none;
 }
 
 .revert-padding {

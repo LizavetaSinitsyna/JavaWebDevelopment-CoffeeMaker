@@ -1,6 +1,3 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.controller.command;
 
 import java.io.IOException;
@@ -13,17 +10,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import by.epamtc.coffee_machine.bean.DrinkIngredient;
+import by.epamtc.coffee_machine.controller.AttributeName;
 import by.epamtc.coffee_machine.service.DrinkIngredientMessage;
 import by.epamtc.coffee_machine.service.DrinkMessage;
 import by.epamtc.coffee_machine.service.ServiceException;
 import by.epamtc.coffee_machine.service.ServiceProvider;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class EditProductCommand implements Command {
+	private static final Logger LOG = LogManager.getLogger(EditProductCommand.class.getName());
+	
 	private static final String NEXT_PATH_SUCCESS_EDIT = "/successEdit";
 	private static final String NEXT_PATH_FAILED_EDIT = "/failedEdit";
 	private static final String NEXT_PATH_ERROR_EDIT = "/errorPage.jsp";
@@ -95,8 +94,7 @@ public class EditProductCommand implements Command {
 			}
 
 		} catch (ServiceException | IOException | ServletException e) {
-			// log4j2
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 
 	}

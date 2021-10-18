@@ -1,14 +1,7 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.service.utility;
 
 import java.util.ResourceBundle;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class MenuPropertyProvider {
 	private ResourceBundle bundle = ResourceBundle.getBundle("menu");
 

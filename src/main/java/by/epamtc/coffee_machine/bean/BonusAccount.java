@@ -1,19 +1,16 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.bean;
 
 import java.io.Serializable;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class BonusAccount implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long id;
 	private int balance;
+	
+	public BonusAccount() {
+		
+	}
 
 	public long getId() {
 		return id;

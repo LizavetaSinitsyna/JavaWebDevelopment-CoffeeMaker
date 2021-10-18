@@ -1,15 +1,8 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.bean;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class Feedback implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package by.epamtc.coffee_machine.service.impl;
 
 import java.util.List;
@@ -8,16 +5,12 @@ import java.util.List;
 import by.epamtc.coffee_machine.bean.transfer.DrinkTransfer;
 import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.DAOProvider;
+import by.epamtc.coffee_machine.service.CommonExceptionMessage;
 import by.epamtc.coffee_machine.service.OrderDrinkService;
 import by.epamtc.coffee_machine.service.ServiceException;
 import by.epamtc.coffee_machine.service.utility.MenuParameter;
 import by.epamtc.coffee_machine.service.utility.MenuPropertyProvider;
-import by.epamtc.coffee_machine.service.validation.ValidationHelper;
 
-/**
- * @author Lizaveta Sinitsyna
- *
- */
 public class OrderDrinkServiceImpl implements OrderDrinkService {
 	private DAOProvider daoProvider = DAOProvider.getInstance();
 	private MenuPropertyProvider menuPropertyProvider = MenuPropertyProvider.getInstance();
@@ -28,8 +21,8 @@ public class OrderDrinkServiceImpl implements OrderDrinkService {
 		int amount;
 		try {
 			amount = Integer.parseInt(menuPropertyProvider.retrieveValue(MenuParameter.POPULAR_DRINKS_AMOUNT));
-			if (ValidationHelper.isNegative(amount)) {
-				throw new ServiceException(ValidationHelper.NEGATIVE_PARAM_EXCEPTION);
+			if (amount < 0) {
+				throw new ServiceException(CommonExceptionMessage.NEGATIVE_PARAM);
 			}
 			drinks = daoProvider.getOrderDrinkDAO().selectPopularDrinks(amount);
 		} catch (DAOException | NumberFormatException e) {
