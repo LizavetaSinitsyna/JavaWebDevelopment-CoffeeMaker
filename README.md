@@ -25,7 +25,7 @@ Change language| * | * | * |
 View most popular drinks| * | * | * |
 View menu| * | * | * |
 View Product card| * | * | * |
-Sign in| * | * |
+Sign in|   | * | * |
 Sign up| * |   |
 Sign out|   | * | * |
 Load shopping cart|   | * | * |
