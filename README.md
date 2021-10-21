@@ -40,6 +40,6 @@ Update Drink|  |   | * |<br/>
 4. Leave and view feedbacks.
 5. Add and remove drinks, fulfill the machine with ingredients.
 # Database tables
-![](https://https://github.com/LizavetaSinitsyna/JavaWebDevelopment-CoffeeMaker/blob/main/database/tables.JPG)
+![](https://github.com/LizavetaSinitsyna/JavaWebDevelopment-CoffeeMaker/blob/main/database/tables.JPG)
 
 
