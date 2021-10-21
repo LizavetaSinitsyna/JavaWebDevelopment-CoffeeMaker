@@ -7,7 +7,7 @@ Admin| lizaveta@gmail.com | Password1! |
 #
 ### Application description
    The website Coffee Machine is created to represent menu of drinks and gives the opportunity to make the order.
-   The user's role and features available to them are described int the table below.
+   The user's roles and actions available to them are described in the table below.
     
    * **Key elements**
       - MySQL database
