@@ -13,19 +13,26 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.epamtc.coffee_machine.controller.AttributeName;
 
+/**
+ * Provides support in check of user authorization.
+ *
+ */
 public class LoginAccessFilter implements Filter {
-	private static final String LOGIN_PATH = "/login";
 
 	public void destroy() {
 	}
 
+	/**
+	 * Check if the user from the request has signed in. If no, sets error to the
+	 * response with code 401.
+	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		Object user = httpRequest.getSession().getAttribute(AttributeName.USER);
 		if (user == null) {
-			httpRequest.getRequestDispatcher(LOGIN_PATH).forward(httpRequest, httpResponse);
+			httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
 		chain.doFilter(request, response);

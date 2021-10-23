@@ -1,6 +1,5 @@
 package by.epamtc.coffee_machine.dao.impl;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,19 +15,27 @@ import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.DrinkDAO;
 import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPoolException;
 import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPool;
-import by.epamtc.coffee_machine.service.utility.MenuParameter;
-import by.epamtc.coffee_machine.service.utility.MenuPropertyProvider;
+import by.epamtc.coffee_machine.service.utility.DecimalExchange;
 
+/**
+ * Provides methods for working with Drinks table and entities {@link Drink},
+ * {@link DrinkTransfer}
+ */
 public class SQLDrinkDAO implements DrinkDAO {
 	private static final ConnectionPool CONNECTION_POOL = ConnectionPool.retrieveConnectionPool();
-	private static final BigDecimal PRICE_DIVISOR = new BigDecimal(
-			MenuPropertyProvider.getInstance().retrieveValue(MenuParameter.DRINK_PRICE_DIVISOR));
 	private static final String OBTAIN_DRINKS_QUERY = "SELECT drink_id, name, image_path, price "
 			+ "FROM drinks LIMIT ?, ?";
 	private static final String OBTAIN_DRINK_QUERY = "SELECT * FROM drinks WHERE drink_id = ?";
 	private static final String OBTAIN_GENERAL_DRINKS_AMOUNT_QUERY = "SELECT COUNT(*) FROM drinks";
 	private static final String UPDATE_DRINK_QUERY = "UPDATE drinks SET image_path = ?, price = ?, description = ? WHERE drink_id = ?";
 
+	/**
+	 * Obtains existed drink with specified drink id.
+	 * 
+	 * @param drinkId {@code long} value which uniquely indicates the drink.
+	 * @return {@code Drink} with specified id.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public Drink read(long drinkId) throws DAOException {
 		Drink drink = null;
@@ -52,11 +59,7 @@ public class SQLDrinkDAO implements DrinkDAO {
 				drink.setId(resultSet.getLong(1));
 				drinkInfo.setName(resultSet.getString(2));
 				drinkInfo.setImagePath(resultSet.getString(3));
-
-				BigDecimal priceDB = new BigDecimal(resultSet.getInt(4));
-				BigDecimal price = priceDB.divide(PRICE_DIVISOR);
-				drinkInfo.setPrice(price);
-
+				drinkInfo.setPrice(DecimalExchange.obtainFromInt(resultSet.getInt(4)));
 				drinkInfo.setDescription(resultSet.getString(5));
 				drink.setInfo(drinkInfo);
 			}
@@ -73,6 +76,16 @@ public class SQLDrinkDAO implements DrinkDAO {
 		return drink;
 	}
 
+	/**
+	 * Obtains specified amount of drinks starting from indicated row.
+	 * 
+	 * @param startIndex the begin index, inclusive.
+	 * @param amount     the amount of drinks to return.
+	 * @return {@code List} of {@code DrinkTransfer} objects representing specified
+	 *         {@code amount} of drinks starting from {@code startIndex} or
+	 *         {@code null} if passed parameters are invalid.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public List<DrinkTransfer> obtainDrinks(int startIndex, int amount) throws DAOException {
 		List<DrinkTransfer> drinks = null;
@@ -98,10 +111,7 @@ public class SQLDrinkDAO implements DrinkDAO {
 				drink.setId(resultSet.getLong(1));
 				drink.setName(resultSet.getString(2));
 				drink.setImagePath(resultSet.getString(3));
-
-				BigDecimal priceDB = new BigDecimal(resultSet.getInt(4));
-				BigDecimal price = priceDB.divide(PRICE_DIVISOR);
-				drink.setPrice(price);
+				drink.setPrice(DecimalExchange.obtainFromInt(resultSet.getInt(4)));
 
 				drinks.add(drink);
 			}
@@ -117,6 +127,12 @@ public class SQLDrinkDAO implements DrinkDAO {
 		return drinks;
 	}
 
+	/**
+	 * Returns general amount of drinks saved in database.
+	 * 
+	 * @return {@code int} value representing general amount of drinks.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public int obtainGeneralDrinksAmount() throws DAOException {
 		int result = 0;
@@ -144,18 +160,17 @@ public class SQLDrinkDAO implements DrinkDAO {
 		return result;
 	}
 
-	@Override
-	public long add(Drink drink) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean remove(long drinkId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	/**
+	 * Updates existed Drink.
+	 * 
+	 * @param drink {@code Drink} value which contains drink id of existed drink.
+	 *              The field of the already existed in database drink will be
+	 *              replaced by the fields of passed drink.
+	 * 
+	 * @return {@code true} If the update was successful or {@code false} if update
+	 *         was failed or fields of passed drink are invalid.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public boolean update(Drink drink) throws DAOException {
 
@@ -176,11 +191,7 @@ public class SQLDrinkDAO implements DrinkDAO {
 			connection = CONNECTION_POOL.retrieveConnection();
 			preparedStatement = connection.prepareStatement(UPDATE_DRINK_QUERY);
 			preparedStatement.setString(1, info.getImagePath());
-
-			BigDecimal inputPrice = info.getPrice();
-			BigDecimal priceDB = inputPrice.multiply(PRICE_DIVISOR);
-			preparedStatement.setInt(2, priceDB.intValue());
-
+			preparedStatement.setInt(2, DecimalExchange.revertToInt(info.getPrice()));
 			preparedStatement.setString(3, info.getDescription());
 			preparedStatement.setLong(4, drink.getId());
 			effectedRows = preparedStatement.executeUpdate();

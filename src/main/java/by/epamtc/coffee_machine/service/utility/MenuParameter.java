@@ -1,5 +1,9 @@
 package by.epamtc.coffee_machine.service.utility;
 
+/**
+ * Contains names of parameters which can be specified in menu property file.
+ *
+ */
 public class MenuParameter {
 	public static final String POPULAR_DRINKS_AMOUNT = "popular_drinks_amount";
 	public static final String DRINK_PRICE_DIVISOR = "drink_price_divisor";

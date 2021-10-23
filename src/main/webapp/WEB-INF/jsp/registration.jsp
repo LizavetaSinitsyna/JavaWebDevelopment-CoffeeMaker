@@ -29,13 +29,13 @@
 <meta charset="UTF-8">
 <title><fmt:message key="local.registration.header" /></title>
 <link
-	href="css/bootstrap.min.css"
+	href="/CoffeeMachine/css/bootstrap.min.css"
 	rel="stylesheet">
 <link
-	href="css/site.css"
+	href="/CoffeeMachine/css/site.css"
 	rel="stylesheet">
 <link
-	href="images/favicon.ico"
+	href="/CoffeeMachine/images/favicon.ico"
 	rel="shortcut icon"
 	type="image/x-icon">
 </head>
@@ -54,7 +54,7 @@
 	<div>
 		<div class="bd-example">
 			<form
-				action="Controller"
+				action="/CoffeeMachine/Controller"
 				method="post">
 				<input
 					type="hidden"
@@ -217,6 +217,6 @@
 	</p>
 	<%@include file="partial_pages/footer.jsp"%>
 	<jsp:include page="/WEB-INF/jsp/partial_pages/registration-js.jsp"></jsp:include>
-	<script src="js/header.js"></script>
+	<script src="/CoffeeMachine/js/header.js"></script>
 </body>
 </html>

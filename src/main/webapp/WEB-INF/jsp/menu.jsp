@@ -31,13 +31,13 @@
 <meta charset="UTF-8">
 <title><fmt:message key="local.header.menu.name" /></title>
 <link
-	href="css/bootstrap.min.css"
+	href="/CoffeeMachine/css/bootstrap.min.css"
 	rel="stylesheet">
 <link
-	href="css/site.css"
+	href="/CoffeeMachine/css/site.css"
 	rel="stylesheet">
 <link
-	href="images/favicon.ico"
+	href="/CoffeeMachine/images/favicon.ico"
 	rel="shortcut icon"
 	type="image/x-icon">
 </head>
@@ -54,7 +54,7 @@
 				begin="1"
 				end="${requestScope.pages_amount}"
 				varStatus="pageNumber">
-				<form action="Controller">
+				<form action="/CoffeeMachine/Controller">
 					<input
 						type="hidden"
 						name="command"
@@ -84,8 +84,8 @@
 		</c:if>
 	</div>
 	<%@include file="partial_pages/footer.jsp"%>
-	<script src="js/bootstrap.bundle.min.js"></script>
-	<script src="js/header.js"></script>
-	<script src="js/addToBasket.js"></script>
+	<script src="/CoffeeMachine/js/bootstrap.bundle.min.js"></script>
+	<script src="/CoffeeMachine/js/header.js"></script>
+	<script src="/CoffeeMachine/js/addToBasket.js"></script>
 </body>
 </html>

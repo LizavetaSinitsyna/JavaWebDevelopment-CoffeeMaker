@@ -1,15 +1,16 @@
 package by.epamtc.coffee_machine.bean;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class Account implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private long id;
-	private int balance;
-	
+	private BigDecimal balance;
+
 	public Account() {
-		
+
 	}
 
 	public long getId() {
@@ -20,11 +21,11 @@ public class Account implements Serializable {
 		this.id = id;
 	}
 
-	public int getBalance() {
+	public BigDecimal getBalance() {
 		return balance;
 	}
 
-	public void setBalance(int balance) {
+	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
 	}
 
@@ -32,7 +33,7 @@ public class Account implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + balance;
+		result = prime * result + ((balance == null) ? 0 : balance.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
@@ -46,7 +47,10 @@ public class Account implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Account other = (Account) obj;
-		if (balance != other.balance)
+		if (balance == null) {
+			if (other.balance != null)
+				return false;
+		} else if (!balance.equals(other.balance))
 			return false;
 		if (id != other.id)
 			return false;

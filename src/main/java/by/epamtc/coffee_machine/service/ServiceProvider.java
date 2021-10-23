@@ -9,6 +9,10 @@ import by.epamtc.coffee_machine.service.impl.OrderDrinkServiceImpl;
 import by.epamtc.coffee_machine.service.impl.OrderServiceImpl;
 import by.epamtc.coffee_machine.service.impl.UserServiceImpl;
 
+/**
+ * Singleton-based class which provides specific realization of Service-layer
+ * interfaces.
+ */
 public class ServiceProvider {
 	private OrderDrinkService orderDrinkService = new OrderDrinkServiceImpl();
 	private UserService userService = new UserServiceImpl();

@@ -16,6 +16,8 @@ public class AttributeName {
 	public static final String LOGIN = "login";
 	public static final String INCORRECT_CREDENTIALS = "incorrect_credentials";
 	public static final String USER = "user";
+	public static final String ACCOUNT = "account";
+	public static final String BONUS_ACCOUNT = "bonusAccount";
 
 	// General
 	public static final String NAME = "name";

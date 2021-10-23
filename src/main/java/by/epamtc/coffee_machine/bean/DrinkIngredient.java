@@ -2,6 +2,11 @@ package by.epamtc.coffee_machine.bean;
 
 import java.io.Serializable;
 
+/**
+ * Contains characteristics of the particular ingredient as the part of
+ * specified drink.
+ *
+ */
 public class DrinkIngredient implements Serializable {
 
 	private static final long serialVersionUID = 1L;

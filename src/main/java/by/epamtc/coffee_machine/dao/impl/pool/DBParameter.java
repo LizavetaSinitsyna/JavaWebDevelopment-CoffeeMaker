@@ -1,5 +1,9 @@
 package by.epamtc.coffee_machine.dao.impl.pool;
 
+/**
+ * Contains names of parameters which can be specified in database property file.
+ *
+ */
 public class DBParameter {
 	private DBParameter() {
 	}

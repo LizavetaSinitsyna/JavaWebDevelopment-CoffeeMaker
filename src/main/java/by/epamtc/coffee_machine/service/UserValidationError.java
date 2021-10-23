@@ -1,5 +1,10 @@
 package by.epamtc.coffee_machine.service;
 
+/**
+ * Contains {@code enum} values representing possible {@code User} validation
+ * messages.
+ *
+ */
 public enum UserValidationError {
 	ILLEGAL_NAME("illegal_name"), ILLEGAL_EMAIL("illegal_email"), ILLEGAL_PASSWORD("illegal_password"),
 	ILLEGAL_USERNAME("illegal_username"), DUBLICATE_EMAIL("dublicate_email"), DUBLICATE_USERNAME("dublicate_username"),
@@ -14,7 +19,7 @@ public enum UserValidationError {
 	public String getValue() {
 		return value;
 	}
-	
+
 	public void setValue(String value) {
 		this.value = value;
 	}

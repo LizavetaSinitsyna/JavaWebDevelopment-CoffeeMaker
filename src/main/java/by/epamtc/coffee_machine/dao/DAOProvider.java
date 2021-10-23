@@ -9,6 +9,10 @@ import by.epamtc.coffee_machine.dao.impl.SQLOrderDAO;
 import by.epamtc.coffee_machine.dao.impl.SQLOrderDrinkDAO;
 import by.epamtc.coffee_machine.dao.impl.SQLUserDAO;
 
+/**
+ * Singleton-based class which provides specific realization of DAO-layer
+ * interfaces.
+ */
 public class DAOProvider {
 	private AccountDAO accountDAO = new SQLAccountDAO();
 	private OrderDrinkDAO orderDrinkDAO = new SQLOrderDrinkDAO();
@@ -18,14 +22,14 @@ public class DAOProvider {
 	private DrinkIngredientDAO drinkIngredientDAO = new SQLDrinkIngredientDAO();
 	private IngredientDAO ingredientDAO = new SQLIngredientDAO();
 	private OrderDAO orderDAO = new SQLOrderDAO();
-	
+
 	private DAOProvider() {
 	}
-	
+
 	private static class SingletonHelper {
 		private static final DAOProvider INSTANCE = new DAOProvider();
 	}
-	
+
 	public static DAOProvider getInstance() {
 		return SingletonHelper.INSTANCE;
 	}
@@ -93,6 +97,5 @@ public class DAOProvider {
 	public void setOrderDAO(OrderDAO orderDAO) {
 		this.orderDAO = orderDAO;
 	}
-	
-	
+
 }

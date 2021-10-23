@@ -4,6 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents DrinkIngredient connection as the particular drink with
+ * corresponding list of ingredients.
+ *
+ *@see DrinkIngredient
+ */
 public class DrinkIngredientMap implements Serializable {
 
 	private static final long serialVersionUID = 1L;

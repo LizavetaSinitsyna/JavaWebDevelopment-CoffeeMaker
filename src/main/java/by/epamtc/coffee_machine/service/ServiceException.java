@@ -1,5 +1,9 @@
 package by.epamtc.coffee_machine.service;
 
+/**
+ * Realization of Exception-class for exceptions in Service-layer.
+ *
+ */
 public class ServiceException extends Exception {
 	private static final long serialVersionUID = 1L;
 

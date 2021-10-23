@@ -14,9 +14,16 @@
 <head>
 <meta charset="UTF-8">
 <title><fmt:message key="local.welcome.header" /></title>
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/site.css" rel="stylesheet">
-<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+<link
+	href="/CoffeeMachine/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="/CoffeeMachine/css/site.css"
+	rel="stylesheet">
+<link
+	href="/CoffeeMachine/images/favicon.ico"
+	rel="shortcut icon"
+	type="image/x-icon">
 </head>
 <body>
 	<jsp:include page="partial_pages/header.jsp"></jsp:include>
@@ -27,8 +34,8 @@
 		<jsp:include page="/WEB-INF/jsp/partial_pages/show_menu.jsp"></jsp:include>
 	</c:if>
 	<%@include file="partial_pages/footer.jsp"%>
-	<script src="js/bootstrap.bundle.min.js"></script>
-	<script src="js/header.js"></script>
-	<script src="js/addToBasket.js"></script>
+	<script src="/CoffeeMachine/js/bootstrap.bundle.min.js"></script>
+	<script src="/CoffeeMachine/js/header.js"></script>
+	<script src="/CoffeeMachine/js/addToBasket.js"></script>
 </body>
 </html>

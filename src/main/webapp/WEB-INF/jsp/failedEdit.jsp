@@ -7,22 +7,29 @@
 <fmt:setLocale value="${ empty cookie_lang ? 'EN' : cookie_lang}"
 	scope="application" />
 <fmt:setBundle basename="localization.local" scope="application" />
-<c:set var="currentPage" value="/successEdit"
+<c:set var="currentPage" value="/failedEdit"
 	scope="application" />
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Failed</title>
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/site.css" rel="stylesheet">
-<link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+<title><fmt:message key="local.edit.failed"/></title>
+<link
+	href="/CoffeeMachine/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="/CoffeeMachine/css/site.css"
+	rel="stylesheet">
+<link
+	href="/CoffeeMachine/images/favicon.ico"
+	rel="shortcut icon"
+	type="image/x-icon">
 </head>
 <body>
 	<jsp:include page="/WEB-INF/jsp/partial_pages/header.jsp"></jsp:include>
-	<p>Failed edit</p>
+	<p><fmt:message key="local.product.edit.failde_update" /></p>
 	<%@include file="partial_pages/footer.jsp"%>
-	<script src="js/bootstrap.bundle.min.js"></script>
-	<script src="js/header.js"></script>
+	<script src="/CoffeeMachine/js/bootstrap.bundle.min.js"></script>
+	<script src="/CoffeeMachine/js/header.js"></script>
 </body>
 </html>

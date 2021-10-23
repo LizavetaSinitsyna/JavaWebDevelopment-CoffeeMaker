@@ -1,6 +1,5 @@
 package by.epamtc.coffee_machine.dao.impl;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,29 +15,26 @@ import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.OrderDrinkDAO;
 import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPoolException;
 import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPool;
-import by.epamtc.coffee_machine.service.utility.MenuParameter;
-import by.epamtc.coffee_machine.service.utility.MenuPropertyProvider;
+import by.epamtc.coffee_machine.service.utility.DecimalExchange;
 
+/**
+ * Provides methods for working with OrderDrinks table and entity
+ * {@link OrderDrink}
+ */
 public class SQLOrderDrinkDAO implements OrderDrinkDAO {
 	private static final ConnectionPool CONNECTION_POOL = ConnectionPool.retrieveConnectionPool();
-	private static final MenuPropertyProvider MENU_PROPERTY_PROVIDER = MenuPropertyProvider.getInstance();
 	private static final String SELECT_POPULAR_DRINKS_QUERY = "SELECT drink_id, name, image_path, price "
 			+ "FROM drinks WHERE drink_id IN " + "(SELECT drink_id FROM (SELECT drink_id, SUM(drink_count) "
 			+ "FROM order_drinks GROUP BY drink_id ORDER BY drink_count DESC LIMIT ?) sub_query)";
 	private static final String ADD_QUERY = "INSERT INTO order_drinks (order_id, drink_id, drink_count) VALUES (%s, %s, %s)";
 
-	@Override
-	public List<OrderDrink> findDrinksForSpecificOrder(int ingredient_id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<OrderDrink> findOrdersWithSpecificDrink(int drink_id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	/**
+	 * Add passed OrderDrink to database.
+	 * 
+	 * @param orderDrink the {@code OrderDrink} object to be saved in database.
+	 * @return {@code long} value which represents OrderDrink id.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public long add(OrderDrink orderDrink) throws DAOException {
 		int effectedColumns = 0;
@@ -82,18 +78,13 @@ public class SQLOrderDrinkDAO implements OrderDrinkDAO {
 		return effectedColumns;
 	}
 
-	@Override
-	public boolean remove(OrderDrink orderDrink) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean update(OrderDrink orderDrink, int amount) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	/**
+	 * Select specified amount of popular drinks.
+	 * 
+	 * @return {@code List} of {@code DrinkTransfer} objects representing popular
+	 *         drinks or {@code null} if passed parameter is invalid.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public List<DrinkTransfer> selectPopularDrinks(int amount) throws DAOException {
 		List<DrinkTransfer> drinks = null;
@@ -118,12 +109,7 @@ public class SQLOrderDrinkDAO implements OrderDrinkDAO {
 				drink.setId(resultSet.getLong(1));
 				drink.setName(resultSet.getString(2));
 				drink.setImagePath(resultSet.getString(3));
-
-				BigDecimal priceDB = new BigDecimal(resultSet.getInt(4));
-				BigDecimal priceDivisor = new BigDecimal(
-						MENU_PROPERTY_PROVIDER.retrieveValue(MenuParameter.DRINK_PRICE_DIVISOR));
-				BigDecimal price = priceDB.divide(priceDivisor);
-				drink.setPrice(price);
+				drink.setPrice(DecimalExchange.obtainFromInt(resultSet.getInt(4)));
 
 				drinks.add(drink);
 			}

@@ -15,6 +15,10 @@ import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPoolException;
 import by.epamtc.coffee_machine.service.CommonExceptionMessage;
 import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPool;
 
+/**
+ * Provides methods for working with Users table and entities {@link User},
+ * {@link UserLoginPasswordTransfer}
+ */
 public class SQLUserDAO implements UserDAO {
 	private static final ConnectionPool CONNECTION_POOL = ConnectionPool.retrieveConnectionPool();
 	private static final String ADD_QUERY = "INSERT INTO users "
@@ -23,6 +27,15 @@ public class SQLUserDAO implements UserDAO {
 	private static final String SEARCH_LOGIN_QUERY = "SELECT * FROM users WHERE login = ?";
 	private static final String LOGIN_QUERY = "SELECT user_id, role_id, password FROM users WHERE login = ? OR email = ?";
 
+	/**
+	 * Returns User by the specified login.
+	 * 
+	 * @param login the login of the User
+	 * @return {@code UserLoginPasswordTransfer} object representing user with
+	 *         passed login or {@code null} if passed parameter is invalid or user
+	 *         with such login doesn't exist.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public UserLoginPasswordTransfer login(String login) throws DAOException {
 		UserLoginPasswordTransfer result = null;
@@ -58,6 +71,14 @@ public class SQLUserDAO implements UserDAO {
 		return result;
 	}
 
+	/**
+	 * Checks if the user with specified email exists.
+	 * 
+	 * @param email the email to be checked.
+	 * @return {@code true} if the user with passed email exists and {@code false}
+	 *         in other case.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public boolean containsEmail(String email) throws DAOException {
 		boolean result = false;
@@ -87,6 +108,14 @@ public class SQLUserDAO implements UserDAO {
 		return result;
 	}
 
+	/**
+	 * Checks if the user with specified username exists.
+	 * 
+	 * @param username the username to be checked.
+	 * @return {@code true} if the user with passed username exists and
+	 *         {@code false} in other case.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public boolean containsUsername(String username) throws DAOException {
 		boolean result = false;
@@ -117,14 +146,23 @@ public class SQLUserDAO implements UserDAO {
 		return result;
 	}
 
+	/**
+	 * Add passed User to database.
+	 * 
+	 * @param user the user to be saved in database.
+	 * @return {@code long} value which represents user id.
+	 * @throws DAOException If problem occurs during interaction with database or
+	 *                      passed parameter is invalid.
+	 */
+
 	@Override
 	public long add(User user) throws DAOException {
 		if (user == null) {
-			return -1;
+			throw new DAOException(CommonExceptionMessage.NULL_ARGUMENT);
 		}
 		UserInfo userInfo = user.getInfo();
 		if (userInfo == null) {
-			return -1;
+			throw new DAOException(CommonExceptionMessage.NULL_ARGUMENT);
 		}
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -159,18 +197,6 @@ public class SQLUserDAO implements UserDAO {
 				throw new DAOException(e.getMessage(), e);
 			}
 		}
-	}
-
-	@Override
-	public boolean remove(int user_id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean update(int user_id, UserInfo userInfo) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

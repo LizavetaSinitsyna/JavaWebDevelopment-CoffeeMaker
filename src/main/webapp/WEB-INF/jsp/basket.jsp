@@ -28,13 +28,13 @@
 <meta charset="UTF-8">
 <title><fmt:message key="local.header.basket.name" /></title>
 <link
-	href="css/bootstrap.min.css"
+	href="/CoffeeMachine/css/bootstrap.min.css"
 	rel="stylesheet">
 <link
-	href="css/site.css"
+	href="/CoffeeMachine/css/site.css"
 	rel="stylesheet">
 <link
-	href="images/favicon.ico"
+	href="/CoffeeMachine/images/favicon.ico"
 	rel="shortcut icon"
 	type="image/x-icon">
 </head>
@@ -47,11 +47,27 @@
 		<div class="container">
 			<c:if test="${! empty unavailableIngredient}">
 				<div class="error">
-					<fmt:message key="local.basket.error.unavailable_ingredient" />
+					<input
+						type="hidden"
+						id="unavailableDrinkId"
+						value="${unavailableIngredient.getDrinkId()}">
+					<input
+						type="hidden"
+						id="availableDrinkAmount"
+						value="${unavailableIngredient.getAvailableDrinkAmount()}">
+					<div>
+						<fmt:message key="local.basket.error.unavailable_ingredient" />
+						<span><c:out value="${unavailableIngredient.getIngredientName()}. " /></span>
+					</div>
+					<div>
+						<fmt:message key="local.basket.error.availableDrinkAmount" />
+						<span><c:out value="${unavailableIngredient.getAvailableDrinkAmount()}." /></span> <span><fmt:message
+								key="local.basket.error.change_order_invitation" /></span>
+					</div>
 				</div>
 			</c:if>
 			<form
-				action="Controller"
+				action="/CoffeeMachine/Controller"
 				method="post">
 				<input
 					type="hidden"
@@ -63,14 +79,12 @@
 						id="emptyBasket">
 						<fmt:message key="local.basket.empty.message" />
 					</h6>
-					<table>
+					<table class="basket-table">
 						<thead>
 							<tr class="basket-list-header">
-								<td
-									class="basket-list-td"
-									colspan="2"><fmt:message key="local.basket.table.drink" /></td>
-								<td class="basket-list-td"><fmt:message key="local.product.price" /></td>
-								<td class="basket-list-td"><fmt:message key="local.product.amount" /></td>
+								<td colspan="2"><fmt:message key="local.basket.table.drink" /></td>
+								<td><fmt:message key="local.product.price" /></td>
+								<td><fmt:message key="local.product.amount" /></td>
 								<td colspan="2"><fmt:message key="local.basket.table.sum" /></td>
 							</tr>
 						</thead>
@@ -78,9 +92,7 @@
 						</tbody>
 						<tfoot>
 							<tr class="basket-list-header basket-list-tr">
-								<td
-									class="basket-list-td"
-									colspan="4"><fmt:message key="local.basket.table.total" /></td>
+								<td colspan="4"><fmt:message key="local.basket.table.total" /></td>
 								<td
 									id="total"
 									colspan="2"><fmt:message key="local.basket.table.sum" /></td>
@@ -99,8 +111,8 @@
 		</div>
 	</div>
 	<%@include file="/WEB-INF/jsp/partial_pages/footer.jsp"%>
-	<script src="js/bootstrap.bundle.min.js"></script>
-	<script src="js/header.js"></script>
-	<script src="js/basket.js"></script>
+	<script src="/CoffeeMachine/js/bootstrap.bundle.min.js"></script>
+	<script src="/CoffeeMachine/js/header.js"></script>
+	<script src="/CoffeeMachine/js/basket.js"></script>
 </body>
 </html>

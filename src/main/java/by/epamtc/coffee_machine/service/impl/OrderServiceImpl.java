@@ -31,6 +31,10 @@ import by.epamtc.coffee_machine.service.ServiceProvider;
 import by.epamtc.coffee_machine.service.utility.OrderParameter;
 import by.epamtc.coffee_machine.service.utility.OrderPropertyProvider;
 
+/**
+ * Provides access to {@link OrderDAO} and support for working with entities
+ * {@link Order}, {@link OrderInfo}.
+ */
 public class OrderServiceImpl implements OrderService {
 	private static final DrinkDAO DRINK_DAO = DAOProvider.getInstance().getDrinkDAO();
 	private static final OrderDAO ORDER_DAO = DAOProvider.getInstance().getOrderDAO();
@@ -41,6 +45,20 @@ public class OrderServiceImpl implements OrderService {
 	private static final String ILLEGAL_ARRAY_PARAMETERS_MESSAGE = "Passed arrays should contain only positive integers";
 	public static final String DIGITS_REGEX = "\\d+";
 
+	/**
+	 * Creates new Order. Before it removes unpaid orders and checks the
+	 * availability of ingredients.
+	 * 
+	 * @param drinksId     Array of {@code String} values which contains id of
+	 *                     drinks for the order.
+	 * @param drinksAmount Array of {@code String} values which contains amount of
+	 *                     each drink in the order.
+	 * @param userId       {@code long} value which uniquely indicates the user who
+	 *                     made the order.
+	 * @return {@code OrderTransfer} object representing the created Order.
+	 * @throws ServiceException If problem occurs during interaction with DAO-layer
+	 *                          or passed parameters are invalid.
+	 */
 	@Override
 	public OrderTransfer placeOrder(String[] drinksId, String[] drinksAmount, long userId) throws ServiceException {
 		if (drinksId == null || drinksAmount == null) {
@@ -142,7 +160,7 @@ public class OrderServiceImpl implements OrderService {
 					.obtainIngredientsForSpecificDrink(drinkId);
 
 			// Find general amount of ingredients for specified drink taking into account
-			// its amount in order
+			// its amount in the order
 
 			for (DrinkIngredientTransfer drinkIngredient : drinkIngredients) {
 				long ingredientId = drinkIngredient.getIngredientId();
@@ -179,14 +197,13 @@ public class OrderServiceImpl implements OrderService {
 					result.setDrinkId(drink.getKey().getId());
 					result.setIngredientId(element.getKey());
 					result.setIngredientName(ingredient.getInfo().getName());
-					result.setAvailableDrinkAmount(currentAmount / drinkAmount);
+					result.setAvailableDrinkAmount(currentAmount / (requiredIngredientAmount / drinkAmount));
 				} else {
 					if (usedIngredientsAmount.containsKey(ingredientId)) {
-						currentAmount = requiredForSpecifiedDrinkIngredientsAmount.get(ingredientId);
-						requiredForSpecifiedDrinkIngredientsAmount.put(ingredientId,
-								currentAmount + requiredIngredientAmount);
+						currentAmount = usedIngredientsAmount.get(ingredientId);
+						usedIngredientsAmount.put(ingredientId, currentAmount + requiredIngredientAmount);
 					} else {
-						requiredForSpecifiedDrinkIngredientsAmount.put(ingredientId, requiredIngredientAmount);
+						usedIngredientsAmount.put(ingredientId, requiredIngredientAmount);
 					}
 				}
 
@@ -197,6 +214,12 @@ public class OrderServiceImpl implements OrderService {
 		return result;
 	}
 
+	/**
+	 * Removes unpaid orders using time for payment parameter provided by
+	 * {@link OrderPropertyProvider}.
+	 * 
+	 * @throws ServiceException
+	 */
 	@Override
 	public void removeUnpaidOrders() throws ServiceException {
 		String availableTimeForPayment = ORDER_PROPERTY_PROVIDER.retrieveValue(OrderParameter.TIME_FOR_PAYMENT);

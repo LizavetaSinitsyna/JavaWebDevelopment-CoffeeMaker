@@ -3,18 +3,25 @@ package by.epamtc.coffee_machine.controller;
 import java.util.HashMap;
 
 import by.epamtc.coffee_machine.controller.command.ChangeLanguageCommand;
-import by.epamtc.coffee_machine.controller.command.Command;
 import by.epamtc.coffee_machine.controller.command.EditProductCommand;
 import by.epamtc.coffee_machine.controller.command.LogOutCommand;
 import by.epamtc.coffee_machine.controller.command.LoginCommand;
 import by.epamtc.coffee_machine.controller.command.MakeOrderCommand;
 import by.epamtc.coffee_machine.controller.command.NoSuchCommand;
+import by.epamtc.coffee_machine.controller.command.PayForOrderCommand;
 import by.epamtc.coffee_machine.controller.command.RegistrationCommand;
 import by.epamtc.coffee_machine.controller.command.SelectPopularDrinksCommand;
 import by.epamtc.coffee_machine.controller.command.ViewMenuCommand;
 import by.epamtc.coffee_machine.controller.command.ViewProductCommand;
 import by.epamtc.coffee_machine.controller.command.ViewProductEditCommand;
 
+/**
+ * Singleton-based class which provides specific realization of {@link Command}
+ * by command name.
+ * 
+ * @see CommandName
+ * @see Command
+ */
 public class CommandProvider {
 	private HashMap<CommandName, Command> commands = new HashMap<>();
 
@@ -30,6 +37,7 @@ public class CommandProvider {
 		commands.put(CommandName.VIEW_PRODUCT_EDIT, new ViewProductEditCommand());
 		commands.put(CommandName.EDIT_PRODUCT, new EditProductCommand());
 		commands.put(CommandName.MAKE_ORDER, new MakeOrderCommand());
+		commands.put(CommandName.PAY_FOR_ORDER, new PayForOrderCommand());
 	}
 
 	private static final class SingletonHelper {
@@ -40,6 +48,15 @@ public class CommandProvider {
 		return SingletonHelper.INSTANCE;
 	}
 
+	/**
+	 * Provides realization of {@link Command} by specified name.
+	 * 
+	 * @param commandName the name of required command. The possible command names
+	 *                    are stated in {@link CommandName}.
+	 * @return realization of {@link Command} with specified name or
+	 *         {@link NoSuchCommand} if passed parameter is invalid or command with
+	 *         such name doesn't exist.
+	 */
 	public Command retriveCommand(String commandName) {
 		Command command = commands.get(CommandName.NO_SUCH_COMMAND);
 

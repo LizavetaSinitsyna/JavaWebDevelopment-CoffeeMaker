@@ -4,10 +4,6 @@
 	if (!storage || storage.length < 1) {
 		let table = document.getElementsByTagName("table")[0];
 		table.remove();
-		/*let parent = table.parentNode;
-		let img = document.createElement("img");
-		img.src = "/CoffeeMachine/images/no_coffee.jpg";
-		parent.appendChild(img);*/
 		document.getElementById("emptyBasket").classList.remove("hide");
 	} else {
 		let drinks = JSON.parse(storage);
@@ -30,9 +26,9 @@
 								src="${drink.image}"
 								alt="drinkImage">
 								<input type="hidden" name="drink_id" value="${element}"></td>
-							<td class= "basket-list-td">${drink.name}</td>
-							<td class= "basket-list-td">${showPrice}</td>
-							<td class= "basket-list-td"><input type="number" class="amount" name="drinkAmount" min="1" max="99" class="form-control" value="${amount}" onchange="recalculateBasket()" required></td>
+							<td>${drink.name}</td>
+							<td>${showPrice}</td>
+							<td><input type="number" class="amount" name="drinkAmount" min="1" max="99" class="form-control" value="${amount}" onchange="recalculateBasket()" required></td>
 							<td >${showSum}</td>
 							<td ><button type="button" class="delete icon-image" onclick="removeDrink()"></button></td>`;
 			parent.append(tr);
@@ -76,3 +72,22 @@ function removeDrink() {
 	window.location.replace("/CoffeeMachine/basket");
 }
 
+(function markUnavailableDrink() {
+	let unavailableDrinkId = document.getElementById("unavailableDrinkId");
+	let availableDrinkAmount = document.getElementById("availableDrinkAmount");
+
+	let drinks = document.getElementsByName("drink_id");
+	
+	if (unavailableDrinkId && availableDrinkAmount && drinks) {
+		for (let i = 0; i < drinks.length; i++) {
+			if (drinks[i].value == unavailableDrinkId.value) {
+				let parent = drinks[i].parentNode.parentNode;
+				parent.classList.add("error");
+				let drinkAmount = parent.querySelector('[name="drinkAmount"]');
+				drinkAmount.value = availableDrinkAmount.value;
+				drinkAmount.max = availableDrinkAmount.value;
+
+			}
+		}
+	}
+})()

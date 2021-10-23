@@ -7,15 +7,35 @@ import java.util.Set;
 import by.epamtc.coffee_machine.bean.DrinkIngredient;
 import by.epamtc.coffee_machine.service.DrinkIngredientMessage;
 
+/**
+ * Provides support for Ingredient validation.
+ *
+ */
 public class IngredientValidator {
+
 	private IngredientValidator() {
 
 	}
 
+	/**
+	 * Validates ingredient amount.
+	 * 
+	 * @param amount the amount to validate.
+	 * @return {@code true} if amount is valid and {@code false} otherwise.
+	 */
 	public static boolean checkAmount(int amount) {
 		return amount > 0;
 	}
 
+	/**
+	 * Validates all {@code DrinkIngredient} objects from the passed {@code List}
+	 * When invalid element is found the validation process stops and returns the
+	 * result.
+	 * 
+	 * @param drinkIngredients the {@code List} of {@code DrinkIngredient} to
+	 *                         validate.
+	 * @return {@code Set} of {@code DrinkIngredientMessage}.
+	 */
 	public static Set<DrinkIngredientMessage> validateFields(List<DrinkIngredient> drinkIngredients) {
 		Set<DrinkIngredientMessage> messages = new HashSet<>();
 

@@ -20,31 +20,31 @@
 	scope="application" />
 <c:set
 	var="currentPage"
-	value="/CoffeeMachine/errorPage"
+	value="/CoffeeMachine/error500"
 	scope="application" />
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Page not found!</title>
+<title><fmt:message key="local.error.500" /></title>
 <link
-	href="css/bootstrap.min.css"
+	href="/CoffeeMachine/css/bootstrap.min.css"
 	rel="stylesheet">
 <link
-	href="css/site.css"
+	href="/CoffeeMachine/css/site.css"
 	rel="stylesheet">
 <link
-	href="images/favicon.ico"
+	href="/CoffeeMachine/images/favicon.ico"
 	rel="shortcut icon"
 	type="image/x-icon">
 </head>
 <body>
 	<jsp:include page="/WEB-INF/jsp/partial_pages/header.jsp"></jsp:include>
 	<h1>
-		Page not found!
+		<fmt:message key="local.error.500" />
 	</h1>
 	<%@include file="/WEB-INF/jsp/partial_pages/footer.jsp"%>
-	<script src="js/bootstrap.bundle.min.js"></script>
-	<script src="js/header.js"></script>
+	<script src="/CoffeeMachine/js/bootstrap.bundle.min.js"></script>
+	<script src="/CoffeeMachine/js/header.js"></script>
 </body>
 </html>

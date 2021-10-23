@@ -15,6 +15,10 @@ import by.epamtc.coffee_machine.dao.IngredientDAO;
 import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPoolException;
 import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPool;
 
+/**
+ * Provides methods for working with Ingredients table and entities
+ * {@link Ingredient}, {@link IngredientTransfer}
+ */
 public class SQLIngredientDAO implements IngredientDAO {
 	private static final ConnectionPool CONNECTION_POOL = ConnectionPool.retrieveConnectionPool();
 	private static final String SELECT_ALL_QUERY = "SELECT ingredient_id, name FROM ingredients";
@@ -26,12 +30,23 @@ public class SQLIngredientDAO implements IngredientDAO {
 			+ "WHERE order_id IN (SELECT order_id FROM orders WHERE status = 'created') GROUP BY ingredient_id) AS q "
 			+ "ON ingredients.ingredient_id = q.ingredient_id WHERE ingredients.ingredient_id = %s";
 
+	/**
+	 * Obtains existed ingredient with specified ingredient id.
+	 * 
+	 * @param ingredientId {@code long} value which uniquely indicates the
+	 *                     ingredient.
+	 * @return {@code Ingredient} with specified id.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public Ingredient read(long ingredientId) throws DAOException {
+		Ingredient ingredient = null;
+		if (ingredientId <= 0) {
+			return ingredient;
+		}
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
-		Ingredient ingredient = null;
 
 		try {
 			connection = CONNECTION_POOL.retrieveConnection();
@@ -58,6 +73,12 @@ public class SQLIngredientDAO implements IngredientDAO {
 		return ingredient;
 	}
 
+	/**
+	 * Returns Ingredient from database with available for new order amount.
+	 *
+	 * @return {@code Ingredient} representing available amount.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public Ingredient readAvailable(long ingredientId) throws DAOException {
 		Connection connection = null;
@@ -90,30 +111,13 @@ public class SQLIngredientDAO implements IngredientDAO {
 		return ingredient;
 	}
 
-	@Override
-	public long add(Ingredient ingredient) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean remove(long ingredientId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean updateAmount(long ingredientId, int amount) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean update(long ingredientId, IngredientInfo ingredientInfo) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	/**
+	 * Returns all ingredients from database.
+	 *
+	 * @return {@code List} of {@code IngredientTransfer} objects representing all
+	 *         ingredients from database.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public List<IngredientTransfer> readAll() throws DAOException {
 		List<IngredientTransfer> ingredients = null;

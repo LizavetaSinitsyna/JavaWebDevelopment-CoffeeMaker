@@ -18,10 +18,23 @@ import by.epamtc.coffee_machine.service.utility.MenuParameter;
 import by.epamtc.coffee_machine.service.utility.MenuPropertyProvider;
 import by.epamtc.coffee_machine.service.validation.DrinkValidator;
 
+/**
+ * Provides access to {@link by.epamtc.coffee_machine.dao.DrinkDAO} and support
+ * for working with entities {@link Drink}, {@link DrinkInfo},
+ * {@link DrinkTransfer}.
+ */
 public class DrinkServiceImpl implements DrinkService {
 	private static final DAOProvider DAO_PROVIDER = DAOProvider.getInstance();
 	private static final MenuPropertyProvider MENU_PROPERTY_PROVIDER = MenuPropertyProvider.getInstance();
 
+	/**
+	 * Obtains existed drink by its id.
+	 * 
+	 * @param drinkId {@code long} value which uniquely indicates the drink.
+	 * @return {@code Drink} with specified id or {@code null} if {@code drinkId} is
+	 *         invalid.
+	 * @throws ServiceException If problem occurs during interaction with DAO-layer.
+	 */
 	@Override
 	public Drink obtainDrink(long drinkId) throws ServiceException {
 		Drink drink = null;
@@ -36,6 +49,15 @@ public class DrinkServiceImpl implements DrinkService {
 		}
 		return drink;
 	}
+
+	/**
+	 * Obtains drinks for showing on specified page.
+	 * 
+	 * @param pageNumber {@code int} value which represents page number.
+	 * @return {@code List} of {@code DrinkTransfer} objects representing drinks for
+	 *         the specified page or {@code null} if {@code pageNumber} is invalid.
+	 * @throws ServiceException If problem occurs during interaction with DAO-layer.
+	 */
 
 	@Override
 	public List<DrinkTransfer> obtainMenu(int pageNumber) throws ServiceException {
@@ -58,6 +80,15 @@ public class DrinkServiceImpl implements DrinkService {
 		return drinks;
 	}
 
+	/**
+	 * Calculates general amount of menu pages using drinks' amount per page
+	 * provided by {@link MenuPropertyProvider}.
+	 * 
+	 * @return {@code int} value representing amount of pages.
+	 * @throws ServiceException If problem occurs during interaction with DAO-layer
+	 *                          or drinks' amount per page is invalid.
+	 */
+
 	@Override
 	public int obtainMenuPagesAmount() throws ServiceException {
 		int generalDrinksAmount = 0;
@@ -76,6 +107,17 @@ public class DrinkServiceImpl implements DrinkService {
 		return result;
 	}
 
+	/**
+	 * Edit existed Drink.
+	 * 
+	 * @param imagePath   {@code String} value representing new path to image.
+	 * @param drinkId     {@code long} value which uniquely indicates the existed
+	 *                    drink.
+	 * @param price       {@code BigDecimal} value representing new price.
+	 * @param description {@code String} value representing new description.
+	 * @return {@code Set} of {@link DrinkMessage} objects.
+	 * @throws ServiceException If problem occurs during interaction with DAO-layer.
+	 */
 	@Override
 	public Set<DrinkMessage> edit(String imagePath, long drinkId, BigDecimal price, String description)
 			throws ServiceException {

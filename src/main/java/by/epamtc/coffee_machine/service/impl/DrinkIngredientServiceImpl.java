@@ -14,9 +14,23 @@ import by.epamtc.coffee_machine.service.DrinkIngredientService;
 import by.epamtc.coffee_machine.service.ServiceException;
 import by.epamtc.coffee_machine.service.validation.IngredientValidator;
 
+/**
+ * Provides access to {@link by.epamtc.coffee_machine.dao.DrinkIngredientDAO}
+ * and support for working with entities {@link DrinkIngredient},
+ * {@link DrinkIngredientTransfer}
+ */
 public class DrinkIngredientServiceImpl implements DrinkIngredientService {
 	private DAOProvider daoProvider = DAOProvider.getInstance();
 
+	/**
+	 * Obtains all ingredients for specified drink.
+	 * 
+	 * @param drinkId {@code long} value which uniquely indicates the drink.
+	 * @return {@code List} of {@code DrinkIngredientTransfer} objects representing
+	 *         ingredients for the specified drink or {@code null} if drinkId is
+	 *         invalid.
+	 * @throws ServiceException If problem occurs during interaction with DAO-layer.
+	 */
 	@Override
 	public List<DrinkIngredientTransfer> obtainIngredientsForSpecificDrink(long drinkId) throws ServiceException {
 		List<DrinkIngredientTransfer> result = null;
@@ -31,6 +45,17 @@ public class DrinkIngredientServiceImpl implements DrinkIngredientService {
 		}
 		return result;
 	}
+
+	/**
+	 * Edit ingredients for specified drink.
+	 * 
+	 * @param drinkId          {@code long} value which uniquely indicates the
+	 *                         drink.
+	 * @param drinkIngredients {@code List} of {@code DrinkIngredient} objects which
+	 *                         represent new drink's composition.
+	 * @return {@code Set} of {@link DrinkIngredientMessage} objects.
+	 * @throws ServiceException If problem occurs during interaction with DAO-layer.
+	 */
 
 	@Override
 	public Set<DrinkIngredientMessage> edit(long drinkId, List<DrinkIngredient> drinkIngredients)

@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Represents Front controller.
+ *
+ */
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -26,8 +30,12 @@ public class Controller extends HttpServlet {
 
 	/**
 	 * Retrieves command from request and executes it.
+	 * 
+	 * @throws IOException
+	 * @throws ServletException
 	 */
-	private void execute(HttpServletRequest request, HttpServletResponse response) {
+	private void execute(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		CommandProvider.getInstance().retriveCommand(request.getParameter(AttributeName.COMMAND)).execute(request,
 				response);
 	}

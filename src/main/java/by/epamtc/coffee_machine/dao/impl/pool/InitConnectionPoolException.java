@@ -1,5 +1,10 @@
 package by.epamtc.coffee_machine.dao.impl.pool;
 
+/**
+ * Realization of RuntimeException-class for exceptions happened during
+ * connection pool initializing process.
+ *
+ */
 public class InitConnectionPoolException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 

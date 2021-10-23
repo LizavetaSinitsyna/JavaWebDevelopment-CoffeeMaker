@@ -16,6 +16,11 @@ import by.epamtc.coffee_machine.dao.DrinkIngredientDAO;
 import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPoolException;
 import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPool;
 
+/**
+ * Provides methods for working with DrinkIngredients table and entities
+ * {@link DrinkIngredientMap}, {@link DrinkIngredient},
+ * {@link DrinkIngredientTransfer}
+ */
 public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 	private static final ConnectionPool CONNECTION_POOL = ConnectionPool.retrieveConnectionPool();
 	private static final String READ_INGREDIENTS_FOR_SPECIFIC_DRINK_QUERY = "SELECT ingredients.ingredient_id, ingredients.name, ingredient_amount, is_optional FROM "
@@ -24,12 +29,15 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 	private static final String DELETE_DRINK_INGREDIENTS_QUERY = "DELETE FROM drink_ingredients WHERE drink_id = ";
 	private static final String INSERT_DRINK_INGREDIENTS_QUERY = "INSERT INTO drink_ingredients (drink_id, ingredient_id, ingredient_amount, is_optional) VALUES (?, ?, ?, ?)";
 
-	@Override
-	public List<DrinkIngredient> findDrinksWithSpecificIngredient(long ingredientId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	/**
+	 * Read ingredients from database for specified drink by drink id.
+	 * 
+	 * @param drinkId {@code long} value which uniquely indicates the drink.
+	 * @return {@code List} of {@code DrinkIngredientTransfer} objects representing
+	 *         all ingredients for specified drink or {@code null} if passed
+	 *         parameter is invalid.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public List<DrinkIngredientTransfer> readIngredientsForSpecificDrink(long drinkId) throws DAOException {
 		List<DrinkIngredientTransfer> result = null;
@@ -68,17 +76,18 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 		return result;
 	}
 
-	@Override
-	public long add(DrinkIngredient drinkIngredient) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean remove(DrinkIngredient drinkIngredient) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	/**
+	 * Updates ingredients for specified id taking drink id from passed
+	 * {@code DrinkIngredientMap}.
+	 * 
+	 * @param drinkIngredientMap the {@code DrinkIngredientMap} object. Ingredients
+	 *                           of the already existed in database drink will be
+	 *                           replaced by the ingredients of passed
+	 *                           drinkIngredientMap.
+	 * @return {@code true} If the update was successful or {@code false} if update
+	 *         was failed or passed parameter is invalid.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 
 	@Override
 	public boolean update(DrinkIngredientMap drinkIngredientMap) throws DAOException {
@@ -96,8 +105,8 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		Statement statement = null;
-		int effectedRows = 0; 
-		
+		int effectedRows = 0;
+
 		long drinkId = drinkIngredientMap.getDrinkId();
 		if (drinkId <= 0) {
 			return false;

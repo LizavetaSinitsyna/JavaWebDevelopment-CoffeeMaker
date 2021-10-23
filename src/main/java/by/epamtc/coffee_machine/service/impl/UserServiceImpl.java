@@ -21,9 +21,23 @@ import by.epamtc.coffee_machine.service.UserValidationError;
 import by.epamtc.coffee_machine.service.utility.BCrypt;
 import by.epamtc.coffee_machine.service.validation.UserValidator;
 
+/**
+ * Provides access to {@link UserDAO} and support for working with entities
+ * {@link User}, {@link UserInfo}.
+ */
 public class UserServiceImpl implements UserService {
 	private static final UserDAO USER_DAO = DAOProvider.getInstance().getUserDAO();
-	
+
+	/**
+	 * Obtains User with passed login and password.
+	 * 
+	 * @param login    {@code String} value representing user's email of user name
+	 * @param password {@code String} value representing user's password
+	 * @return {@code UserLoginTransfer} object representing the authenticated user
+	 *         or {@code null} if passed parameters are invalid or user with passed
+	 *         parameters doesn't exist.
+	 * @throws ServiceException If problem occurs during interaction with DAO-layer.
+	 */
 
 	@Override
 	public UserLoginTransfer login(String login, String password) throws ServiceException {
@@ -44,6 +58,23 @@ public class UserServiceImpl implements UserService {
 		return result;
 	}
 
+	/**
+	 * Creates user with passed parameters.
+	 * 
+	 * @param email          {@code String} value representing user's email
+	 * @param password       {@code String} value representing user's password. If
+	 *                       all passed parameters are valid, the password will be
+	 *                       encrypted by
+	 *                       {@link by.epamtc.coffee_machine.service.utility.BCrypt}
+	 * @param repeatPassword {@code String} value representing user's repeat
+	 *                       password
+	 * @param username       {@code String} value representing user's username
+	 * @param name           {@code String} value representing user's name
+	 * @param phone          {@code String} value representing user's phone
+	 * @return {@code Set} of {@link UserValidationError} objects.
+	 * @throws ServiceException If problem occurs during interaction with DAO-layer.
+	 */
+
 	@Override
 	public Set<UserValidationError> registration(String email, String password, String repeatPassword, String username,
 			String name, String phone) throws ServiceException {
@@ -51,7 +82,7 @@ public class UserServiceImpl implements UserService {
 		ServiceProvider serviceProvider = ServiceProvider.getInstance();
 
 		errors = UserValidator.validateFields(email, password, repeatPassword, username, name, phone);
-		
+
 		if (errors != null && errors.size() > 0) {
 			return errors;
 		}
@@ -87,7 +118,5 @@ public class UserServiceImpl implements UserService {
 
 		return errors;
 	}
-
-	
 
 }

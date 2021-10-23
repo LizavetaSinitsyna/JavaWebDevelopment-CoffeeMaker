@@ -42,11 +42,13 @@ body {
 .basket-list {
 	min-width: 100%;
 	text-align: center;
-	position: relative;
-	display: flex;
-	flex-direction: column;
 	background-color: #fff;
 	border-radius: .25rem;
+}
+
+.basket-table {
+    table-layout: fixed;
+    width: 100%;
 }
 
 .basket-list-image {

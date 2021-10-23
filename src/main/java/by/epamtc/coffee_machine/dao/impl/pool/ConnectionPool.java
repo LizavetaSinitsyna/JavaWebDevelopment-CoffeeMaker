@@ -25,6 +25,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Singleton-based class which provides support for connection pool
+ * initializing, destroying and methods for working with connections in
+ * connection pool.
+ *
+ */
 public class ConnectionPool {
 	private final static int DEFAULT_MAX_POOL_SIZE = 100;
 	private final static int DEFAULT_MAX_IDLE = 15;
@@ -65,6 +71,14 @@ public class ConnectionPool {
 		return SingletonHelper.INSTANCE;
 	}
 
+	/**
+	 * Performs connection pool initializing using parameters specified in database
+	 * property file. It opens specified amount of connections and put them into
+	 * {@code ArrayBlockingQueue} of connections. Should be called one time at the
+	 * start of the application.
+	 * 
+	 * @see DBResourceManager
+	 */
 	public void initPool() {
 		Locale.setDefault(Locale.ENGLISH);
 
@@ -89,6 +103,15 @@ public class ConnectionPool {
 		}
 	}
 
+	/**
+	 * Returns connection from the pool of opened connections. If there are no free
+	 * connections and current size of pool is less then specified max size it opens
+	 * new Connection, put it into the pool and returns it. The returned connection
+	 * is put on the {@code ArrayBlockingQueue} of taken away connections.
+	 * 
+	 * @return Connection from connection pool
+	 * @throws ConnectionPoolException
+	 */
 	public Connection retrieveConnection() throws ConnectionPoolException {
 		Connection connection = null;
 		if (isPoolClosing) {
@@ -107,6 +130,11 @@ public class ConnectionPool {
 		return connection;
 	}
 
+	/**
+	 * Performs closing of {@code ArrayBlockingQueue} with opened connections and
+	 * taken away connections. Should be called one time at the end of application
+	 * work.
+	 */
 	public void clearConnectionPool() throws ConnectionPoolException {
 		isPoolClosing = true;
 		closeConnectionsQueue(connectionsQueue);
@@ -128,6 +156,12 @@ public class ConnectionPool {
 		}
 	}
 
+	/**
+	 * Performs returning of passed Connection from {@code ArrayBlockingQueue} with
+	 * taken away connection to {@code ArrayBlockingQueue} with opened connections.
+	 * 
+	 * @param connection the connection to be closed.
+	 */
 	public void closeConnection(Connection connection) throws ConnectionPoolException {
 		if (connection != null) {
 			try {
@@ -138,6 +172,14 @@ public class ConnectionPool {
 		}
 	}
 
+	/**
+	 * Performs returning of passed Connection from {@code ArrayBlockingQueue} with
+	 * taken away connection to {@code ArrayBlockingQueue} with opened connections
+	 * and statement closing.
+	 * 
+	 * @param connection the connection to be closed.
+	 * @param statement  the statement to be closed.
+	 */
 	public void closeConnection(Connection connection, Statement statement) throws ConnectionPoolException {
 		if (statement != null) {
 			try {
@@ -150,6 +192,15 @@ public class ConnectionPool {
 		closeConnection(connection);
 	}
 
+	/**
+	 * Performs returning of passed Connection from {@code ArrayBlockingQueue} with
+	 * taken away connection to {@code ArrayBlockingQueue} with opened connections
+	 * and closing of statement and resultSet.
+	 * 
+	 * @param connection the connection to be closed.
+	 * @param statement  the statement to be closed.
+	 * @param resultSet  the result set to be closed.
+	 */
 	public void closeConnection(Connection connection, Statement statement, ResultSet resultSet)
 			throws ConnectionPoolException {
 		if (resultSet != null) {

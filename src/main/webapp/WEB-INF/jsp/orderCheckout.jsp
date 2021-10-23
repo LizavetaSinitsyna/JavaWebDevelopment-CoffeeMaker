@@ -28,13 +28,13 @@
 <meta charset="UTF-8">
 <title><fmt:message key="local.order.header" /></title>
 <link
-	href="css/bootstrap.min.css"
+	href="/CoffeeMachine/css/bootstrap.min.css"
 	rel="stylesheet">
 <link
-	href="css/site.css"
+	href="/CoffeeMachine/css/site.css"
 	rel="stylesheet">
 <link
-	href="images/favicon.ico"
+	href="/CoffeeMachine/images/favicon.ico"
 	rel="shortcut icon"
 	type="image/x-icon">
 </head>
@@ -45,13 +45,13 @@
 	</h3>
 	<div class="half-padding">
 		<div class="container">
-			<form action="Controller">
+			<form action="/CoffeeMachine/Controller">
 				<input
 					type="hidden"
 					name="command"
 					value="pay">
 				<div class="basket-list">
-					<table>
+					<table class="basket-table">
 						<thead>
 							<tr class="basket-list-header">
 								<td
@@ -97,12 +97,24 @@
 										value="${order.getOrder().getInfo().getCost()}" /></td>
 							</tr>
 							<tr class="basket-list-header basket-list-tr">
-								<td colspan="3">Бонусный счет<input type="number">
-								</td>
-								<td colspan="3">Денежный счет<input type="number">
-								</td>
+								<td colspan="3"><fmt:message key="local.pay.cash_balance" />
+									<input
+										id="cashAccount"
+										type="number"
+										min="0.01"
+										max="${account.getBalance()}"
+										step="0.01"
+										value="${account.getBalance()}"></td>
+								<td colspan="3"><fmt:message key="local.pay.bonus_balance" />
+									<input
+										id="bonusAccount"
+										type="number"
+										min="0.01"
+										max="${bonusAccount.getBalance()}"
+										step="0.01"
+										value="${bonusAccount.getBalance()}"></td>
 							</tr>
-							<tr class="basket-list-header basket-list-tr">
+							<tr class="basket-list-header">
 								<td colspan="6"><button
 										type="submit"
 										class="do-btn btn btn-sm btn-outline-secondary float-right">
@@ -116,7 +128,7 @@
 		</div>
 	</div>
 	<%@include file="/WEB-INF/jsp/partial_pages/footer.jsp"%>
-	<script src="js/bootstrap.bundle.min.js"></script>
-	<script src="js/header.js"></script>
+	<script src="/CoffeeMachine/js/bootstrap.bundle.min.js"></script>
+	<script src="/CoffeeMachine/js/header.js"></script>
 </body>
 </html>

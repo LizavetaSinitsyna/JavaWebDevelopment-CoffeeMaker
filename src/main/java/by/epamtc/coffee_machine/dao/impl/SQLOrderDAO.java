@@ -1,6 +1,5 @@
 package by.epamtc.coffee_machine.dao.impl;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,32 +17,30 @@ import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.OrderDAO;
 import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPoolException;
 import by.epamtc.coffee_machine.service.CommonExceptionMessage;
-import by.epamtc.coffee_machine.service.utility.MenuParameter;
-import by.epamtc.coffee_machine.service.utility.MenuPropertyProvider;
+import by.epamtc.coffee_machine.service.utility.DecimalExchange;
 import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPool;
 
+/**
+ * Provides methods for working with Orders table and entities {@link Order},
+ * {@link OrderTransfer}
+ */
 public class SQLOrderDAO implements OrderDAO {
 	private static final ConnectionPool CONNECTION_POOL = ConnectionPool.retrieveConnectionPool();
 	private static final String REMOVE_EXPIRED_ORDERS_QUERY = "DELETE from orders WHERE date_time <= \"%s\" AND status = \"%s\"";
 	private static final String ADD_QUERY = "INSERT INTO orders (user_id, date_time, status, cost) VALUES (%s, \"%s\", \"%s\", %s)";
 	private static final String ADD_ORDER_DRINK_QUERY = "INSERT INTO order_drinks (order_id, drink_id, drink_count) VALUES (%s, %s, %s)";
-	private static final BigDecimal PRICE_DIVISOR = new BigDecimal(
-			MenuPropertyProvider.getInstance().retrieveValue(MenuParameter.DRINK_PRICE_DIVISOR));
 
 	private static final String NO_INSERTED_DRINKS_MESSAGE = "No drinks from the order were inserted in database";
 
-	@Override
-	public Order read(long orderId) throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean remove(long orderId) throws DAOException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	/**
+	 * Removes orders with expired time and passed status.
+	 * 
+	 * @param dateTime the {@code OffsetDateTime} value representing point in time
+	 *                 in comparison with which older orders will be deleted.
+	 * @param status   the {@code OrderStatus} value representing status with which
+	 *                 old orders will be deleted.
+	 * @throws DAOException If problem occurs during interaction with database.
+	 */
 	@Override
 	public void removeExpiredOrders(OffsetDateTime dateTime, OrderStatus status) throws DAOException {
 		Connection connection = null;
@@ -65,12 +62,14 @@ public class SQLOrderDAO implements OrderDAO {
 		}
 	}
 
-	@Override
-	public boolean update(long orderId, OrderInfo info) throws DAOException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	/**
+	 * Add passed order to database.
+	 * 
+	 * @param orderTransfer the order to be saved in database.
+	 * @return {@code long} value which represents order id.
+	 * @throws DAOException If problem occurs during interaction with database or
+	 *                      passed parameter is invalid.
+	 */
 	@Override
 	public long add(OrderTransfer orderTransfer) throws DAOException {
 		if (orderTransfer == null) {
@@ -108,7 +107,7 @@ public class SQLOrderDAO implements OrderDAO {
 
 			statement = connection.createStatement();
 
-			int cost = orderInfo.getCost().multiply(PRICE_DIVISOR).intValue();
+			int cost = DecimalExchange.revertToInt(orderInfo.getCost());
 			statement.executeUpdate(
 					String.format(ADD_QUERY, order.getUserId(), orderInfo.getDateTime(), orderInfo.getStatus(), cost),
 					Statement.RETURN_GENERATED_KEYS);

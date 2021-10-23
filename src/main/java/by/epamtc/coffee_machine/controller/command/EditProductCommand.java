@@ -15,20 +15,32 @@ import org.apache.log4j.Logger;
 
 import by.epamtc.coffee_machine.bean.DrinkIngredient;
 import by.epamtc.coffee_machine.controller.AttributeName;
+import by.epamtc.coffee_machine.controller.Command;
 import by.epamtc.coffee_machine.service.DrinkIngredientMessage;
 import by.epamtc.coffee_machine.service.DrinkMessage;
 import by.epamtc.coffee_machine.service.ServiceException;
 import by.epamtc.coffee_machine.service.ServiceProvider;
 
+/**
+ * 
+ * {@code Command} realization for performing edit of product action.
+ *
+ */
 public class EditProductCommand implements Command {
 	private static final Logger LOG = LogManager.getLogger(EditProductCommand.class.getName());
-	
+
 	private static final String NEXT_PATH_SUCCESS_EDIT = "/successEdit";
 	private static final String NEXT_PATH_FAILED_EDIT = "/failedEdit";
-	private static final String NEXT_PATH_ERROR_EDIT = "/errorPage.jsp";
+	private static final String NEXT_PATH_ERROR_EDIT = "/error500.jsp";
 
+	/**
+	 * Takes drink information and its composition (ingredients) from request,
+	 * performs update of existed drink with received from request information and
+	 * redirects according to the result of update. If drink or ingredients
+	 * information was invalid forwards to the same page with error messages.
+	 */
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String currentPage = request.getParameter(AttributeName.CURRENT_PAGE);
 		String imagePath = request.getParameter(AttributeName.IMAGE_PATH);
 		long drinkId = Long.parseLong(request.getParameter(AttributeName.DRINK_ID));
@@ -84,7 +96,8 @@ public class EditProductCommand implements Command {
 				request.setAttribute(AttributeName.INGREDIENT_ERRORS, ingredientsMessages);
 				errorPage = true;
 			} else {
-				request.setAttribute(AttributeName.SUCCESS_INGREDIENTS_UPDATE, AttributeName.SUCCESS_INGREDIENTS_UPDATE);
+				request.setAttribute(AttributeName.SUCCESS_INGREDIENTS_UPDATE,
+						AttributeName.SUCCESS_INGREDIENTS_UPDATE);
 			}
 
 			if (errorPage) {
@@ -95,6 +108,7 @@ public class EditProductCommand implements Command {
 
 		} catch (ServiceException | IOException | ServletException e) {
 			LOG.error(e.getMessage(), e);
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 
 	}

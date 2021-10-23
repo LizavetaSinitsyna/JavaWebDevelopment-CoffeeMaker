@@ -11,19 +11,30 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import by.epamtc.coffee_machine.controller.AttributeName;
+import by.epamtc.coffee_machine.controller.Command;
 import by.epamtc.coffee_machine.service.ServiceException;
 import by.epamtc.coffee_machine.service.ServiceProvider;
 import by.epamtc.coffee_machine.service.UserService;
 import by.epamtc.coffee_machine.service.UserValidationError;
 
+/**
+ * 
+ * {@code Command} realization for performing user's registration action.
+ *
+ */
 public class RegistrationCommand implements Command {
 	private static final Logger LOG = LogManager.getLogger(RegistrationCommand.class.getName());
-	
+
 	private static final String NEXT_PATH_SUCCESS_REGISTRATION = "/successRegistration";
 	private static final String NEXT_PATH_FAILED_REGISTRATION = "/registration";
 
+	/**
+	 * Takes user's registration information from request and performs his
+	 * registration. If the registration failed forwards to the same page with error
+	 * messages.
+	 */
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String email = request.getParameter(AttributeName.EMAIL);
 		String password = request.getParameter(AttributeName.PASSWORD);
 		String repeatPassword = request.getParameter(AttributeName.REPEAT_PASSWORD);
@@ -48,6 +59,7 @@ public class RegistrationCommand implements Command {
 
 		} catch (ServiceException | IOException | ServletException e) {
 			LOG.error(e.getMessage(), e);
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 
 	}

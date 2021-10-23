@@ -1,5 +1,9 @@
 package by.epamtc.coffee_machine.dao;
 
+/**
+ * Realization of Exception-class for exceptions in DAO-layer.
+ *
+ */
 public class DAOException extends Exception {
 	private static final long serialVersionUID = 1L;
 

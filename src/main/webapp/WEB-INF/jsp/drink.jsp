@@ -46,13 +46,13 @@
 <meta charset="UTF-8">
 <title><c:out value="${drinkInfo.getName()}" /></title>
 <link
-	href="css/bootstrap.min.css"
+	href="/CoffeeMachine/css/bootstrap.min.css"
 	rel="stylesheet">
 <link
-	href="css/site.css"
+	href="/CoffeeMachine/css/site.css"
 	rel="stylesheet">
 <link
-	href="images/favicon.ico"
+	href="/CoffeeMachine/images/favicon.ico"
 	rel="shortcut icon"
 	type="image/x-icon">
 </head>
@@ -155,15 +155,14 @@
 									id="1"> <label for="1">☆</label>
 							</span>
 						</p>
-						<p>feedback</p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<%@include file="partial_pages/footer.jsp"%>
-	<script src="js/bootstrap.bundle.min.js"></script>
-	<script src="js/header.js"></script>
-	<script src="js/addToBasket.js"></script>
+	<script src="/CoffeeMachine/js/bootstrap.bundle.min.js"></script>
+	<script src="/CoffeeMachine/js/header.js"></script>
+	<script src="/CoffeeMachine/js/addToBasket.js"></script>
 </body>
 </html>

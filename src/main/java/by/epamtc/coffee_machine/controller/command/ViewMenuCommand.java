@@ -12,18 +12,28 @@ import org.apache.log4j.Logger;
 
 import by.epamtc.coffee_machine.bean.transfer.DrinkTransfer;
 import by.epamtc.coffee_machine.controller.AttributeName;
+import by.epamtc.coffee_machine.controller.Command;
 import by.epamtc.coffee_machine.service.DrinkService;
 import by.epamtc.coffee_machine.service.ServiceException;
 import by.epamtc.coffee_machine.service.ServiceProvider;
 
+/**
+ * 
+ * {@code Command} realization for performing view menu action.
+ *
+ */
 public class ViewMenuCommand implements Command {
 	private static final Logger LOG = LogManager.getLogger(ViewMenuCommand.class.getName());
-	
+
 	private static final int FIRST_PAGE = 1;
 	private static final String NEXT_PATH = "/WEB-INF/jsp/menu.jsp";
 
+	/**
+	 * Takes number of page from request and forwards to the specified menu page
+	 * with set of products for showing on it.
+	 */
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String pageRequest = request.getParameter(AttributeName.PAGE);
 		int page;
 
@@ -44,6 +54,7 @@ public class ViewMenuCommand implements Command {
 			request.getRequestDispatcher(NEXT_PATH).forward(request, response);
 		} catch (ServiceException | ServletException | IOException e) {
 			LOG.error(e.getMessage(), e);
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 
 	}

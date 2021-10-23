@@ -1,5 +1,9 @@
 package by.epamtc.coffee_machine.dao.impl.pool;
 
+/**
+ * Realization of Exception-class for exceptions in Connection Pool.
+ *
+ */
 public class ConnectionPoolException extends Exception {
 
 	private static final long serialVersionUID = 1L;
