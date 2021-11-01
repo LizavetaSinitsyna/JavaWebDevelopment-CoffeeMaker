@@ -39,7 +39,7 @@ Add Drink|  |   | * |<br/>
 1. View User profile and change user's information.<br/>
 2. View history of orders.<br/>
 3. Leave and view feedbacks.<br/>
-4. Remove drinks, 
+4. Remove drinks.
 5. Add new ingredients, fulfill the machine with ingredients.<br/>
 # Database tables
 ![](https://github.com/LizavetaSinitsyna/JavaWebDevelopment-CoffeeMaker/blob/main/database/tables.JPG)

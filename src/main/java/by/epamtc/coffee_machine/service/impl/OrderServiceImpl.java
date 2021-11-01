@@ -168,29 +168,12 @@ public class OrderServiceImpl implements OrderService {
 		while (orderDrinksIterator.hasNext() && result == null) {
 			int currentAmount;
 
-			Map<Long, Integer> requiredForSpecifiedDrinkIngredientsAmount = new HashMap<>();
-
 			Map.Entry<DrinkTransfer, Integer> drink = orderDrinksIterator.next();
 			long drinkId = drink.getKey().getId();
 			int drinkAmount = drink.getValue();
 
-			List<DrinkIngredientTransfer> drinkIngredients = obtainIngredientsForSpecificDrink(drinkId);
-
-			// Find general amount of ingredients for specified drink taking into account
-			// its amount in the order
-
-			for (DrinkIngredientTransfer drinkIngredient : drinkIngredients) {
-				long ingredientId = drinkIngredient.getIngredientId();
-				int ingredientAmount = drinkIngredient.getIngredientAmount();
-
-				if (requiredForSpecifiedDrinkIngredientsAmount.containsKey(ingredientId)) {
-					currentAmount = requiredForSpecifiedDrinkIngredientsAmount.get(ingredientId);
-					requiredForSpecifiedDrinkIngredientsAmount.put(ingredientId,
-							currentAmount + ingredientAmount * drinkAmount);
-				} else {
-					requiredForSpecifiedDrinkIngredientsAmount.put(ingredientId, ingredientAmount * drinkAmount);
-				}
-			}
+			Map<Long, Integer> requiredForSpecifiedDrinkIngredientsAmount = findRequiredForSpecifiedDrinkIngredientsAmount(
+					drinkId, drinkAmount);
 
 			// Compare amount of required ingredients for particular drink with current
 			// amount of ingredients minus
@@ -229,6 +212,39 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Finds general amount of ingredients for specified drink taking into account
+	 * its amount in the order
+	 * 
+	 * @param drinkId     the drink id
+	 * @param drinkAmount amount of drink in the order
+	 * @return {@code Map} with key as ingredient id and value as required
+	 *         ingredient amount
+	 * @throws ServiceException
+	 */
+	private Map<Long, Integer> findRequiredForSpecifiedDrinkIngredientsAmount(long drinkId, int drinkAmount)
+			throws ServiceException {
+		int currentAmount;
+		Map<Long, Integer> requiredForOrderDrinkIngredientsAmount = new HashMap<>();
+
+		List<DrinkIngredientTransfer> drinkIngredients = obtainIngredientsForSpecificDrink(drinkId);
+
+		for (DrinkIngredientTransfer drinkIngredient : drinkIngredients) {
+			long ingredientId = drinkIngredient.getIngredientId();
+			int ingredientAmount = drinkIngredient.getIngredientAmount();
+
+			if (requiredForOrderDrinkIngredientsAmount.containsKey(ingredientId)) {
+				currentAmount = requiredForOrderDrinkIngredientsAmount.get(ingredientId);
+				requiredForOrderDrinkIngredientsAmount.put(ingredientId,
+						currentAmount + ingredientAmount * drinkAmount);
+			} else {
+				requiredForOrderDrinkIngredientsAmount.put(ingredientId, ingredientAmount * drinkAmount);
+			}
+		}
+
+		return requiredForOrderDrinkIngredientsAmount;
 	}
 
 	/**
@@ -325,7 +341,7 @@ public class OrderServiceImpl implements OrderService {
 		BonusAccount bonusAccount = bonusAccountService.obtainAccountByUserId(userId);
 		Order order = read(orderId);
 
-		if (account == null || bonusAccount == null || order == null) {
+		if (account == null || bonusAccount == null || order == null || order.getUserId() != userId) {
 			return result;
 		}
 		String cashbackPercent = ORDER_PROPERTY_PROVIDER.retrieveValue(OrderParameter.CASHBACK);

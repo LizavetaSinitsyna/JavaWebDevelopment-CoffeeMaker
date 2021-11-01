@@ -27,6 +27,8 @@ import by.epamtc.coffee_machine.service.validation.UserValidator;
  */
 public class UserServiceImpl implements UserService {
 	private final UserDAO userDao = DAOProvider.getInstance().getUserDAO();
+	private final AccountService accountService = ServiceProvider.getInstance().getAccountService();
+	private final BonusAccountService bonusAccountService = ServiceProvider.getInstance().getBonusAccountService();
 
 	/**
 	 * Obtains User with passed login and password.
@@ -79,16 +81,12 @@ public class UserServiceImpl implements UserService {
 	public Set<UserValidationError> registration(String email, String password, String repeatPassword, String username,
 			String name, String phone) throws ServiceException {
 		Set<UserValidationError> errors = null;
-		ServiceProvider serviceProvider = ServiceProvider.getInstance();
 
 		errors = UserValidator.validateFields(userDao, email, password, repeatPassword, username, name, phone);
 
 		if (errors != null && errors.size() > 0) {
 			return errors;
 		}
-
-		AccountService accountService = serviceProvider.getAccountService();
-		BonusAccountService bonusAccountService = serviceProvider.getBonusAccountService();
 
 		User user = new User();
 		Account account = accountService.createAccount();

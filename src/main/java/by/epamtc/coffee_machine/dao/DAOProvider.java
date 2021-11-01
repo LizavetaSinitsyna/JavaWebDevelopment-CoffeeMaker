@@ -14,14 +14,14 @@ import by.epamtc.coffee_machine.dao.impl.SQLUserDAO;
  * interfaces.
  */
 public class DAOProvider {
-	private AccountDAO accountDAO = new SQLAccountDAO();
-	private OrderDrinkDAO orderDrinkDAO = new SQLOrderDrinkDAO();
-	private UserDAO userDAO = new SQLUserDAO();
-	private BonusAccountDAO bonusAccountDAO = new SQLBonusAccountDAO();
-	private DrinkDAO drinkDAO = new SQLDrinkDAO();
-	private DrinkIngredientDAO drinkIngredientDAO = new SQLDrinkIngredientDAO();
-	private IngredientDAO ingredientDAO = new SQLIngredientDAO();
-	private OrderDAO orderDAO = new SQLOrderDAO();
+	private AccountDAO accountDAO;
+	private OrderDrinkDAO orderDrinkDAO;
+	private UserDAO userDAO;
+	private BonusAccountDAO bonusAccountDAO;
+	private DrinkDAO drinkDAO;
+	private DrinkIngredientDAO drinkIngredientDAO;
+	private IngredientDAO ingredientDAO;
+	private OrderDAO orderDAO;
 
 	private DAOProvider() {
 	}
@@ -35,67 +35,59 @@ public class DAOProvider {
 	}
 
 	public AccountDAO getAccountDAO() {
+		if (accountDAO == null) {
+			accountDAO = new SQLAccountDAO();
+		}
 		return accountDAO;
 	}
 
-	public void setAccountDAO(AccountDAO accountDAO) {
-		this.accountDAO = accountDAO;
-	}
-
 	public OrderDrinkDAO getOrderDrinkDAO() {
+		if (orderDrinkDAO == null) {
+			orderDrinkDAO = new SQLOrderDrinkDAO();
+		}
 		return orderDrinkDAO;
 	}
 
-	public void setOrderDrinkDAO(OrderDrinkDAO orderDrinkDAO) {
-		this.orderDrinkDAO = orderDrinkDAO;
-	}
-
 	public UserDAO getUserDAO() {
+		if (userDAO == null) {
+			userDAO = new SQLUserDAO();
+		}
 		return userDAO;
 	}
 
-	public void setUserDAO(UserDAO userDAO) {
-		this.userDAO = userDAO;
-	}
-
 	public BonusAccountDAO getBonusAccountDAO() {
+		if (bonusAccountDAO == null) {
+			bonusAccountDAO = new SQLBonusAccountDAO();
+		}
 		return bonusAccountDAO;
 	}
 
-	public void setBonusAccountDAO(BonusAccountDAO bonusAccountDAO) {
-		this.bonusAccountDAO = bonusAccountDAO;
-	}
-
 	public DrinkDAO getDrinkDAO() {
+		if (drinkDAO == null) {
+			drinkDAO = new SQLDrinkDAO();
+		}
 		return drinkDAO;
 	}
 
-	public void setDrinkDAO(DrinkDAO drinkDAO) {
-		this.drinkDAO = drinkDAO;
-	}
-
 	public DrinkIngredientDAO getDrinkIngredientDAO() {
+		if (drinkIngredientDAO == null) {
+			drinkIngredientDAO = new SQLDrinkIngredientDAO();
+		}
 		return drinkIngredientDAO;
 	}
 
-	public void setDrinkIngredientDAO(DrinkIngredientDAO drinkIngredientDAO) {
-		this.drinkIngredientDAO = drinkIngredientDAO;
-	}
-
 	public IngredientDAO getIngredientDAO() {
+		if (ingredientDAO == null) {
+			ingredientDAO = new SQLIngredientDAO();
+		}
 		return ingredientDAO;
 	}
 
-	public void setIngredientDAO(IngredientDAO ingredientDAO) {
-		this.ingredientDAO = ingredientDAO;
-	}
-
 	public OrderDAO getOrderDAO() {
+		if (orderDAO == null) {
+			orderDAO = new SQLOrderDAO();
+		}
 		return orderDAO;
-	}
-
-	public void setOrderDAO(OrderDAO orderDAO) {
-		this.orderDAO = orderDAO;
 	}
 
 }
