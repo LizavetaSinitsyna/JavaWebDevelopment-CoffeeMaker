@@ -5,6 +5,7 @@ import java.util.List;
 import by.epamtc.coffee_machine.bean.transfer.IngredientTransfer;
 import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.DAOProvider;
+import by.epamtc.coffee_machine.dao.IngredientDAO;
 import by.epamtc.coffee_machine.service.IngredientService;
 import by.epamtc.coffee_machine.service.ServiceException;
 
@@ -14,7 +15,7 @@ import by.epamtc.coffee_machine.service.ServiceException;
  * {@link IngredientTransfer}
  */
 public class IngredientServiceImpl implements IngredientService {
-	private DAOProvider daoProvider = DAOProvider.getInstance();
+	private final IngredientDAO ingredientDao = DAOProvider.getInstance().getIngredientDAO();
 
 	/**
 	 * Obtains all existed ingredients.
@@ -27,7 +28,7 @@ public class IngredientServiceImpl implements IngredientService {
 	public List<IngredientTransfer> obtainAllIngredients() throws ServiceException {
 		List<IngredientTransfer> ingredients = null;
 		try {
-			ingredients = daoProvider.getIngredientDAO().readAll();
+			ingredients = ingredientDao.readAll();
 		} catch (DAOException e) {
 			throw new ServiceException(e.getMessage(), e);
 		}

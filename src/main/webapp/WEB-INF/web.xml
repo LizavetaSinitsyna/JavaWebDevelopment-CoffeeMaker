@@ -46,6 +46,15 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>SuccessPayment</servlet-name>
+		<jsp-file>/WEB-INF/jsp/successPayment.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SuccessPayment</servlet-name>
+		<url-pattern>/successPayment</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>ForbidenAccess</servlet-name>
 		<jsp-file>/WEB-INF/jsp/forbidenAccess.jsp</jsp-file>
 	</servlet>
@@ -89,6 +98,15 @@
 		<servlet-name>Order</servlet-name>
 		<url-pattern>/order</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>SuccessOrderCancel</servlet-name>
+		<jsp-file>/WEB-INF/jsp/successOrderCancel.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SuccessOrderCancel</servlet-name>
+		<url-pattern>/successOrderCancel</url-pattern>
+	</servlet-mapping>
 
 	<filter>
 		<filter-name>EncodingFilter</filter-name>
@@ -109,7 +127,7 @@
 		<filter-class>by.epamtc.coffee_machine.controller.filter.AdminAccessFilter</filter-class>
 		<init-param>
 			<param-name>commands</param-name>
-			<param-value>view_product_edit</param-value>
+			<param-value>view_product_edit;edit_product;view_product_add;add_product</param-value>
 		</init-param>
 	</filter>
 
@@ -137,12 +155,11 @@
 		<exception-type>java.lang.Throwable</exception-type>
 		<location>/error500.jsp</location>
 	</error-page>
-	
 	<error-page>
 		<error-code>401</error-code>
 		<location>/login</location>
 	</error-page>
-	
+
 	<error-page>
 		<error-code>403</error-code>
 		<location>/forbidenAccess.jsp</location>
@@ -152,9 +169,16 @@
 		<error-code>404</error-code>
 		<location>/error404.jsp</location>
 	</error-page>
-	
+
 	<error-page>
 		<error-code>500</error-code>
 		<location>/error500.jsp</location>
 	</error-page>
+
+	<jsp-config>
+		<taglib>
+			<taglib-uri>customtags</taglib-uri>
+			<taglib-location>/WEB-INF/tld/custom.tld</taglib-location>
+		</taglib>
+	</jsp-config>
 </web-app>

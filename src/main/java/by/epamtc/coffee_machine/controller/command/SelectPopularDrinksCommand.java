@@ -33,7 +33,7 @@ public class SelectPopularDrinksCommand implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		ServiceProvider serviceProvider = ServiceProvider.getInstance();
 		try {
-			List<DrinkTransfer> drinks = serviceProvider.getOrderDrinkService().selectPopularDrinks();
+			List<DrinkTransfer> drinks = serviceProvider.getOrderService().selectPopularDrinks();
 			request.setAttribute(AttributeName.MENU, drinks);
 			request.getRequestDispatcher(NEXT_PATH).forward(request, response);
 		} catch (ServiceException | ServletException | IOException e) {

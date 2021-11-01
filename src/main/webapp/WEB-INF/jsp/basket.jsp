@@ -66,6 +66,16 @@
 					</div>
 				</div>
 			</c:if>
+			<c:if test="${! empty failedPayment}">
+				<div class="error">
+					<fmt:message key="local.pay.failed_payment" />
+				</div>
+			</c:if>
+			<c:if test="${! empty failedOrderCancel}">
+				<div class="error">
+					<fmt:message key="local.order.failed_order_cancel" />
+				</div>
+			</c:if>
 			<form
 				action="/CoffeeMachine/Controller"
 				method="post">

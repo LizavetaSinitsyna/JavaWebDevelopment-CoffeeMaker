@@ -42,7 +42,7 @@ public class ViewProductEditCommand implements Command {
 			drinkId = Long.parseLong(request.getParameter(AttributeName.DRINK_ID));
 			drink = SERVICE_PROVIDER.getDrinkService().obtainDrink(drinkId);
 
-			List<DrinkIngredientTransfer> drinkIingredients = SERVICE_PROVIDER.getDrinkIngredientService()
+			List<DrinkIngredientTransfer> drinkIingredients = SERVICE_PROVIDER.getOrderService()
 					.obtainIngredientsForSpecificDrink(drinkId);
 
 			List<IngredientTransfer> allIngredients = SERVICE_PROVIDER.getIngredientService().obtainAllIngredients();

@@ -2,10 +2,8 @@ package by.epamtc.coffee_machine.service;
 
 import by.epamtc.coffee_machine.service.impl.AccountServiceImpl;
 import by.epamtc.coffee_machine.service.impl.BonusAccountServiceImpl;
-import by.epamtc.coffee_machine.service.impl.DrinkIngredientServiceImpl;
 import by.epamtc.coffee_machine.service.impl.DrinkServiceImpl;
 import by.epamtc.coffee_machine.service.impl.IngredientServiceImpl;
-import by.epamtc.coffee_machine.service.impl.OrderDrinkServiceImpl;
 import by.epamtc.coffee_machine.service.impl.OrderServiceImpl;
 import by.epamtc.coffee_machine.service.impl.UserServiceImpl;
 
@@ -14,14 +12,12 @@ import by.epamtc.coffee_machine.service.impl.UserServiceImpl;
  * interfaces.
  */
 public class ServiceProvider {
-	private OrderDrinkService orderDrinkService = new OrderDrinkServiceImpl();
-	private UserService userService = new UserServiceImpl();
-	private AccountService accountService = new AccountServiceImpl();
-	private BonusAccountService bonusAccountService = new BonusAccountServiceImpl();
-	private DrinkService drinkService = new DrinkServiceImpl();
-	private DrinkIngredientService drinkIngredientService = new DrinkIngredientServiceImpl();
-	private IngredientService ingredientService = new IngredientServiceImpl();
-	private OrderService orderService = new OrderServiceImpl();
+	private UserService userService;
+	private AccountService accountService;
+	private BonusAccountService bonusAccountService;
+	private DrinkService drinkService;
+	private IngredientService ingredientService;
+	private OrderService orderService;
 
 	private ServiceProvider() {
 
@@ -35,68 +31,46 @@ public class ServiceProvider {
 		return SingletonHelper.INSTANCE;
 	}
 
-	public OrderDrinkService getOrderDrinkService() {
-		return orderDrinkService;
-	}
-
-	public void setOrderDrinkService(OrderDrinkService orderDrinkService) {
-		this.orderDrinkService = orderDrinkService;
-	}
-
 	public UserService getUserService() {
+		if (userService == null) {
+			userService = new UserServiceImpl();
+		}
 		return userService;
 	}
 
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
-
 	public AccountService getAccountService() {
+		if (accountService == null) {
+			accountService = new AccountServiceImpl();
+		}
 		return accountService;
 	}
 
-	public void setAccountService(AccountService accountService) {
-		this.accountService = accountService;
-	}
-
 	public BonusAccountService getBonusAccountService() {
+		if (bonusAccountService == null) {
+			bonusAccountService = new BonusAccountServiceImpl();
+		}
 		return bonusAccountService;
 	}
 
-	public void setBonusAccountService(BonusAccountService bonusAccountService) {
-		this.bonusAccountService = bonusAccountService;
-	}
-
 	public DrinkService getDrinkService() {
+		if (drinkService == null) {
+			drinkService = new DrinkServiceImpl();
+		}
 		return drinkService;
 	}
 
-	public void setDrinkService(DrinkService drinkService) {
-		this.drinkService = drinkService;
-	}
-
-	public DrinkIngredientService getDrinkIngredientService() {
-		return drinkIngredientService;
-	}
-
-	public void setDrinkIngredientService(DrinkIngredientService drinkIngredientService) {
-		this.drinkIngredientService = drinkIngredientService;
-	}
-
 	public IngredientService getIngredientService() {
+		if (ingredientService == null) {
+			ingredientService = new IngredientServiceImpl();
+		}
 		return ingredientService;
 	}
 
-	public void setIngredientService(IngredientService ingredientService) {
-		this.ingredientService = ingredientService;
-	}
-
 	public OrderService getOrderService() {
+		if (orderService == null) {
+			orderService = new OrderServiceImpl();
+		}
 		return orderService;
-	}
-
-	public void setOrderService(OrderService orderService) {
-		this.orderService = orderService;
 	}
 
 }

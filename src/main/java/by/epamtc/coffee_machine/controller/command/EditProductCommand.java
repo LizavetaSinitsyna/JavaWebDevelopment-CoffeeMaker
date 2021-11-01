@@ -1,6 +1,7 @@
 package by.epamtc.coffee_machine.controller.command;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -42,7 +44,8 @@ public class EditProductCommand implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String currentPage = request.getParameter(AttributeName.CURRENT_PAGE);
-		String imagePath = request.getParameter(AttributeName.IMAGE_PATH);
+		String realPathForImage = request.getServletContext().getRealPath("/images");
+		InputStream imageContent = null;
 		long drinkId = Long.parseLong(request.getParameter(AttributeName.DRINK_ID));
 		BigDecimal price = new BigDecimal(request.getParameter(AttributeName.PRICE));
 		String description = request.getParameter(AttributeName.DESCRIPTION);
@@ -51,8 +54,11 @@ public class EditProductCommand implements Command {
 		String[] ingredientsOptional = request.getParameterValues(AttributeName.OPTIONAL);
 
 		try {
-			Set<DrinkMessage> drinkMessages = ServiceProvider.getInstance().getDrinkService().edit(imagePath, drinkId,
-					price, description);
+			Part imagePart = request.getPart(AttributeName.IMAGE);
+			String imageName = imagePart.getSubmittedFileName();
+			imageContent = imagePart.getInputStream();
+			Set<DrinkMessage> drinkMessages = ServiceProvider.getInstance().getDrinkService()
+					.editDrink(realPathForImage, imageContent, imageName, drinkId, price, description);
 			if (drinkMessages.contains(DrinkMessage.INVALID_DRINK_ID)) {
 				response.sendRedirect(request.getContextPath() + NEXT_PATH_ERROR_EDIT);
 				return;
@@ -68,8 +74,8 @@ public class EditProductCommand implements Command {
 				drinkIngredients.add(drinkIngredient);
 			}
 
-			Set<DrinkIngredientMessage> ingredientsMessages = ServiceProvider.getInstance().getDrinkIngredientService()
-					.edit(drinkId, drinkIngredients);
+			Set<DrinkIngredientMessage> ingredientsMessages = ServiceProvider.getInstance().getDrinkService()
+					.editDrinkComposition(drinkId, drinkIngredients);
 
 			if (ingredientsMessages.contains(DrinkIngredientMessage.INVALID_DRINK_ID)
 					|| ingredientsMessages.contains(DrinkIngredientMessage.INVALID_INGREDIENT_ID)) {
@@ -109,6 +115,10 @@ public class EditProductCommand implements Command {
 		} catch (ServiceException | IOException | ServletException e) {
 			LOG.error(e.getMessage(), e);
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		} finally {
+			if (imageContent != null) {
+				imageContent.close();
+			}
 		}
 
 	}

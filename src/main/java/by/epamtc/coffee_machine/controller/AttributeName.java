@@ -40,6 +40,7 @@ public class AttributeName {
 
 	// Attribute name for product
 	public static final String IMAGE_PATH = "imagePath";
+	public static final String IMAGE = "image";
 	public static final String PRICE = "price";
 	public static final String DESCRIPTION = "description";
 	public static final String INGREDIENT = "ingredient";
@@ -52,10 +53,13 @@ public class AttributeName {
 	// Basket
 	public static final String BASKET = "basket";
 	public static final String DRINK_AMOUNT = "drinkAmount";
-	
-	//Order
+
+	// Order
 	public static final String UNAVAILABLE_INGREDIENT = "unavailableIngredient";
 	public static final String ORDER = "order";
+	public static final String ORDER_ID = "orderId";
+	public static final String FAILED_PAYMENT = "failedPayment";
+	public static final String FAILED_ORDER_CANCEL = "failedOrderCancel";
 
 	private AttributeName() {
 

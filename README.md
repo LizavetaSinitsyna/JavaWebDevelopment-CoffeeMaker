@@ -32,13 +32,15 @@ Load shopping cart|   | * | * |
 Add products to shopping cart|  | * | * |
 Remove product from shopping cart|  | * | * |
 Create order|  | * | * |
-Update Drink|  |   | * |<br/>	
+Pay for order|  | * | * |
+Update Drink|  |   | * |
+Add Drink|  |   | * |<br/>	
 # Commands which will be added
 1. View User profile and change user's information.<br/>
 2. View history of orders.<br/>
-3. Pay for order with help of bonuses.
-4. Leave and view feedbacks.
-5. Add and remove drinks, fulfill the machine with ingredients.
+3. Leave and view feedbacks.<br/>
+4. Remove drinks, 
+5. Add new ingredients, fulfill the machine with ingredients.<br/>
 # Database tables
 ![](https://github.com/LizavetaSinitsyna/JavaWebDevelopment-CoffeeMaker/blob/main/database/tables.JPG)
 

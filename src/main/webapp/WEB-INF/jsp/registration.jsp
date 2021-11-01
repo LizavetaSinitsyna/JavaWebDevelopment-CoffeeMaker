@@ -45,7 +45,7 @@
 		<fmt:message key="local.registration.header" />
 	</h3>
 	<p>
-		<fmt:message key="local.registration.info_request" />
+		<fmt:message key="local.info_request" />
 	</p>
 	<p>
 		<span class="star">* </span>
@@ -74,6 +74,7 @@
 						value="${requestScope.email}"
 						placeholder="coffee@example.com"
 						pattern="^(?=[^@\s]+@[^@\\s]+\.[^@\s]+).{5,255}$"
+						title="<fmt:message key="local.registration.email_requirements" />"
 						required>
 					<label for="email">
 						<fmt:message key="local.registration.email" />
@@ -98,6 +99,7 @@
 						placeholder="CoffeeName"
 						value="${requestScope.username}"
 						pattern="^[a-zA-Z0-9а-яА-Я]([\._-](?![\._-])|[a-zA-Z0-9а-яА-Я]){3,18}[a-zA-Z0-9а-яА-Я]$"
+						title="<fmt:message key="local.registration.username_requirements" />"
 						required>
 					<label for="username">
 						<fmt:message key="local.registration.username" />
@@ -122,6 +124,7 @@
 						placeholder="Latte"
 						value="${requestScope.name}"
 						pattern=".{1,100}"
+						title="<fmt:message key="local.registration.name_requirements" />"
 						required>
 					<label for="name">
 						<fmt:message key="local.registration.name" />
@@ -146,6 +149,7 @@
 						placeholder="+375XXXXXXXXX"
 						value="${requestScope.phone}"
 						pattern="\+375[0-9]{9}"
+						title="<fmt:message key="local.registration.phone_requirements" />"
 						required>
 					<label for="phone">
 						<fmt:message key="local.registration.phone" />
@@ -169,6 +173,7 @@
 						id="password"
 						placeholder="xxx"
 						pattern="^(?=.*?[A-ZА-Я])(?=.*?[a-zа-я])(?=.*?[0-9])(?=.*?[ !&quot;#\\$%&'\(\)\*\+,\-\./:;<=>\?@\[\]\^_`{|}~]).{8,}$"
+						title="<fmt:message key="local.registration.password_requirements" />"
 						required>
 					<label for="password">
 						<fmt:message key="local.password" />

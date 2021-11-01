@@ -14,6 +14,7 @@ import by.epamtc.coffee_machine.bean.transfer.DrinkIngredientTransfer;
 import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.dao.DrinkIngredientDAO;
 import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPoolException;
+import by.epamtc.coffee_machine.service.CommonExceptionMessage;
 import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPool;
 
 /**
@@ -103,9 +104,10 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 		}
 
 		Connection connection = null;
-		PreparedStatement preparedStatement = null;
 		Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		int effectedRows = 0;
+		boolean result = false;
 
 		long drinkId = drinkIngredientMap.getDrinkId();
 		if (drinkId <= 0) {
@@ -114,6 +116,9 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 
 		try {
 			connection = CONNECTION_POOL.retrieveConnection();
+			if (connection == null) {
+				throw new DAOException(CommonExceptionMessage.NULL_CONNECTION);
+			}
 			connection.setAutoCommit(false);
 
 			statement = connection.createStatement();
@@ -123,6 +128,7 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 				return false;
 			}
 
+			effectedRows = 0;
 			preparedStatement = connection.prepareStatement(INSERT_DRINK_INGREDIENTS_QUERY);
 			for (DrinkIngredient element : ingredients) {
 				preparedStatement.setLong(1, drinkId);
@@ -131,23 +137,30 @@ public class SQLDrinkIngredientDAO implements DrinkIngredientDAO {
 				preparedStatement.setBoolean(4, element.isOptional());
 				effectedRows += preparedStatement.executeUpdate();
 			}
-
-			connection.commit();
+			result = effectedRows > 0;
+			if (result) {
+				connection.commit();
+			} else {
+				connection.rollback();
+			}
 		} catch (ConnectionPoolException | SQLException e) {
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
-				throw new DAOException(e.getMessage(), e);
+				throw new DAOException(e1.getMessage(), e1);
 			}
 			throw new DAOException(e.getMessage(), e);
 		} finally {
 			try {
 				connection.setAutoCommit(true);
-				CONNECTION_POOL.closeConnection(connection, preparedStatement);
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				CONNECTION_POOL.closeConnection(connection, statement);
 			} catch (ConnectionPoolException | SQLException e) {
 				throw new DAOException(e.getMessage(), e);
 			}
 		}
-		return effectedRows > 0;
+		return result;
 	}
 }

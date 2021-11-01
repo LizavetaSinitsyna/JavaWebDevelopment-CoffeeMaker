@@ -8,6 +8,20 @@
 	var="error"
 	items="${errors}">
 	<c:choose>
+		<c:when test="${error == 'ILLEGAL_DRINK_NAME'}">
+			<c:set
+				var="nameError"
+				scope="request">
+				<fmt:message key="local.product.name_requirements" />
+			</c:set>
+		</c:when>
+		<c:when test="${error == 'DUBLICATE_DRINK_NAME'}">
+			<c:set
+				var="nameError"
+				scope="request">
+				<fmt:message key="local.product.error.dublicate_name" />
+			</c:set>
+		</c:when>
 		<c:when test="${error == 'ILLEGAL_IMAGE_PATH'}">
 			<c:set
 				var="imageError"
@@ -26,7 +40,7 @@
 			<c:set
 				var="descriptionError"
 				scope="request">
-				<fmt:message key="local.registration.username_requirements" />
+				<fmt:message key="local.product.description_requirements" />
 			</c:set>
 		</c:when>
 	</c:choose>

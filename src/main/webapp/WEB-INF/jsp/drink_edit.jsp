@@ -65,7 +65,8 @@
 	<div>
 		<form
 			action="/CoffeeMachine/Controller"
-			method="post">
+			method="post"
+			enctype="multipart/form-data">
 			<input
 				type="hidden"
 				name="command"
@@ -83,17 +84,20 @@
 					<fmt:message key="local.user.error.incorrect_input" />
 				</div>
 			</c:if>
-			<div class="form-floating mb-3 flex-display">
-				<input
-					type="text"
-					name="imagePath"
-					class="form-control width-50"
-					id="imagePath"
-					value="${drinkInfo.getImagePath()}"
-					placeholder="/CoffeeMachine/images/image_name.png">
-				<label for="imagePath">
+			<img
+				name="imagePath"
+				class="basket-list-image"
+				id="imagePath"
+				src="${drinkInfo.getImagePath()}">
+			<div class="form-floating mb-3">
+				<p class="underline">
 					<fmt:message key="local.product.image" />
-				</label>
+				</p>
+				<input
+					type="file"
+					name="image"
+					id="image"
+					accept="image/png, image/jpeg">
 				<span class="input-info error"><c:out value="${imageError}" /></span>
 			</div>
 			<div class="form-floating mb-3 flex-display">
@@ -101,11 +105,13 @@
 					type="number"
 					step="0.01"
 					min="0.01"
+					max="100.00"
 					name="price"
 					class="form-control width-50"
 					id="price"
 					placeholder="0.01"
 					value="${drinkInfo.getPrice()}"
+					title="<fmt:message key="local.product.price_requirements" />"
 					required>
 				<label for="name">
 					<fmt:message key="local.product.price" />
@@ -226,16 +232,12 @@
 			<input
 				id="submit-edit"
 				type="submit"
-				class="btn btn-sm btn-outline-secondary"
+				class="btn btn-sm btn-outline-secondary change-btn"
 				name="edit-form"
 				value="<fmt:message
 							key="local.edit.submit"/>" />
 		</form>
 	</div>
-	<p>
-		<fmt:message key="local.registration.login_offer" />
-		<a href="/CoffeeMachine/login"><fmt:message key="local.header.login.name" /></a>
-	</p>
 	<div
 		id="copy"
 		class="hide">

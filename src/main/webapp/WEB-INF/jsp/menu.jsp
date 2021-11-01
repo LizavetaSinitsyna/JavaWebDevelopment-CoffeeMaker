@@ -8,6 +8,9 @@
 <%@ taglib
 	prefix="fmt"
 	uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib
+	prefix="ctg"
+	uri="customtags"%>
 <c:set
 	var="cookie_lang"
 	value="${cookie['lang'].value}"
@@ -43,45 +46,42 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/jsp/partial_pages/header.jsp"></jsp:include>
-	<h3 class="center-align">
-		<fmt:message key="local.header.menu.name" />
-	</h3>
-	<jsp:include page="/WEB-INF/jsp/partial_pages/show_menu.jsp"></jsp:include>
-	<div class="btn-group page-list">
-		<c:if test="${requestScope.pages_amount != null && requestScope.pages_amount > 1}">
-			<c:forEach
-				var="page"
-				begin="1"
-				end="${requestScope.pages_amount}"
-				varStatus="pageNumber">
-				<form action="/CoffeeMachine/Controller">
+	<c:choose>
+		<c:when test="${sessionScope.user != null && sessionScope.user.getRoleId() == 1}">
+			<form action="/CoffeeMachine/Controller">
+				<h3 class="center-align">
+					<fmt:message key="local.header.menu.name" />
 					<input
 						type="hidden"
 						name="command"
-						value="view_menu">
-					<c:choose>
-						<c:when test="${currentMenuPage == page}">
-							<button
-								class="btn btn-sm btn-outline-secondary current"
-								type="submit"
-								name="page"
-								value="${pageNumber.index}">
-								<c:out value="${pageNumber.index} " />
-							</button>
-						</c:when>
-						<c:otherwise>
-							<button
-								class="btn btn-sm btn-outline-secondary"
-								type="submit"
-								name="page"
-								value="${pageNumber.index}">
-								<c:out value="${pageNumber.index} " />
-							</button>
-						</c:otherwise>
-					</c:choose>
-				</form>
-			</c:forEach>
-		</c:if>
+						value="view_product_add">
+					<button
+						type="submit"
+						class="btn btn-sm btn-outline-secondary">
+						<fmt:message key="local.add.btn" />
+					</button>
+				</h3>
+			</form>
+		</c:when>
+		<c:otherwise>
+			<h3 class="center-align">
+				<fmt:message key="local.header.menu.name" />
+			</h3>
+		</c:otherwise>
+	</c:choose>
+	<jsp:include page="/WEB-INF/jsp/partial_pages/show_menu.jsp"></jsp:include>
+	<div class="btn-group page-list">
+		<form action="/CoffeeMachine/Controller">
+			<input
+				type="hidden"
+				name="command"
+				value="view_menu">
+			<ctg:pagination
+				current="${currentMenuPage}"
+				total="${requestScope.pages_amount}"
+				generalClass="btn btn-sm btn-outline-secondary"
+				currentPageClass="btn btn-sm btn-outline-secondary current" />
+		</form>
 	</div>
 	<%@include file="partial_pages/footer.jsp"%>
 	<script src="/CoffeeMachine/js/bootstrap.bundle.min.js"></script>

@@ -33,7 +33,8 @@
 								href=""></a>
 						</c:if>
 						<img
-							alt=""
+							class="drink-menu"
+							alt="${drink.getName()}"
 							src="${image}">
 						<div class="card-body">
 							<p class="card-text">

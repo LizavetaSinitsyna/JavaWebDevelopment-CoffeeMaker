@@ -40,16 +40,39 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/jsp/partial_pages/header.jsp"></jsp:include>
-	<h3 class="center-align">
-		<fmt:message key="local.order.header" />
-	</h3>
+	<form
+		action="/CoffeeMachine/Controller"
+		method="post">
+		<h3 class="center-align">
+			<fmt:message key="local.order.header" />
+			<input
+				type="hidden"
+				name="command"
+				value="cancel_order">
+			<input
+				type="hidden"
+				name="orderId"
+				value="${order.getOrder().getOrderId()}">
+			<button
+				type="submit"
+				class="btn btn-sm btn-outline-secondary">
+				<fmt:message key="local.edit.cancel" />
+			</button>
+		</h3>
+	</form>
 	<div class="half-padding">
 		<div class="container">
-			<form action="/CoffeeMachine/Controller">
+			<form
+				action="/CoffeeMachine/Controller"
+				method="post">
 				<input
 					type="hidden"
 					name="command"
-					value="pay">
+					value="pay_for_order">
+				<input
+					type="hidden"
+					name="orderId"
+					value="${order.getOrder().getOrderId()}">
 				<div class="basket-list">
 					<table class="basket-table">
 						<thead>
@@ -97,29 +120,34 @@
 										value="${order.getOrder().getInfo().getCost()}" /></td>
 							</tr>
 							<tr class="basket-list-header basket-list-tr">
-								<td colspan="3"><fmt:message key="local.pay.cash_balance" />
-									<input
-										id="cashAccount"
+								<td colspan="3"><fmt:message key="local.pay.cash_balance" />: <fmt:formatNumber
 										type="number"
-										min="0.01"
-										max="${account.getBalance()}"
-										step="0.01"
-										value="${account.getBalance()}"></td>
-								<td colspan="3"><fmt:message key="local.pay.bonus_balance" />
-									<input
-										id="bonusAccount"
+										minFractionDigits="2"
+										value="${account.getBalance()}" /> <fmt:message key="local.menu.price.currency" /></td>
+								<td colspan="3"><fmt:message key="local.pay.bonus_balance" />: <fmt:formatNumber
 										type="number"
-										min="0.01"
-										max="${bonusAccount.getBalance()}"
-										step="0.01"
-										value="${bonusAccount.getBalance()}"></td>
+										minFractionDigits="2"
+										value="${bonusAccount.getBalance()}" /> <fmt:message key="local.menu.price.currency" /></td>
 							</tr>
 							<tr class="basket-list-header">
 								<td colspan="6"><button
 										type="submit"
-										class="do-btn btn btn-sm btn-outline-secondary float-right">
+										class="do-btn btn btn-sm btn-outline-secondary">
 										<fmt:message key="local.order.pay" />
 									</button></td>
+							</tr>
+							<tr class="basket-list-header">
+								<td colspan="6"><fmt:message key="local.order.creation_time" />
+									<fmt:parseDate
+										value="${order.getOrder().getInfo().getDateTime()}"
+										pattern="yyyy-MM-dd'T'HH:mm"
+										var="parsedDateTime"
+										type="both" /> <fmt:formatDate
+										pattern="dd.MM.yyyy HH:mm"
+										value="${ parsedDateTime }" /></td>
+							</tr>
+							<tr class="basket-list-header">
+								<td colspan="6"><fmt:message key="local.pay.time_warn" /></td>
 							</tr>
 						</tfoot>
 					</table>

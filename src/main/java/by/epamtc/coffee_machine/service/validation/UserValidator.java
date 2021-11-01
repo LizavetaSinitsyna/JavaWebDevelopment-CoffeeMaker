@@ -5,8 +5,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import by.epamtc.coffee_machine.dao.DAOException;
-import by.epamtc.coffee_machine.dao.DAOProvider;
 import by.epamtc.coffee_machine.dao.UserDAO;
+import by.epamtc.coffee_machine.service.CommonExceptionMessage;
 import by.epamtc.coffee_machine.service.ServiceException;
 import by.epamtc.coffee_machine.service.UserValidationError;
 
@@ -15,7 +15,6 @@ import by.epamtc.coffee_machine.service.UserValidationError;
  *
  */
 public class UserValidator {
-	private static final UserDAO USER_DAO = DAOProvider.getInstance().getUserDAO();
 
 	private static final String EMAIL_REGEX = "^(?=[^@\\s]+@[^@\\s]+\\.[^@\\s]+).{5,255}$";
 	private static final String PASSWORD_REGEX = "^(?=.*?[A-ZА-Я])(?=.*?[a-zа-я])(?=.*?[0-9])(?=.*?[ !\\\"#\\$%&'\\(\\)\\*\\+,\\-\\./:;<=>\\?@\\[\\]\\^_`{|}~]).{8,25}$";
@@ -47,10 +46,13 @@ public class UserValidator {
 	 *         {@code false} otherwise.
 	 * @throws ServiceException If problem occurs during interaction with DAO-layer.
 	 */
-	public static boolean checkDublicatedEmail(String email) throws ServiceException {
+	public static boolean checkDublicatedEmail(UserDAO userDao, String email) throws ServiceException {
+		if (userDao == null) {
+			throw new ServiceException(CommonExceptionMessage.NULL_ARGUMENT);
+		}
 		boolean result = false;
 		try {
-			result = USER_DAO.containsEmail(email);
+			result = userDao.containsEmail(email);
 		} catch (DAOException e) {
 			throw new ServiceException(e.getMessage(), e);
 		}
@@ -79,10 +81,15 @@ public class UserValidator {
 	 *         {@code false} otherwise.
 	 * @throws ServiceException If problem occurs during interaction with DAO-layer.
 	 */
-	public static boolean checkDublicatedUsername(String username) throws ServiceException {
+	public static boolean checkDublicatedUsername(UserDAO userDao, String username) throws ServiceException {
+		if (userDao == null) {
+			throw new ServiceException(CommonExceptionMessage.NULL_ARGUMENT);
+		}
+
 		boolean result = false;
+
 		try {
-			result = USER_DAO.containsUsername(username);
+			result = userDao.containsUsername(username);
 		} catch (DAOException e) {
 			throw new ServiceException(e.getMessage(), e);
 		}
@@ -155,21 +162,21 @@ public class UserValidator {
 	 * @param name           the name to validate.
 	 * @param phone          the phone to validate.
 	 * @return {@code Set} of {@code UserValidationError}.
-	 * @throws ServiceException
+	 * @throws ServiceException If problem occurs during interaction with DAO-layer.
 	 */
-	public static Set<UserValidationError> validateFields(String email, String password, String repeatPassword,
-			String username, String name, String phone) throws ServiceException {
+	public static Set<UserValidationError> validateFields(UserDAO userDao, String email, String password,
+			String repeatPassword, String username, String name, String phone) throws ServiceException {
 		Set<UserValidationError> errors = new HashSet<>();
 
 		if (!checkEmail(email)) {
 			errors.add(UserValidationError.ILLEGAL_EMAIL);
-		} else if (checkDublicatedEmail(email)) {
+		} else if (checkDublicatedEmail(userDao, email)) {
 			errors.add(UserValidationError.DUBLICATE_EMAIL);
 		}
 
 		if (!checkUsername(username)) {
 			errors.add(UserValidationError.ILLEGAL_USERNAME);
-		} else if (checkDublicatedUsername(username)) {
+		} else if (checkDublicatedUsername(userDao, username)) {
 			errors.add(UserValidationError.DUBLICATE_USERNAME);
 		}
 

@@ -26,7 +26,7 @@ import by.epamtc.coffee_machine.service.validation.UserValidator;
  * {@link User}, {@link UserInfo}.
  */
 public class UserServiceImpl implements UserService {
-	private static final UserDAO USER_DAO = DAOProvider.getInstance().getUserDAO();
+	private final UserDAO userDao = DAOProvider.getInstance().getUserDAO();
 
 	/**
 	 * Obtains User with passed login and password.
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 			return result;
 		}
 		try {
-			UserLoginPasswordTransfer user = USER_DAO.login(login);
+			UserLoginPasswordTransfer user = userDao.login(login);
 			if (user != null && BCrypt.checkpw(password, user.getPassword())) {
 				result = new UserLoginTransfer();
 				result.setId(user.getId());
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 		Set<UserValidationError> errors = null;
 		ServiceProvider serviceProvider = ServiceProvider.getInstance();
 
-		errors = UserValidator.validateFields(email, password, repeatPassword, username, name, phone);
+		errors = UserValidator.validateFields(userDao, email, password, repeatPassword, username, name, phone);
 
 		if (errors != null && errors.size() > 0) {
 			return errors;
@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
 		user.setInfo(userInfo);
 
 		try {
-			USER_DAO.add(user);
+			userDao.add(user);
 		} catch (DAOException e) {
 			throw new ServiceException(e.getMessage(), e);
 		}

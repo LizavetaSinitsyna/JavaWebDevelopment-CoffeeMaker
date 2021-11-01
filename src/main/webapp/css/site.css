@@ -47,8 +47,8 @@ body {
 }
 
 .basket-table {
-    table-layout: fixed;
-    width: 100%;
+	table-layout: fixed;
+	width: 100%;
 }
 
 .basket-list-image {
@@ -306,4 +306,17 @@ header .nav-link:hover {
 	width: 50px;
 	border: 1px solid #ced4da;
 	border-radius: .25rem;
+}
+
+.change-btn {
+	margin-bottom: 10px;
+}
+
+.underline {
+	text-decoration: underline;
+}
+
+.drink-menu {
+	width: 219px;
+	height: 358px;
 }

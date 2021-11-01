@@ -64,9 +64,9 @@ public class AdminAccessFilter implements Filter {
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		commandsWithAccessControl = new HashSet<>();
-		String[] commands = fConfig.getInitParameter(COMMANDS_PARAMETER_NAME).split("\\n");
+		String[] commands = fConfig.getInitParameter(COMMANDS_PARAMETER_NAME).split(";");
 		for (String element : commands) {
-			commandsWithAccessControl.add(element.toLowerCase());
+			commandsWithAccessControl.add(element.toLowerCase().trim());
 		}
 	}
 

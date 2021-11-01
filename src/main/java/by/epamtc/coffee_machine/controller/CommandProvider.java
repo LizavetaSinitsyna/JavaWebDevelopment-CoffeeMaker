@@ -2,6 +2,8 @@ package by.epamtc.coffee_machine.controller;
 
 import java.util.HashMap;
 
+import by.epamtc.coffee_machine.controller.command.AddProductCommand;
+import by.epamtc.coffee_machine.controller.command.CancelOrderCommand;
 import by.epamtc.coffee_machine.controller.command.ChangeLanguageCommand;
 import by.epamtc.coffee_machine.controller.command.EditProductCommand;
 import by.epamtc.coffee_machine.controller.command.LogOutCommand;
@@ -12,6 +14,7 @@ import by.epamtc.coffee_machine.controller.command.PayForOrderCommand;
 import by.epamtc.coffee_machine.controller.command.RegistrationCommand;
 import by.epamtc.coffee_machine.controller.command.SelectPopularDrinksCommand;
 import by.epamtc.coffee_machine.controller.command.ViewMenuCommand;
+import by.epamtc.coffee_machine.controller.command.ViewProductAddCommand;
 import by.epamtc.coffee_machine.controller.command.ViewProductCommand;
 import by.epamtc.coffee_machine.controller.command.ViewProductEditCommand;
 
@@ -38,6 +41,9 @@ public class CommandProvider {
 		commands.put(CommandName.EDIT_PRODUCT, new EditProductCommand());
 		commands.put(CommandName.MAKE_ORDER, new MakeOrderCommand());
 		commands.put(CommandName.PAY_FOR_ORDER, new PayForOrderCommand());
+		commands.put(CommandName.CANCEL_ORDER, new CancelOrderCommand());
+		commands.put(CommandName.VIEW_PRODUCT_ADD, new ViewProductAddCommand());
+		commands.put(CommandName.ADD_PRODUCT, new AddProductCommand());
 	}
 
 	private static final class SingletonHelper {

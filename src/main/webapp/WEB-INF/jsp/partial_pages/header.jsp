@@ -29,13 +29,12 @@
 					type="hidden"
 					name="command"
 					value="view_menu">
-				<input
+				<button
 					id="menu"
 					type="submit"
-					class="btn text-uppercase empty-shadow"
-					name="menu"
-					value="<fmt:message
-					key="local.header.menu.name" />" />
+					class="btn text-uppercase empty-shadow">
+					<fmt:message key="local.header.menu.name" />
+				</button>
 			</form></li>
 		<li><a
 			href="#"

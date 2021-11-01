@@ -25,7 +25,7 @@ public class SQLOrderDrinkDAO implements OrderDrinkDAO {
 	private static final ConnectionPool CONNECTION_POOL = ConnectionPool.retrieveConnectionPool();
 	private static final String SELECT_POPULAR_DRINKS_QUERY = "SELECT drink_id, name, image_path, price "
 			+ "FROM drinks WHERE drink_id IN " + "(SELECT drink_id FROM (SELECT drink_id, SUM(drink_count) "
-			+ "FROM order_drinks GROUP BY drink_id ORDER BY drink_count DESC LIMIT ?) sub_query)";
+			+ "FROM order_drinks GROUP BY drink_id ORDER BY SUM(drink_count) DESC LIMIT ?) sub_query)";
 	private static final String ADD_QUERY = "INSERT INTO order_drinks (order_id, drink_id, drink_count) VALUES (%s, %s, %s)";
 
 	/**

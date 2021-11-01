@@ -34,4 +34,15 @@ public class DBResourceManager {
 		return bundle.getString(key);
 	}
 
+	/**
+	 * Sets specified resource bundle if passed parameter is not {@code null}.
+	 * 
+	 * @param bundle the {@code ResourceBundle} object to be set.
+	 */
+	public void setBundle(ResourceBundle bundle) {
+		if (bundle != null) {
+			this.bundle = bundle;
+		}
+	}
+
 }
