@@ -54,6 +54,9 @@ public class DrinkValidator {
 	 * @return {@code true} if price is valid and {@code false} otherwise.
 	 */
 	public static boolean checkPrice(BigDecimal price) {
+		if (price == null) {
+			return false;
+		}
 		return price.compareTo(new BigDecimal(MIN_PRICE)) >= 0 && price.compareTo(new BigDecimal(MAX_PRICE)) <= 0;
 	}
 
@@ -64,9 +67,12 @@ public class DrinkValidator {
 	 * @return {@code true} if description is valid and {@code false} otherwise.
 	 */
 	public static boolean checkDescription(String description) {
+		if (description == null || description.isEmpty()) {
+			return true;
+		}
 		Pattern pattern = Pattern.compile(DESCRIPTION_REGEX);
 
-		return !(description == null) && pattern.matcher(description).matches();
+		return pattern.matcher(description).matches();
 	}
 
 	/**
@@ -76,9 +82,12 @@ public class DrinkValidator {
 	 * @return {@code true} if name is valid and {@code false} otherwise.
 	 */
 	public static boolean checkName(String name) {
+		if (name == null || name.isBlank()) {
+			return false;
+		}
 		Pattern pattern = Pattern.compile(NAME_REGEX);
 
-		return !(name == null) && pattern.matcher(name).matches();
+		return pattern.matcher(name).matches();
 	}
 
 	/**
@@ -110,8 +119,8 @@ public class DrinkValidator {
 	 * @param description the description to validate
 	 * @return {@code Set} of {@code DrinkMessage}
 	 */
-	public static Set<DrinkMessage> validateFields(DrinkDAO drinkDao, String drinkName, String imageName, BigDecimal price,
-			String description) throws ServiceException {
+	public static Set<DrinkMessage> validateAllFields(DrinkDAO drinkDao, String drinkName, String imageName,
+			BigDecimal price, String description) throws ServiceException {
 
 		Set<DrinkMessage> messages = new HashSet<>();
 
@@ -134,7 +143,7 @@ public class DrinkValidator {
 	 * @param description the description to validate
 	 * @return {@code Set} of {@code DrinkMessage}
 	 */
-	public static Set<DrinkMessage> validateFields(String imageName, BigDecimal price, String description) {
+	public static Set<DrinkMessage> validateEditableFields(String imageName, BigDecimal price, String description) {
 
 		Set<DrinkMessage> messages = new HashSet<>();
 

@@ -50,7 +50,13 @@ public class UserValidator {
 		if (userDao == null) {
 			throw new ServiceException(CommonExceptionMessage.NULL_ARGUMENT);
 		}
+
+		if (email == null) {
+			return false;
+		}
+		
 		boolean result = false;
+		
 		try {
 			result = userDao.containsEmail(email);
 		} catch (DAOException e) {

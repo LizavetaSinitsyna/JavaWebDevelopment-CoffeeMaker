@@ -150,7 +150,7 @@ public class DrinkServiceImpl implements DrinkService {
 			return messages;
 		}
 
-		messages = DrinkValidator.validateFields(imageName, price, description);
+		messages = DrinkValidator.validateEditableFields(imageName, price, description);
 
 		if (messages == null || messages.isEmpty()) {
 			Drink drink = new Drink();
@@ -197,7 +197,7 @@ public class DrinkServiceImpl implements DrinkService {
 			String drinkName, BigDecimal price, String description, List<DrinkIngredient> drinkIngredients)
 			throws ServiceException {
 		DrinkMessageTransfer generalDrinkMessages = new DrinkMessageTransfer();
-		Set<DrinkMessage> drinkMessages = DrinkValidator.validateFields(drinkDao, drinkName, imageName, price,
+		Set<DrinkMessage> drinkMessages = DrinkValidator.validateAllFields(drinkDao, drinkName, imageName, price,
 				description);
 		Set<DrinkIngredientMessage> drinkIngredientMessages = IngredientValidator.validateFields(drinkIngredients);
 

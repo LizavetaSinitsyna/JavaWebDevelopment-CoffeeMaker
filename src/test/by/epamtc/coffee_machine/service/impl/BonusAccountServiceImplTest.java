@@ -1,78 +1,75 @@
 package by.epamtc.coffee_machine.service.impl;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ResourceBundle;
-
-import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.powermock.reflect.internal.WhiteboxImpl;
 
 import by.epamtc.coffee_machine.bean.BonusAccount;
-import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPool;
-import by.epamtc.coffee_machine.dao.impl.pool.ConnectionPoolException;
-import by.epamtc.coffee_machine.dao.impl.pool.DBResourceManager;
+import by.epamtc.coffee_machine.dao.BonusAccountDAO;
+import by.epamtc.coffee_machine.dao.DAOException;
 import by.epamtc.coffee_machine.service.BonusAccountService;
 import by.epamtc.coffee_machine.service.ServiceException;
-import by.epamtc.coffee_machine.service.ServiceProvider;
 
 public class BonusAccountServiceImplTest {
-	private static ConnectionPool connectionPool;
-	private static final String REMOVE_ACCOUNT_BY_ID = "DELETE FROM bonus_accounts WHERE bonus_account_id = %s";
-	private static final String UPDATE_AUTO_INCREMENT = "ALTER TABLE bonus_accounts AUTO_INCREMENT = %s";
+
+	private BonusAccountDAO accountDAO;
+	private static BonusAccountService bonusAccountService = new BonusAccountServiceImpl();
 
 	@BeforeClass
-	public static void initPool() {
-		ResourceBundle rb = ResourceBundle.getBundle("resources/databaseTest");
-		DBResourceManager.getInstance().setBundle(rb);
-		connectionPool = ConnectionPool.retrieveConnectionPool();
-		connectionPool.initPool();
+	public static void init() {
+		bonusAccountService = new BonusAccountServiceImpl();
+	}
+
+	@Before
+	public void initMock() {
+		accountDAO = Mockito.mock(BonusAccountDAO.class);
+		WhiteboxImpl.setInternalState(bonusAccountService, "accountDAO", accountDAO);
 	}
 
 	@Test
-	public void testCreateAccount() throws ServiceException, ConnectionPoolException {
-		BonusAccountService accountService = ServiceProvider.getInstance().getBonusAccountService();
-		BonusAccount actual = accountService.createAccount();
+	public void testCreateAccount() throws ServiceException, DAOException {
+		BonusAccount bonusAccount = new BonusAccount();
+		long accountId = 1;
+		Mockito.when(accountDAO.add(bonusAccount)).thenReturn(accountId);
 		BonusAccount expected = new BonusAccount();
-		expected.setId(6);
-		Connection connection = ConnectionPool.retrieveConnectionPool().retrieveConnection();
-		Statement statement = null;
-		try {
-			statement = connection.createStatement();
-			statement.executeUpdate(String.format(REMOVE_ACCOUNT_BY_ID, actual.getId()));
-			statement.executeUpdate(String.format(UPDATE_AUTO_INCREMENT, actual.getId()));
-		} catch (SQLException e) {
-			throw new ServiceException(e.getMessage(), e);
-		} finally {
-			connectionPool.closeConnection(connection, statement);
-		}
+		expected.setId(accountId);
+		BonusAccount actual = bonusAccountService.createAccount();
 		Assert.assertEquals(expected, actual);
 	}
 
+	@Test(expected = ServiceException.class)
+	public void testCreateAccountWithDAOException() throws ServiceException, DAOException {
+		BonusAccount bonusAccount = new BonusAccount();
+		Mockito.when(accountDAO.add(bonusAccount)).thenThrow(new DAOException());
+		bonusAccountService.createAccount();
+	}
+
 	@Test
-	public void testObtainAccountByUserIdWithValidId() throws ServiceException {
-		BonusAccountService accountService = ServiceProvider.getInstance().getBonusAccountService();
-		BonusAccount actual = accountService.obtainAccountByUserId(1);
-		BonusAccount expected = new BonusAccount();
-		expected.setId(1);
-		expected.setBalance(new BigDecimal("0.35"));
+	public void testObtainAccountByUserIdWithValidId() throws ServiceException, DAOException {
+		long userId = 1;
+		BonusAccount bonusAccount = new BonusAccount();
+		Mockito.when(accountDAO.readByUserId(Mockito.anyLong())).thenReturn(bonusAccount);
+		BonusAccount actual = bonusAccountService.obtainAccountByUserId(userId);
+		BonusAccount expected = bonusAccount;
 		Assert.assertEquals(expected, actual);
 	}
 
 	@Test
 	public void testObtainAccountByUserIdWithInvalidId() throws ServiceException {
-		BonusAccountService accountService = ServiceProvider.getInstance().getBonusAccountService();
-		BonusAccount actual = accountService.obtainAccountByUserId(0);
-		BonusAccount expected = null;
-		Assert.assertEquals(expected, actual);
+		long userId = 0;
+		BonusAccount actual = bonusAccountService.obtainAccountByUserId(userId);
+		Assert.assertNull(actual);
 	}
 
-	@AfterClass
-	public static void closePool() throws ConnectionPoolException {
-		connectionPool.clearConnectionPool();
+	@Test(expected = ServiceException.class)
+	public void testObtainAccountByUserIdWithDAOException() throws ServiceException, DAOException {
+		long userId = 1;
+		Mockito.when(accountDAO.readByUserId(Mockito.anyLong())).thenThrow(new DAOException());
+		bonusAccountService.obtainAccountByUserId(userId);
+
 	}
 
 }
